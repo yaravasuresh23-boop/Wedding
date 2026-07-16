@@ -5,18 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>James & Olivia — June 14, 2025</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/lucide@latest"></script>
-
-<!-- 🔒 ICONS INITIALIZED FIRST — separate from database code -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  if (window.lucide) lucide.createIcons();
-});
-</script>
-
 <script>
 tailwind.config={theme:{extend:{colors:{gold:{50:'#fefaf3',100:'#fef7ed',200:'#f0c987',300:'#e8b668',400:'#d4a574',500:'#c49a6c',600:'#a67c52',700:'#8a6440'},rose:{50:'#fff5f6',100:'#fff1f2',200:'#e8b4b8',300:'#d4868e',400:'#b8636e',500:'#9e4a55'},sage:{200:'#c5d5c0',300:'#a3b89c',400:'#8aa87f'},cream:{100:'#faf6f0',200:'#f5ede0'},dark:{900:'#08080d',800:'#0e0e16',700:'#16161f',600:'#1e1e2a',500:'#2a2a38'}},fontFamily:{sans:['Inter','sans-serif'],serif:['Playfair Display','serif']}}}}
 </script>
@@ -24,39 +14,24 @@ tailwind.config={theme:{extend:{colors:{gold:{50:'#fefaf3',100:'#fef7ed',200:'#f
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{font-family:'Inter',sans-serif;background:#08080d;color:#fff;overflow-x:hidden}
-::-webkit-scrollbar{width:6px}
-::-webkit-scrollbar-track{background:#08080d}
-::-webkit-scrollbar-thumb{background:rgba(212,165,116,0.3);border-radius:3px}
-
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#08080d}::-webkit-scrollbar-thumb{background:rgba(212,165,116,.3);border-radius:3px}
 #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 .z1{position:relative;z-index:1}
-
 .text-gold-grad{background:linear-gradient(135deg,#f0c987,#d4a574,#e8b668,#f0c987);background-size:200% 200%;animation:shimmer 3s ease infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 @keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-
-.divider{width:80px;height:1px;background:linear-gradient(to right,transparent,#d4a574,transparent)}
-.divider-w{width:200px;height:1px;background:linear-gradient(to right,transparent,rgba(212,165,116,0.3),transparent)}
-
-.glass{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);backdrop-filter:blur(16px);transition:all .5s cubic-bezier(.25,.46,.45,.94)}
-.glass:hover{background:rgba(255,255,255,0.05);border-color:rgba(212,165,116,0.2);transform:translateY(-6px);box-shadow:0 30px 60px -15px rgba(0,0,0,.5),0 0 40px -10px rgba(212,165,116,.08)}
-
+.divider-w{width:200px;height:1px;background:linear-gradient(to right,transparent,rgba(212,165,116,.3),transparent)}
+.glass{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(16px);transition:all .5s cubic-bezier(.25,.46,.45,.94)}
+.glass:hover{background:rgba(255,255,255,.05);border-color:rgba(212,165,116,.2);transform:translateY(-6px);box-shadow:0 30px 60px -15px rgba(0,0,0,.5),0 0 40px -10px rgba(212,165,116,.08)}
 .gold-border{position:relative;overflow:hidden}
 .gold-border::before{content:'';position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(212,165,116,.4),transparent 40%,transparent 60%,rgba(232,180,184,.3));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
-
-/* ✅ BUTTONS — guaranteed visible text */
-.btn-g{background:linear-gradient(135deg,#d4a574,#e8b668,#d4a574);background-size:200% 200%;animation:shimmer 3s ease infinite;color:#08080d !important;font-weight:600;transition:all .3s;box-shadow:0 4px 20px -4px rgba(212,165,116,.5);letter-spacing:.05em;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn-g{background:linear-gradient(135deg,#d4a574,#e8b668,#d4a574);background-size:200% 200%;animation:shimmer 3s ease infinite;color:#08080d!important;font-weight:600;transition:all .3s;box-shadow:0 4px 20px -4px rgba(212,165,116,.5);letter-spacing:.05em;display:inline-flex;align-items:center;justify-content:center;gap:8px}
 .btn-g:hover{box-shadow:0 8px 35px -4px rgba(212,165,116,.7);transform:translateY(-2px) scale(1.02)}
 .btn-g:active{transform:translateY(0) scale(.98)}
-.btn-g:disabled{opacity:.5;cursor:not-allowed;transform:none !important}
-
-.btn-o{border:1px solid rgba(212,165,116,.3);color:#d4a574 !important;transition:all .3s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
-.btn-o:hover{background:rgba(212,165,116,.08);border-color:#d4a574;box-shadow:0 0 20px -5px rgba(212,165,116,.2)}
-
-/* ✅ ICON-ONLY BUTTONS — always have visible content */
+.btn-g:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-o{border:1px solid rgba(212,165,116,.3);color:#d4a574!important;transition:all .3s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn-o:hover{background:rgba(212,165,116,.08);border-color:#d4a574}
 .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);font-size:16px;transition:all .3s;cursor:pointer;background:transparent}
 .icon-btn:hover{color:#d4a574;border-color:rgba(212,165,116,.3);background:rgba(212,165,116,.05)}
-.icon-btn svg{width:16px;height:16px}
-
 .fade-up{opacity:0;transform:translateY(40px);transition:all .9s cubic-bezier(.25,.46,.45,.94)}
 .fade-up.v{opacity:1;transform:translateY(0)}
 .fade-l{opacity:0;transform:translateX(-50px);transition:all .9s cubic-bezier(.25,.46,.45,.94)}
@@ -65,40 +40,32 @@ body{font-family:'Inter',sans-serif;background:#08080d;color:#fff;overflow-x:hid
 .fade-r.v{opacity:1;transform:translateX(0)}
 .scale-in{opacity:0;transform:scale(.85);transition:all .9s cubic-bezier(.25,.46,.45,.94)}
 .scale-in.v{opacity:1;transform:scale(1)}
-
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
 .float{animation:float 5s ease-in-out infinite}
 @keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(212,165,116,.3)}70%{box-shadow:0 0 0 15px rgba(212,165,116,0)}100%{box-shadow:0 0 0 0 rgba(212,165,116,0)}}
 .pulse-r{animation:pulse-ring 2s ease-out infinite}
 @keyframes spin-slow{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 .spin-s{animation:spin-slow 20s linear infinite}
-
 .hero-bg{background:linear-gradient(to bottom,rgba(8,8,13,.2) 0%,rgba(8,8,13,.5) 40%,rgba(8,8,13,.92) 80%,#08080d 100%)}
 .cd-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(10px)}
-
 .tl-line{position:absolute;left:50%;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,rgba(212,165,116,.25),rgba(212,165,116,.25),transparent);transform:translateX(-50%)}
 .tl-dot{width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#d4a574,#e8b668);border:3px solid #08080d;box-shadow:0 0 0 4px rgba(212,165,116,.15)}
-
 .gal-item{overflow:hidden;border-radius:20px;border:1px solid rgba(255,255,255,.04);transition:all .6s;cursor:pointer;position:relative}
 .gal-item::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,13,.6) 0%,transparent 50%);opacity:0;transition:opacity .4s;pointer-events:none}
 .gal-item:hover::after{opacity:1}
 .gal-item:hover{border-color:rgba(212,165,116,.25);transform:scale(1.03);box-shadow:0 25px 50px -12px rgba(0,0,0,.5)}
 .gal-item img{transition:transform .8s cubic-bezier(.25,.46,.45,.94)}
 .gal-item:hover img{transform:scale(1.12)}
-
 .dec-card{position:relative;overflow:hidden;border-radius:24px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);transition:all .5s}
 .dec-card:hover{border-color:rgba(212,165,116,.2);transform:translateY(-8px);box-shadow:0 30px 60px -15px rgba(0,0,0,.4)}
 .dec-card img{transition:transform .7s}
 .dec-card:hover img{transform:scale(1.08)}
-
 .swatch{width:48px;height:48px;border-radius:50%;border:2px solid rgba(255,255,255,.1);transition:all .3s;cursor:pointer}
 .swatch:hover{transform:scale(1.2);border-color:rgba(255,255,255,.3)}
-
 input,textarea,select{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);color:#fff;transition:all .3s;outline:none;font-family:'Inter',sans-serif}
 input:focus,textarea:focus,select:focus{border-color:rgba(212,165,116,.5);box-shadow:0 0 0 4px rgba(212,165,116,.08);background:rgba(255,255,255,.05)}
 input::placeholder,textarea::placeholder{color:rgba(255,255,255,.25)}
 select option{background:#16161f;color:#fff}
-
 .si{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;transition:all .4s}
 .si-a{background:linear-gradient(135deg,#d4a574,#e8b668);color:#08080d;box-shadow:0 0 20px -4px rgba(212,165,116,.5)}
 .si-d{background:rgba(163,184,156,.2);color:#a3b89c;border:1px solid rgba(163,184,156,.3)}
@@ -106,32 +73,24 @@ select option{background:#16161f;color:#fff}
 .sl{height:2px;flex:1;background:rgba(255,255,255,.06);position:relative;overflow:hidden}
 .slf{position:absolute;inset:0;background:linear-gradient(to right,#d4a574,#e8b668);transform:scaleX(0);transform-origin:left;transition:transform .6s}
 .slf.f{transform:scaleX(1)}
-
 .conf-card{background:linear-gradient(135deg,rgba(212,165,116,.08),rgba(232,180,184,.05));border:1px solid rgba(212,165,116,.2);border-radius:24px}
-
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(120px);padding:16px 32px;border-radius:16px;font-weight:500;z-index:1000;transition:all .5s cubic-bezier(.34,1.56,.64,1);backdrop-filter:blur(20px);white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0)}
 .toast-ok{background:rgba(163,184,156,.95);color:#08080d;box-shadow:0 10px 40px rgba(0,0,0,.3)}
 .toast-err{background:rgba(184,99,110,.95);color:#fff;box-shadow:0 10px 40px rgba(0,0,0,.3)}
-
 .confetti{position:fixed;pointer-events:none;z-index:999}
-
-.nav-l{position:relative;color:rgba(255,255,255,.6) !important}
+.nav-l{position:relative;color:rgba(255,255,255,.6)!important}
 .nav-l::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:linear-gradient(to right,#d4a574,#e8b668);transition:width .3s;border-radius:1px}
-.nav-l:hover{color:#d4a574 !important}
+.nav-l:hover{color:#d4a574!important}
 .nav-l:hover::after{width:100%}
-
 .at th{background:rgba(212,165,116,.08)}
 .at tr{border-bottom:1px solid rgba(255,255,255,.04)}
 .at tr:hover{background:rgba(255,255,255,.02)}
 .badge-y{background:rgba(163,184,156,.15);color:#a3b89c;border:1px solid rgba(163,184,156,.2);padding:2px 10px;border-radius:999px;font-size:11px;font-weight:500}
 .badge-n{background:rgba(184,99,110,.15);color:#d4868e;border:1px solid rgba(184,99,110,.2);padding:2px 10px;border-radius:999px;font-size:11px;font-weight:500}
-
 @keyframes check{0%{stroke-dashoffset:50}100%{stroke-dashoffset:0}}
-
 .modal{position:fixed;inset:0;background:rgba(8,8,13,.85);backdrop-filter:blur(8px);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
 .modal.on{display:flex}
-
 .faq-i{border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);border-radius:16px;overflow:hidden;transition:all .3s}
 .faq-i:hover{border-color:rgba(212,165,116,.15)}
 .faq-q{cursor:pointer;padding:20px 24px;display:flex;align-items:center;gap:16px;user-select:none}
@@ -139,23 +98,15 @@ select option{background:#16161f;color:#fff}
 .faq-i.open .faq-a{max-height:300px;padding:0 24px 20px}
 .faq-i.open .faq-chev{transform:rotate(180deg)}
 .faq-chev{transition:transform .3s;flex-shrink:0}
-
 .db-dot{width:6px;height:6px;border-radius:50%;display:inline-block}
 .db-on{color:#a3b89c;background:rgba(163,184,156,.1);border:1px solid rgba(163,184,156,.2)}
 .db-on .db-dot{background:#a3b89c;animation:pulse-ring 2s infinite}
 .db-off{color:#d4868e;background:rgba(184,99,110,.1);border:1px solid rgba(184,99,110,.2)}
 .db-off .db-dot{background:#d4868e}
-
 .row-new{animation:rowFlash 1.5s ease}
 @keyframes rowFlash{0%{background:rgba(212,165,116,.15)}100%{background:transparent}}
-
-/* ✅ Inline SVG icon fallback — always visible */
-.svg-icon{width:16px;height:16px;flex-shrink:0}
-.svg-icon-sm{width:14px;height:14px;flex-shrink:0}
-
 @media(max-width:768px){.tl-line{left:20px}}
 </style>
-
 <script type="importmap">
 {"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
 </script>
@@ -163,8 +114,6 @@ select option{background:#16161f;color:#fff}
 <body>
 
 <canvas id="bg-canvas"></canvas>
-
-<!-- Toasts -->
 <div id="toast-ok" class="toast toast-ok">✓ RSVP submitted successfully!</div>
 <div id="toast-err" class="toast toast-err">✗ Please fill in all required fields</div>
 
@@ -185,7 +134,7 @@ select option{background:#16161f;color:#fff}
           <h3 class="font-serif text-xl text-white">RSVP Dashboard</h3>
           <span id="db-stat" class="text-[10px] px-2.5 py-1 rounded-full db-off flex items-center gap-1.5"><span class="db-dot"></span><span id="db-txt">Connecting</span></span>
         </div>
-        <p class="text-xs text-neutral-500 mt-1">All guest responses — synced in real-time</p>
+        <p class="text-xs text-neutral-500 mt-1">All guest responses from all devices</p>
       </div>
       <button onclick="document.getElementById('admin-m').classList.remove('on')" class="icon-btn" style="color:rgba(255,255,255,.4)">✕</button>
     </div>
@@ -206,7 +155,7 @@ select option{background:#16161f;color:#fff}
             <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium hidden md:table-cell">Guests</th>
             <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium hidden lg:table-cell">Date</th>
           </tr></thead>
-          <tbody id="admin-tb"><tr><td colspan="6" class="text-center py-12 text-neutral-600">Connecting to database...</td></tr></tbody>
+          <tbody id="admin-tb"><tr><td colspan="6" class="text-center py-12 text-neutral-600">Connecting...</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -242,10 +191,9 @@ select option{background:#16161f;color:#fff}
   </div>
 </div>
 
-<!-- ═════════════ PAGE CONTENT ═════════════ -->
+<!-- ═════════════ PAGE ═════════════ -->
 <div class="z1">
 
-<!-- Nav -->
 <nav id="nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
   <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
     <a href="#hero" class="font-serif text-2xl tracking-wide"><span class="text-gold-200">J</span><span class="text-white/20 mx-1">&</span><span class="text-rose-200">O</span></a>
@@ -278,12 +226,7 @@ select option{background:#16161f;color:#fff}
 <section id="hero" class="relative min-h-screen flex flex-col items-center justify-center px-6">
   <div class="hero-bg absolute inset-0 z-10"></div>
   <div class="relative z-20 text-center max-w-4xl mx-auto">
-    <div class="fade-up mb-8">
-      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold-400/15 bg-gold-400/5 mb-6">
-        <span class="w-2 h-2 rounded-full bg-sage-300 animate-pulse"></span>
-        <span class="text-[11px] font-medium tracking-widest uppercase text-gold-300">Save the Date</span>
-      </div>
-    </div>
+    <div class="fade-up mb-8"><div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold-400/15 bg-gold-400/5 mb-6"><span class="w-2 h-2 rounded-full bg-sage-300 animate-pulse"></span><span class="text-[11px] font-medium tracking-widest uppercase text-gold-300">Save the Date</span></div></div>
     <h1 class="fade-up font-serif text-6xl sm:text-8xl lg:text-9xl font-normal tracking-tight leading-[.95] mb-6" style="transition-delay:.15s">James<br><span class="text-gold-grad text-5xl sm:text-6xl lg:text-7xl italic">&</span><br>Olivia</h1>
     <div class="fade-up flex items-center justify-center gap-4 mt-4 mb-8" style="transition-delay:.3s"><div class="w-12 h-px bg-gradient-to-r from-transparent to-gold-400/40"></div><div class="w-2 h-2 rotate-45 border border-gold-400/40"></div><div class="w-12 h-px bg-gradient-to-l from-transparent to-gold-400/40"></div></div>
     <p class="fade-up font-serif text-xl sm:text-2xl text-neutral-300 italic mb-1" style="transition-delay:.4s">June Fourteenth</p>
@@ -311,33 +254,13 @@ select option{background:#16161f;color:#fff}
 <!-- Story -->
 <section id="story" class="py-28 sm:py-36 px-6">
   <div class="max-w-5xl mx-auto">
-    <div class="text-center mb-24">
-      <p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">How It All Began</p>
-      <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">Our <span class="text-gold-grad">Love</span> Story</h2>
-      <div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-w"></div></div>
-    </div>
+    <div class="text-center mb-24"><p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">How It All Began</p><h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">Our <span class="text-gold-grad">Love</span> Story</h2><div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-w"></div></div></div>
     <div class="relative">
       <div class="tl-line hidden md:block"></div>
-      <div class="fade-l relative flex flex-col md:flex-row items-center gap-8 mb-24">
-        <div class="md:w-1/2 md:text-right md:pr-20"><span class="text-[11px] font-semibold tracking-[.2em] uppercase text-gold-400">August 2019</span><h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3 text-white">First Meeting</h3><p class="text-neutral-400 text-sm leading-relaxed">A chance encounter at a friend's dinner party in Florence. James spilled wine on Olivia's dress — and spent the rest of the evening making her laugh about it.</p></div>
-        <div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="tl-dot pulse-r"></div></div>
-        <div class="md:w-1/2 md:pl-20"><div class="rounded-2xl overflow-hidden border border-white/5 gal-item" onclick="openLB('https://picsum.photos/seed/wed-meet/800/600.jpg')"><img src="https://picsum.photos/seed/wed-meet/800/600.jpg" alt="" class="w-full h-56 object-cover"></div></div>
-      </div>
-      <div class="fade-r relative flex flex-col md:flex-row-reverse items-center gap-8 mb-24">
-        <div class="md:w-1/2 md:text-left md:pl-20"><span class="text-[11px] font-semibold tracking-[.2em] uppercase text-gold-400">December 2020</span><h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3 text-white">First Date</h3><p class="text-neutral-400 text-sm leading-relaxed">A snowy evening walk along the Arno river turned into hours of conversation over espresso. They closed down the café and kept talking on a bench until dawn.</p></div>
-        <div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="tl-dot pulse-r"></div></div>
-        <div class="md:w-1/2 md:pr-20"><div class="rounded-2xl overflow-hidden border border-white/5 gal-item" onclick="openLB('https://picsum.photos/seed/wed-date/800/600.jpg')"><img src="https://picsum.photos/seed/wed-date/800/600.jpg" alt="" class="w-full h-56 object-cover"></div></div>
-      </div>
-      <div class="fade-l relative flex flex-col md:flex-row items-center gap-8 mb-24">
-        <div class="md:w-1/2 md:text-right md:pr-20"><span class="text-[11px] font-semibold tracking-[.2em] uppercase text-gold-400">June 2022</span><h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3 text-white">Moving In Together</h3><p class="text-neutral-400 text-sm leading-relaxed">A tiny apartment with a leaky faucet became their first home. They learned to cook together, argue about furniture, and fall deeper in love every single day.</p></div>
-        <div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="tl-dot pulse-r"></div></div>
-        <div class="md:w-1/2 md:pl-20"><div class="rounded-2xl overflow-hidden border border-white/5 gal-item" onclick="openLB('https://picsum.photos/seed/wed-home/800/600.jpg')"><img src="https://picsum.photos/seed/wed-home/800/600.jpg" alt="" class="w-full h-56 object-cover"></div></div>
-      </div>
-      <div class="fade-r relative flex flex-col md:flex-row-reverse items-center gap-8">
-        <div class="md:w-1/2 md:text-left md:pl-20"><span class="text-[11px] font-semibold tracking-[.2em] uppercase text-gold-400">September 2024</span><h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3 text-white">The Proposal</h3><p class="text-neutral-400 text-sm leading-relaxed">Under a canopy of stars in the Tuscan countryside, James got down on one knee. Olivia said yes before he even finished the question.</p></div>
-        <div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="tl-dot pulse-r"></div></div>
-        <div class="md:w-1/2 md:pr-20"><div class="rounded-2xl overflow-hidden border border-white/5 gal-item" onclick="openLB('https://picsum.photos/seed/wed-prop/800/600.jpg')"><img src="https://picsum.photos/seed/wed-prop/800/600.jpg" alt="" class="w-full h-56 object-cover"></div></div>
-      </div>
+      <div class="fade-l relative flex flex-col md:flex-row items-center gap-8 mb-24"><div class="md:w-1/2 md:text-right md:pr-20"><span class="text-[11px] font-semibold tracking-[.2em] uppercase text-gold-400">August 2019</span><h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3 text-white">First Meeting</h3><p class="text-neutral-400 text-sm leading-relaxed">A chance encounter at a friend's dinner party in Florence. James spilled wine on Olivia's dress — and spent the rest of the evening making her laugh about it.</p></div><div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="tl-dot pulse-r"></div></div><div class="md:w-1/2 md:pl-20"><div class="rounded-2xl overflow-hidden border border-white/5 gal-item" onclick="openLB('https://picsum.photos/seed/wed-meet/800/600.jpg')"><img src="https://picsum.photos/seed/wed-meet/800/600.jpg" class="w-full h-56 object-cover"></div></div></div>
+      <div class="fade-r relative flex flex-col md:flex-row-reverse items-center gap-8 mb-24"><div class="md:w-1/2 md:text-left md:pl-20"><span class="text-[11px] font-semibold tracking-[.2em] uppercase text-gold-400">December 2020</span><h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3 text-white">First Date</h3><p class="text-neutral-400 text-sm leading-relaxed">A snowy evening walk along the Arno river turned into hours of conversation over espresso. They closed down the café and kept talking until dawn.</p></div><div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="tl-dot pulse-r"></div></div><div class="md:w-1/2 md:pr-20"><div class="rounded-2xl overflow-hidden border border-white/5 gal-item" onclick="openLB('https://picsum.photos/seed/wed-date/800/600.jpg')"><img src="https://picsum.photos/seed/wed-date/800/600.jpg" class="w-full h-56 object-cover"></div></div></div>
+      <div class="fade-l relative flex flex-col md:flex-row items-center gap-8 mb-24"><div class="md:w-1/2 md:text-right md:pr-20"><span class="text-[11px] font-semibold tracking-[.2em] uppercase text-gold-400">June 2022</span><h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3 text-white">Moving In Together</h3><p class="text-neutral-400 text-sm leading-relaxed">A tiny apartment with a leaky faucet became their first home. They learned to cook together, argue about furniture, and fall deeper in love.</p></div><div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="tl-dot pulse-r"></div></div><div class="md:w-1/2 md:pl-20"><div class="rounded-2xl overflow-hidden border border-white/5 gal-item" onclick="openLB('https://picsum.photos/seed/wed-home/800/600.jpg')"><img src="https://picsum.photos/seed/wed-home/800/600.jpg" class="w-full h-56 object-cover"></div></div></div>
+      <div class="fade-r relative flex flex-col md:flex-row-reverse items-center gap-8"><div class="md:w-1/2 md:text-left md:pl-20"><span class="text-[11px] font-semibold tracking-[.2em] uppercase text-gold-400">September 2024</span><h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3 text-white">The Proposal</h3><p class="text-neutral-400 text-sm leading-relaxed">Under a canopy of stars in the Tuscan countryside, James got down on one knee. Olivia said yes before he even finished the question.</p></div><div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="tl-dot pulse-r"></div></div><div class="md:w-1/2 md:pr-20"><div class="rounded-2xl overflow-hidden border border-white/5 gal-item" onclick="openLB('https://picsum.photos/seed/wed-prop/800/600.jpg')"><img src="https://picsum.photos/seed/wed-prop/800/600.jpg" class="w-full h-56 object-cover"></div></div></div>
     </div>
   </div>
 </section>
@@ -346,23 +269,8 @@ select option{background:#16161f;color:#fff}
 <section id="decor" class="py-28 sm:py-36 px-6 relative">
   <div class="absolute inset-0 bg-gradient-to-b from-transparent via-gold-400/[.02] to-transparent pointer-events-none"></div>
   <div class="max-w-6xl mx-auto relative">
-    <div class="text-center mb-20">
-      <p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">Design & Aesthetics</p>
-      <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">Wedding <span class="text-gold-grad">Decor</span></h2>
-      <div class="fade-up flex items-center justify-center gap-3 mt-5 mb-4"><div class="divider-w"></div></div>
-      <p class="fade-up text-neutral-400 text-sm max-w-xl mx-auto">A romantic celebration inspired by Tuscan sunsets and the timeless elegance of Italian countryside weddings.</p>
-    </div>
-    <div class="fade-up mb-16">
-      <h3 class="font-serif text-xl text-center mb-8 text-white">Color <span class="text-gold-grad">Palette</span></h3>
-      <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-        <div class="text-center"><div class="swatch mx-auto" style="background:#d4a574"></div><p class="text-[10px] text-neutral-500 mt-2">Gold</p></div>
-        <div class="text-center"><div class="swatch mx-auto" style="background:#e8b4b8"></div><p class="text-[10px] text-neutral-500 mt-2">Rose</p></div>
-        <div class="text-center"><div class="swatch mx-auto" style="background:#a3b89c"></div><p class="text-[10px] text-neutral-500 mt-2">Sage</p></div>
-        <div class="text-center"><div class="swatch mx-auto" style="background:#faf6f0"></div><p class="text-[10px] text-neutral-500 mt-2">Ivory</p></div>
-        <div class="text-center"><div class="swatch mx-auto" style="background:#f5ede0"></div><p class="text-[10px] text-neutral-500 mt-2">Champagne</p></div>
-        <div class="text-center"><div class="swatch mx-auto" style="background:#2a2a38"></div><p class="text-[10px] text-neutral-500 mt-2">Charcoal</p></div>
-      </div>
-    </div>
+    <div class="text-center mb-20"><p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">Design</p><h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">Wedding <span class="text-gold-grad">Decor</span></h2><div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-w"></div></div></div>
+    <div class="fade-up mb-16"><h3 class="font-serif text-xl text-center mb-8 text-white">Color <span class="text-gold-grad">Palette</span></h3><div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6"><div class="text-center"><div class="swatch mx-auto" style="background:#d4a574"></div><p class="text-[10px] text-neutral-500 mt-2">Gold</p></div><div class="text-center"><div class="swatch mx-auto" style="background:#e8b4b8"></div><p class="text-[10px] text-neutral-500 mt-2">Rose</p></div><div class="text-center"><div class="swatch mx-auto" style="background:#a3b89c"></div><p class="text-[10px] text-neutral-500 mt-2">Sage</p></div><div class="text-center"><div class="swatch mx-auto" style="background:#faf6f0"></div><p class="text-[10px] text-neutral-500 mt-2">Ivory</p></div><div class="text-center"><div class="swatch mx-auto" style="background:#f5ede0"></div><p class="text-[10px] text-neutral-500 mt-2">Champagne</p></div><div class="text-center"><div class="swatch mx-auto" style="background:#2a2a38"></div><p class="text-[10px] text-neutral-500 mt-2">Charcoal</p></div></div></div>
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
       <div class="scale-in dec-card"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-floral/600/400.jpg" class="w-full h-52 object-cover"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-gold-400 mb-2">🌸 Florals</p><h4 class="font-serif text-lg mb-2 text-white">Floral Arrangements</h4><p class="text-xs text-neutral-400 leading-relaxed">Lush garden-style bouquets with white roses, peonies, trailing ivy, and dried lavender.</p></div></div>
       <div class="scale-in dec-card" style="transition-delay:.1s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-table/600/400.jpg" class="w-full h-52 object-cover"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-rose-300 mb-2">🍽 Tables</p><h4 class="font-serif text-lg mb-2 text-white">Table Settings</h4><p class="text-xs text-neutral-400 leading-relaxed">Long farmhouse tables with gold-rimmed china, linen runners, and candlelit centerpieces.</p></div></div>
@@ -375,79 +283,26 @@ select option{background:#16161f;color:#fff}
 </section>
 
 <!-- Quote -->
-<section class="py-20 px-6 relative">
-  <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at center,rgba(212,165,116,.03) 0%,transparent 70%)"></div>
-  <div class="max-w-3xl mx-auto text-center fade-up relative">
-    <div class="w-16 h-16 rounded-full border border-gold-400/10 flex items-center justify-center mx-auto mb-8 spin-s"><span style="color:rgba(212,165,116,.4);font-size:24px">♥</span></div>
-    <p class="font-serif text-2xl sm:text-3xl lg:text-4xl italic text-neutral-200 leading-relaxed mb-6">"Whatever our souls are made of, his and mine are the same."</p>
-    <div class="flex items-center justify-center gap-3"><div class="w-8 h-px bg-gold-400/30"></div><span class="text-sm text-gold-400">Emily Brontë</span><div class="w-8 h-px bg-gold-400/30"></div></div>
-  </div>
-</section>
+<section class="py-20 px-6 relative"><div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at center,rgba(212,165,116,.03) 0%,transparent 70%)"></div><div class="max-w-3xl mx-auto text-center fade-up relative"><div class="w-16 h-16 rounded-full border border-gold-400/10 flex items-center justify-center mx-auto mb-8 spin-s"><span style="color:rgba(212,165,116,.4);font-size:24px">♥</span></div><p class="font-serif text-2xl sm:text-3xl lg:text-4xl italic text-neutral-200 leading-relaxed mb-6">"Whatever our souls are made of, his and mine are the same."</p><div class="flex items-center justify-center gap-3"><div class="w-8 h-px bg-gold-400/30"></div><span class="text-sm text-gold-400">Emily Brontë</span><div class="w-8 h-px bg-gold-400/30"></div></div></div></section>
 
 <!-- Details -->
 <section id="details" class="py-28 sm:py-36 px-6">
   <div class="max-w-6xl mx-auto">
-    <div class="text-center mb-20">
-      <p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">Join Us</p>
-      <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">Wedding <span class="text-gold-grad">Details</span></h2>
-      <div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-w"></div></div>
-    </div>
+    <div class="text-center mb-20"><p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">Join Us</p><h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">Wedding <span class="text-gold-grad">Details</span></h2><div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-w"></div></div></div>
     <div class="grid md:grid-cols-2 gap-5">
-      <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10">
-        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400/15 to-gold-400/5 flex items-center justify-center mb-6"><span style="font-size:24px">⛪</span></div>
-        <span class="text-[10px] font-semibold tracking-[.2em] uppercase text-gold-400 mb-2 block">The Ceremony</span>
-        <h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Exchange of Vows</h3>
-        <div class="space-y-4 text-sm text-neutral-400">
-          <div class="flex items-start gap-3"><span class="text-gold-400 mt-.5 shrink-0">📅</span><span>Saturday, June 14, 2025</span></div>
-          <div class="flex items-start gap-3"><span class="text-gold-400 mt-.5 shrink-0">🕐</span><span>4:00 PM — Doors open at 3:30 PM</span></div>
-          <div class="flex items-start gap-3"><span class="text-gold-400 mt-.5 shrink-0">📍</span><span>The Rosewood Estate Chapel<br>Via della Rosa, 42 — Tuscany, Italy</span></div>
-        </div>
-        <div class="mt-6 pt-6 border-t border-white/5"><p class="text-xs text-neutral-500">Garden ceremony with seating for 150. Rain backup: Grand Hall.</p></div>
-      </div>
-      <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:.1s">
-        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-200/15 to-rose-200/5 flex items-center justify-center mb-6"><span style="font-size:24px">🍷</span></div>
-        <span class="text-[10px] font-semibold tracking-[.2em] uppercase text-rose-200 mb-2 block">The Reception</span>
-        <h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Dinner & Dancing</h3>
-        <div class="space-y-4 text-sm text-neutral-400">
-          <div class="flex items-start gap-3"><span class="text-rose-200 mt-.5 shrink-0">📅</span><span>Saturday, June 14, 2025</span></div>
-          <div class="flex items-start gap-3"><span class="text-rose-200 mt-.5 shrink-0">🕐</span><span>6:00 PM — Until Midnight</span></div>
-          <div class="flex items-start gap-3"><span class="text-rose-200 mt-.5 shrink-0">📍</span><span>The Rosewood Terrace<br>Adjacent to the Chapel</span></div>
-        </div>
-        <div class="mt-6 pt-6 border-t border-white/5"><p class="text-xs text-neutral-500">Four-course dinner, live band, open bar. Black tie optional.</p></div>
-      </div>
-      <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:.15s">
-        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sage-300/15 to-sage-300/5 flex items-center justify-center mb-6"><span style="font-size:24px">🛏</span></div>
-        <span class="text-[10px] font-semibold tracking-[.2em] uppercase text-sage-300 mb-2 block">Accommodation</span>
-        <h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Where to Stay</h3>
-        <p class="text-sm text-neutral-400 leading-relaxed mb-4">We've reserved rooms at Villa Toscana Inn, 5 minutes from the venue. Code: <span class="text-gold-200 font-semibold bg-gold-400/10 px-2 py-.5 rounded-md">JANDO2025</span></p>
-        <a href="#" class="inline-flex items-center gap-2 text-sm text-sage-300 hover:text-sage-200 font-medium transition-colors">Book your room →</a>
-      </div>
-      <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:.2s">
-        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-200/15 to-rose-200/5 flex items-center justify-center mb-6"><span style="font-size:24px">🎁</span></div>
-        <span class="text-[10px] font-semibold tracking-[.2em] uppercase text-rose-200 mb-2 block">Registry</span>
-        <h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Your Presence Is Enough</h3>
-        <p class="text-sm text-neutral-400 leading-relaxed mb-4">Your love is the greatest gift. We also have a small registry and honeymoon fund if you wish.</p>
-        <a href="#" class="inline-flex items-center gap-2 text-sm text-rose-200 hover:text-rose-300 font-medium transition-colors">View registry →</a>
-      </div>
+      <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400/15 to-gold-400/5 flex items-center justify-center mb-6"><span style="font-size:24px">⛪</span></div><span class="text-[10px] font-semibold tracking-[.2em] uppercase text-gold-400 mb-2 block">The Ceremony</span><h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Exchange of Vows</h3><div class="space-y-4 text-sm text-neutral-400"><div class="flex items-start gap-3"><span class="text-gold-400 mt-.5 shrink-0">📅</span><span>Saturday, June 14, 2025</span></div><div class="flex items-start gap-3"><span class="text-gold-400 mt-.5 shrink-0">🕐</span><span>4:00 PM — Doors open at 3:30 PM</span></div><div class="flex items-start gap-3"><span class="text-gold-400 mt-.5 shrink-0">📍</span><span>The Rosewood Estate Chapel<br>Via della Rosa, 42 — Tuscany, Italy</span></div></div><div class="mt-6 pt-6 border-t border-white/5"><p class="text-xs text-neutral-500">Garden ceremony with seating for 150. Rain backup: Grand Hall.</p></div></div>
+      <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:.1s"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-200/15 to-rose-200/5 flex items-center justify-center mb-6"><span style="font-size:24px">🍷</span></div><span class="text-[10px] font-semibold tracking-[.2em] uppercase text-rose-200 mb-2 block">The Reception</span><h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Dinner & Dancing</h3><div class="space-y-4 text-sm text-neutral-400"><div class="flex items-start gap-3"><span class="text-rose-200 mt-.5 shrink-0">📅</span><span>Saturday, June 14, 2025</span></div><div class="flex items-start gap-3"><span class="text-rose-200 mt-.5 shrink-0">🕐</span><span>6:00 PM — Until Midnight</span></div><div class="flex items-start gap-3"><span class="text-rose-200 mt-.5 shrink-0">📍</span><span>The Rosewood Terrace<br>Adjacent to the Chapel</span></div></div><div class="mt-6 pt-6 border-t border-white/5"><p class="text-xs text-neutral-500">Four-course dinner, live band, open bar. Black tie optional.</p></div></div>
+      <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:.15s"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sage-300/15 to-sage-300/5 flex items-center justify-center mb-6"><span style="font-size:24px">🛏</span></div><span class="text-[10px] font-semibold tracking-[.2em] uppercase text-sage-300 mb-2 block">Accommodation</span><h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Where to Stay</h3><p class="text-sm text-neutral-400 leading-relaxed mb-4">Rooms reserved at Villa Toscana Inn, 5 minutes from venue. Code: <span class="text-gold-200 font-semibold bg-gold-400/10 px-2 py-.5 rounded-md">JANDO2025</span></p><a href="#" class="inline-flex items-center gap-2 text-sm text-sage-300 hover:text-sage-200 font-medium transition-colors">Book your room →</a></div>
+      <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:.2s"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-200/15 to-rose-200/5 flex items-center justify-center mb-6"><span style="font-size:24px">🎁</span></div><span class="text-[10px] font-semibold tracking-[.2em] uppercase text-rose-200 mb-2 block">Registry</span><h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Your Presence Is Enough</h3><p class="text-sm text-neutral-400 leading-relaxed mb-4">Your love is the greatest gift. We also have a small registry and honeymoon fund.</p><a href="#" class="inline-flex items-center gap-2 text-sm text-rose-200 hover:text-rose-300 font-medium transition-colors">View registry →</a></div>
     </div>
-    <div class="fade-up mt-8 glass gold-border rounded-3xl p-8 sm:p-10">
-      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6">
-        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400/15 to-rose-200/10 flex items-center justify-center shrink-0"><span style="font-size:24px">👔</span></div>
-        <div class="flex-1"><span class="text-[10px] font-semibold tracking-[.2em] uppercase text-gold-400 mb-1 block">Dress Code</span><h3 class="font-serif text-xl mb-2 text-white">Black Tie Optional</h3><p class="text-sm text-neutral-400 leading-relaxed">Formal or semi-formal attire. Tuxedos, dark suits, evening gowns, or cocktail dresses. Please avoid white or ivory.</p></div>
-        <div class="flex gap-2 shrink-0"><div class="w-8 h-8 rounded-lg" style="background:#1a1a2e;border:1px solid rgba(255,255,255,.1)"></div><div class="w-8 h-8 rounded-lg" style="background:#2a1a1a;border:1px solid rgba(255,255,255,.1)"></div><div class="w-8 h-8 rounded-lg" style="background:#1a2a1a;border:1px solid rgba(255,255,255,.1)"></div><div class="w-8 h-8 rounded-lg" style="background:#d4a574;border:1px solid rgba(255,255,255,.1)"></div></div>
-      </div>
-    </div>
+    <div class="fade-up mt-8 glass gold-border rounded-3xl p-8 sm:p-10"><div class="flex flex-col sm:flex-row items-start sm:items-center gap-6"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400/15 to-rose-200/10 flex items-center justify-center shrink-0"><span style="font-size:24px">👔</span></div><div class="flex-1"><span class="text-[10px] font-semibold tracking-[.2em] uppercase text-gold-400 mb-1 block">Dress Code</span><h3 class="font-serif text-xl mb-2 text-white">Black Tie Optional</h3><p class="text-sm text-neutral-400 leading-relaxed">Formal or semi-formal attire. Please avoid white or ivory.</p></div><div class="flex gap-2 shrink-0"><div class="w-8 h-8 rounded-lg" style="background:#1a1a2e;border:1px solid rgba(255,255,255,.1)"></div><div class="w-8 h-8 rounded-lg" style="background:#2a1a1a;border:1px solid rgba(255,255,255,.1)"></div><div class="w-8 h-8 rounded-lg" style="background:#1a2a1a;border:1px solid rgba(255,255,255,.1)"></div><div class="w-8 h-8 rounded-lg" style="background:#d4a574;border:1px solid rgba(255,255,255,.1)"></div></div></div></div>
   </div>
 </section>
 
 <!-- Gallery -->
 <section id="gallery" class="py-28 sm:py-36 px-6">
   <div class="max-w-6xl mx-auto">
-    <div class="text-center mb-16">
-      <p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">Moments</p>
-      <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">Our <span class="text-gold-grad">Gallery</span></h2>
-      <div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-w"></div></div>
-    </div>
+    <div class="text-center mb-16"><p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">Moments</p><h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">Our <span class="text-gold-grad">Gallery</span></h2><div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-w"></div></div></div>
     <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
       <div class="scale-in gal-item col-span-2 md:col-span-2 row-span-2" onclick="openLB('https://picsum.photos/seed/gal-hero/1000/1000.jpg')"><img src="https://picsum.photos/seed/gal-hero/1000/1000.jpg" class="w-full h-full object-cover" style="min-height:300px"></div>
       <div class="scale-in gal-item" style="transition-delay:.08s" onclick="openLB('https://picsum.photos/seed/gal-2/600/600.jpg')"><img src="https://picsum.photos/seed/gal-2/600/600.jpg" class="w-full h-44 sm:h-full object-cover"></div>
@@ -463,18 +318,14 @@ select option{background:#16161f;color:#fff}
 <!-- FAQ -->
 <section id="faq" class="py-28 sm:py-36 px-6">
   <div class="max-w-3xl mx-auto">
-    <div class="text-center mb-16">
-      <p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">Questions</p>
-      <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">Frequently <span class="text-gold-grad">Asked</span></h2>
-      <div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-w"></div></div>
-    </div>
+    <div class="text-center mb-16"><p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">Questions</p><h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">Frequently <span class="text-gold-grad">Asked</span></h2><div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-w"></div></div></div>
     <div class="space-y-3">
-      <div class="fade-up faq-i"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span class="flex-1 text-sm font-medium text-white">Is there parking available?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Yes, complimentary valet parking for all guests. Self-parking is also available in the main lot.</div></div>
-      <div class="fade-up faq-i" style="transition-delay:.05s"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span class="flex-1 text-sm font-medium text-white">Can I bring a plus-one?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Your invitation will indicate if a plus-one is included. If unsure, please reach out directly.</div></div>
-      <div class="fade-up faq-i" style="transition-delay:.1s"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span class="flex-1 text-sm font-medium text-white">Are children welcome?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Children are welcome! A supervised kids' area with activities and a special menu will be available during the reception.</div></div>
-      <div class="fade-up faq-i" style="transition-delay:.15s"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span class="flex-1 text-sm font-medium text-white">Dietary restrictions?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Please note any requirements in your RSVP. Our chef accommodates vegetarian, vegan, gluten-free, and other needs.</div></div>
-      <div class="fade-up faq-i" style="transition-delay:.2s"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span class="flex-1 text-sm font-medium text-white">What if it rains?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">The Rosewood Grand Hall is our beautiful indoor alternative with the same romantic atmosphere.</div></div>
-      <div class="fade-up faq-i" style="transition-delay:.25s"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span class="flex-1 text-sm font-medium text-white">RSVP deadline?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Please respond by May 15, 2025. This helps us finalize catering, seating, and accommodations.</div></div>
+      <div class="fade-up faq-i"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span class="flex-1 text-sm font-medium text-white">Is there parking available?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Yes, complimentary valet parking for all guests.</div></div>
+      <div class="fade-up faq-i" style="transition-delay:.05s"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span class="flex-1 text-sm font-medium text-white">Can I bring a plus-one?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Your invitation will indicate if a plus-one is included.</div></div>
+      <div class="fade-up faq-i" style="transition-delay:.1s"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span class="flex-1 text-sm font-medium text-white">Are children welcome?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Yes! A supervised kids' area with activities will be available.</div></div>
+      <div class="fade-up faq-i" style="transition-delay:.15s"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span class="flex-1 text-sm font-medium text-white">Dietary restrictions?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Note any requirements in your RSVP — we accommodate all needs.</div></div>
+      <div class="fade-up faq-i" style="transition-delay:.2s"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span class="flex-1 text-sm font-medium text-white">What if it rains?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">The Grand Hall is our beautiful indoor alternative.</div></div>
+      <div class="fade-up faq-i" style="transition-delay:.25s"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span class="flex-1 text-sm font-medium text-white">RSVP deadline?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Please respond by May 15, 2025.</div></div>
     </div>
   </div>
 </section>
@@ -483,18 +334,9 @@ select option{background:#16161f;color:#fff}
 <section id="rsvp" class="py-28 sm:py-36 px-6 relative">
   <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at center bottom,rgba(212,165,116,.04) 0%,transparent 60%)"></div>
   <div class="max-w-2xl mx-auto relative">
-    <div class="text-center mb-12">
-      <p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">Respond</p>
-      <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">RSVP</h2>
-      <div class="fade-up flex items-center justify-center gap-3 mt-5 mb-4"><div class="divider-w"></div></div>
-      <p class="fade-up text-neutral-400 text-sm">Kindly respond by May 15, 2025</p>
-    </div>
+    <div class="text-center mb-12"><p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">Respond</p><h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">RSVP</h2><div class="fade-up flex items-center justify-center gap-3 mt-5 mb-4"><div class="divider-w"></div></div><p class="fade-up text-neutral-400 text-sm">Kindly respond by May 15, 2025</p></div>
     <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10">
-      <div class="flex items-center justify-center gap-0 mb-10 px-4">
-        <div id="si1" class="si si-a">1</div><div class="sl"><div id="sl1" class="slf"></div></div>
-        <div id="si2" class="si si-p">2</div><div class="sl"><div id="sl2" class="slf"></div></div>
-        <div id="si3" class="si si-p">3</div>
-      </div>
+      <div class="flex items-center justify-center gap-0 mb-10 px-4"><div id="si1" class="si si-a">1</div><div class="sl"><div id="sl1" class="slf"></div></div><div id="si2" class="si si-p">2</div><div class="sl"><div id="sl2" class="slf"></div></div><div id="si3" class="si si-p">3</div></div>
       <form id="rsvp-form" onsubmit="return false">
         <div id="fs1" class="space-y-5">
           <div><label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">Full Name *</label><input type="text" id="f-name" placeholder="Your full name" required class="w-full px-4 py-3.5 rounded-xl text-sm"></div>
@@ -503,333 +345,280 @@ select option{background:#16161f;color:#fff}
           <div class="flex justify-end pt-2"><button type="button" onclick="goStep(2)" class="btn-g px-8 py-3 rounded-xl text-sm">Continue →</button></div>
         </div>
         <div id="fs2" class="space-y-5 hidden">
-          <div>
-            <label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-3">Will you attend? *</label>
-            <div class="grid grid-cols-2 gap-3">
-              <label class="cursor-pointer"><input type="radio" name="att" value="yes" class="hidden peer" required><div class="peer-checked:border-sage-300 peer-checked:bg-sage-300/10 border border-white/8 rounded-xl p-4 text-center transition-all hover:border-white/20"><p class="text-sm font-medium text-white">Joyfully Accept</p><p class="text-[10px] text-neutral-500 mt-1">I'll be there!</p></div></label>
-              <label class="cursor-pointer"><input type="radio" name="att" value="no" class="hidden peer"><div class="peer-checked:border-rose-300 peer-checked:bg-rose-300/10 border border-white/8 rounded-xl p-4 text-center transition-all hover:border-white/20"><p class="text-sm font-medium text-white">Regretfully Decline</p><p class="text-[10px] text-neutral-500 mt-1">Can't make it</p></div></label>
-            </div>
-          </div>
+          <div><label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-3">Will you attend? *</label><div class="grid grid-cols-2 gap-3"><label class="cursor-pointer"><input type="radio" name="att" value="yes" class="hidden peer" required><div class="peer-checked:border-sage-300 peer-checked:bg-sage-300/10 border border-white/8 rounded-xl p-4 text-center transition-all hover:border-white/20"><p class="text-sm font-medium text-white">Joyfully Accept</p><p class="text-[10px] text-neutral-500 mt-1">I'll be there!</p></div></label><label class="cursor-pointer"><input type="radio" name="att" value="no" class="hidden peer"><div class="peer-checked:border-rose-300 peer-checked:bg-rose-300/10 border border-white/8 rounded-xl p-4 text-center transition-all hover:border-white/20"><p class="text-sm font-medium text-white">Regretfully Decline</p><p class="text-[10px] text-neutral-500 mt-1">Can't make it</p></div></label></div></div>
           <div id="gs"><label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">Number of Guests (including you)</label><select id="f-guests" class="w-full px-4 py-3.5 rounded-xl text-sm"><option value="1">1 Guest</option><option value="2" selected>2 Guests</option><option value="3">3 Guests</option><option value="4">4 Guests</option><option value="5">5 Guests</option></select></div>
-          <div class="flex justify-between pt-2">
-            <button type="button" onclick="goStep(1)" class="btn-o px-6 py-3 rounded-xl text-sm">← Back</button>
-            <button type="button" onclick="goStep(3)" class="btn-g px-8 py-3 rounded-xl text-sm">Continue →</button>
-          </div>
+          <div class="flex justify-between pt-2"><button type="button" onclick="goStep(1)" class="btn-o px-6 py-3 rounded-xl text-sm">← Back</button><button type="button" onclick="goStep(3)" class="btn-g px-8 py-3 rounded-xl text-sm">Continue →</button></div>
         </div>
         <div id="fs3" class="space-y-5 hidden">
           <div><label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">Dietary Requirements</label><select id="f-diet" class="w-full px-4 py-3.5 rounded-xl text-sm"><option value="None">No restrictions</option><option value="Vegetarian">Vegetarian</option><option value="Vegan">Vegan</option><option value="Gluten-Free">Gluten-Free</option><option value="Halal">Halal</option><option value="Kosher">Kosher</option><option value="Other">Other</option></select></div>
           <div><label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">Message for the Couple</label><textarea id="f-msg" rows="3" placeholder="Share your love, song requests..." class="w-full px-4 py-3.5 rounded-xl text-sm resize-none"></textarea></div>
-          <div class="flex justify-between pt-2">
-            <button type="button" onclick="goStep(2)" class="btn-o px-6 py-3 rounded-xl text-sm">← Back</button>
-            <button type="button" id="sub-btn" onclick="submitRSVP()" class="btn-g px-8 py-3 rounded-xl text-sm"><span id="sub-txt">Submit RSVP</span><span id="sub-spin" class="hidden inline-block w-4 h-4 border-2 border-dark-900/30 border-t-dark-900 rounded-full animate-spin"></span></button>
-          </div>
+          <div class="flex justify-between pt-2"><button type="button" onclick="goStep(2)" class="btn-o px-6 py-3 rounded-xl text-sm">← Back</button><button type="button" id="sub-btn" onclick="submitRSVP()" class="btn-g px-8 py-3 rounded-xl text-sm"><span id="sub-txt">Submit RSVP</span><span id="sub-spin" class="hidden inline-block w-4 h-4 border-2 border-dark-900/30 border-t-dark-900 rounded-full animate-spin"></span></button></div>
         </div>
       </form>
     </div>
   </div>
 </section>
 
-<!-- Footer -->
-<footer class="py-16 px-6 border-t border-white/5">
-  <div class="max-w-4xl mx-auto text-center">
-    <p class="font-serif text-3xl mb-4"><span class="text-gold-200">J</span><span class="text-white/20 mx-1">&</span><span class="text-rose-200">O</span></p>
-    <p class="text-xs text-neutral-600 tracking-widest uppercase mb-6">June 14, 2025 · Tuscany, Italy</p>
-    <div class="flex items-center justify-center gap-3 mb-8"><div class="divider-w"></div></div>
-    <p class="text-xs text-neutral-600">Made with ♥</p>
-  </div>
-</footer>
+<footer class="py-16 px-6 border-t border-white/5"><div class="max-w-4xl mx-auto text-center"><p class="font-serif text-3xl mb-4"><span class="text-gold-200">J</span><span class="text-white/20 mx-1">&</span><span class="text-rose-200">O</span></p><p class="text-xs text-neutral-600 tracking-widest uppercase mb-6">June 14, 2025 · Tuscany, Italy</p><div class="flex items-center justify-center gap-3 mb-8"><div class="divider-w"></div></div><p class="text-xs text-neutral-600">Made with ♥</p></div></footer>
 
 </div>
 
 <!-- ══════════════════════════════════════════════════
-     DATABASE + LOGIC — wrapped in try/catch so nothing breaks
+     JAVASCRIPT — connects to api.php
      ══════════════════════════════════════════════════ -->
 <script>
-(function() {
-  'use strict';
+(function(){
+'use strict';
 
-  // ─────────────────────────────────────
-  // ⬇️ PASTE YOUR 2 VALUES HERE ⬇️
-  // ─────────────────────────────────────
-  var SUPABASE_URL = 'PASTE_YOUR_URL_HERE';
-  var SUPABASE_KEY = 'PASTE_YOUR_KEY_HERE';
-  // ─────────────────────────────────────
+// ── DATABASE URL — change if api.php is in a different folder ──
+var API = 'api.php';
 
-  var db = null;
-  var allData = [];
-  var lastCount = 0;
+var allData = [];
+var lastCount = 0;
+var curStep = 1;
 
-  // Try to connect to Supabase — never crash the page
-  try {
-    if (typeof supabase !== 'undefined' && supabase.createClient) {
-      db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-      // Connection test
-      db.from('rsvps').select('id').limit(1).then(function(res) {
-        var stat = document.getElementById('db-stat');
-        var txt = document.getElementById('db-txt');
-        if (!res.error) {
-          stat.className = 'text-[10px] px-2.5 py-1 rounded-full db-on flex items-center gap-1.5';
-          txt.textContent = 'Live';
-        } else {
-          stat.className = 'text-[10px] px-2.5 py-1 rounded-full db-off flex items-center gap-1.5';
-          txt.textContent = 'Error';
-          console.warn('DB error:', res.error.message);
-        }
-      }).catch(function(e) {
-        console.warn('DB test failed:', e);
-      });
-
-      // Fetch all
-      function fetchAll() {
-        db.from('rsvps').select('*').order('created_at', { ascending: false }).then(function(res) {
-          if (!res.error && res.data) {
-            allData = res.data;
-            if (document.getElementById('admin-m').classList.contains('on')) {
-              renderTable(allData);
-            }
-          }
-        }).catch(function() {});
+// ── Test connection ──
+function testDB() {
+  fetch(API)
+    .then(function(r){ return r.json(); })
+    .then(function(res) {
+      var stat = document.getElementById('db-stat');
+      var txt = document.getElementById('db-txt');
+      if (res.success) {
+        stat.className = 'text-[10px] px-2.5 py-1 rounded-full db-on flex items-center gap-1.5';
+        txt.textContent = 'Live';
+        allData = res.data || [];
+      } else {
+        stat.className = 'text-[10px] px-2.5 py-1 rounded-full db-off flex items-center gap-1.5';
+        txt.textContent = 'Error';
       }
-
-      // Real-time
-      db.channel('rsvp-live')
-        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'rsvps' }, fetchAll)
-        .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'rsvps' }, fetchAll)
-        .subscribe();
-
-      fetchAll();
-    } else {
-      console.warn('Supabase library not loaded — form will not save to database');
+    })
+    .catch(function() {
       var stat = document.getElementById('db-stat');
       var txt = document.getElementById('db-txt');
       stat.className = 'text-[10px] px-2.5 py-1 rounded-full db-off flex items-center gap-1.5';
-      txt.textContent = 'No DB';
-    }
-  } catch (e) {
-    console.warn('Supabase init error:', e);
-  }
+      txt.textContent = 'Offline';
+    });
+}
 
-  // ─────────────────────────────────────
-  // EXPOSE FUNCTIONS TO GLOBAL SCOPE
-  // ─────────────────────────────────────
-  window.goStep = goStep;
-  window.submitRSVP = submitRSVP;
-  window.openAdmin = openAdmin;
-  window.clearAll = clearAll;
-  window.exportCSV = exportCSV;
-  window.openLB = openLB;
-
-  var curStep = 1;
-
-  function goStep(step) {
-    if (curStep === 1 && step === 2) {
-      if (!document.getElementById('f-name').value.trim() || !document.getElementById('f-email').value.trim()) { showErr(); return; }
-    }
-    if (curStep === 2 && step === 3) {
-      if (!document.querySelector('input[name="att"]:checked')) { showErr(); return; }
-    }
-    document.getElementById('fs' + curStep).classList.add('hidden');
-    document.getElementById('fs' + step).classList.remove('hidden');
-    for (var i = 1; i <= 3; i++) {
-      var el = document.getElementById('si' + i);
-      el.className = 'si ' + (i < step ? 'si-d' : i === step ? 'si-a' : 'si-p');
-      el.innerHTML = i < step ? '✓' : i;
-    }
-    for (var j = 1; j <= 2; j++) {
-      var ln = document.getElementById('sl' + j);
-      if (j < step) ln.classList.add('f'); else ln.classList.remove('f');
-    }
-    if (step === 2) {
-      document.querySelectorAll('input[name="att"]').forEach(function(r) {
-        r.addEventListener('change', function() {
-          document.getElementById('gs').style.display = r.value === 'no' ? 'none' : 'block';
-        });
-      });
-    }
-    curStep = step;
-  }
-
-  function submitRSVP() {
-    var btn = document.getElementById('sub-btn');
-    var txt = document.getElementById('sub-txt');
-    var spin = document.getElementById('sub-spin');
-    var att = document.querySelector('input[name="att"]:checked');
-
-    if (!att) { showErr(); return; }
-
-    var payload = {
-      name: document.getElementById('f-name').value.trim(),
-      email: document.getElementById('f-email').value.trim(),
-      phone: document.getElementById('f-phone').value.trim(),
-      status: att.value === 'yes' ? 'Attending' : 'Declined',
-      guests: att.value === 'no' ? 0 : parseInt(document.getElementById('f-guests').value),
-      dietary: document.getElementById('f-diet').value,
-      message: document.getElementById('f-msg').value.trim(),
-      ref: new URLSearchParams(window.location.search).get('ref') || ''
-    };
-
-    if (!db) {
-      alert('Database not connected. Please check your Supabase URL and Key in the code.');
-      return;
-    }
-
-    btn.disabled = true;
-    txt.textContent = 'Submitting...';
-    spin.classList.remove('hidden');
-
-    db.from('rsvps').insert([payload]).select().then(function(res) {
-      btn.disabled = false;
-      txt.textContent = 'Submit RSVP';
-      spin.classList.add('hidden');
-
-      if (res.error) {
-        showErr();
-        alert('Submission failed: ' + res.error.message);
-        return;
+// ── Fetch all data ──
+function fetchAll() {
+  fetch(API)
+    .then(function(r){ return r.json(); })
+    .then(function(res) {
+      if (res.success) {
+        allData = res.data || [];
+        if (document.getElementById('admin-m').classList.contains('on')) {
+          renderTable(allData);
+        }
       }
+    })
+    .catch(function(){});
+}
 
-      showOk();
-      launchConfetti();
+testDB();
 
-      var row = res.data[0];
-      var shortId = row.id.slice(0, 6).toUpperCase();
-      document.getElementById('c-id').textContent = shortId;
-      document.getElementById('c-name').textContent = row.name;
-      document.getElementById('c-status').innerHTML = row.status === 'Attending' ? '<span class="badge-y">✓ Attending</span>' : '<span class="badge-n">✗ Declined</span>';
-      document.getElementById('c-guests').textContent = row.guests;
-      document.getElementById('c-date').textContent = new Date(row.created_at).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' });
-      document.getElementById('conf-m').classList.add('on');
+// Auto-refresh every 5 seconds
+setInterval(fetchAll, 5000);
 
-      document.getElementById('rsvp-form').reset();
-      goStep(1);
-    }).catch(function(e) {
-      btn.disabled = false;
-      txt.textContent = 'Submit RSVP';
-      spin.classList.add('hidden');
-      showErr();
-      alert('Network error: ' + e.message);
+// ── Form steps ──
+window.goStep = function(step) {
+  if (curStep === 1 && step === 2) {
+    if (!document.getElementById('f-name').value.trim() || !document.getElementById('f-email').value.trim()) { showErr(); return; }
+  }
+  if (curStep === 2 && step === 3) {
+    if (!document.querySelector('input[name="att"]:checked')) { showErr(); return; }
+  }
+  document.getElementById('fs' + curStep).classList.add('hidden');
+  document.getElementById('fs' + step).classList.remove('hidden');
+  for (var i = 1; i <= 3; i++) {
+    var el = document.getElementById('si' + i);
+    el.className = 'si ' + (i < step ? 'si-d' : i === step ? 'si-a' : 'si-p');
+    el.innerHTML = i < step ? '✓' : i;
+  }
+  for (var j = 1; j <= 2; j++) {
+    var ln = document.getElementById('sl' + j);
+    if (j < step) ln.classList.add('f'); else ln.classList.remove('f');
+  }
+  if (step === 2) {
+    document.querySelectorAll('input[name="att"]').forEach(function(r) {
+      r.addEventListener('change', function() {
+        document.getElementById('gs').style.display = r.value === 'no' ? 'none' : 'block';
+      });
     });
   }
+  curStep = step;
+};
 
-  function openAdmin() {
-    document.getElementById('admin-m').classList.add('on');
-    lastCount = allData.length;
-    renderTable(allData);
-  }
+// ── Submit RSVP ──
+window.submitRSVP = function() {
+  var btn = document.getElementById('sub-btn');
+  var txt = document.getElementById('sub-txt');
+  var spin = document.getElementById('sub-spin');
+  var att = document.querySelector('input[name="att"]:checked');
+  if (!att) { showErr(); return; }
 
-  function renderTable(data) {
-    var tb = document.getElementById('admin-tb');
-    if (!data || data.length === 0) {
-      tb.innerHTML = '<tr><td colspan="6" class="text-center py-12 text-neutral-600">No responses yet — share your link!</td></tr>';
-      updateStats([]);
+  var payload = {
+    name: document.getElementById('f-name').value.trim(),
+    email: document.getElementById('f-email').value.trim(),
+    phone: document.getElementById('f-phone').value.trim(),
+    status: att.value === 'yes' ? 'Attending' : 'Declined',
+    guests: att.value === 'no' ? 0 : parseInt(document.getElementById('f-guests').value),
+    dietary: document.getElementById('f-diet').value,
+    message: document.getElementById('f-msg').value.trim(),
+    ref: new URLSearchParams(window.location.search).get('ref') || ''
+  };
+
+  btn.disabled = true;
+  txt.textContent = 'Submitting...';
+  spin.classList.remove('hidden');
+
+  fetch(API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(res) {
+    btn.disabled = false;
+    txt.textContent = 'Submit RSVP';
+    spin.classList.add('hidden');
+
+    if (!res.success) {
+      showErr();
+      alert('Error: ' + (res.error || 'Unknown error'));
       return;
     }
-    updateStats(data);
-    tb.innerHTML = data.map(function(r, i) {
-      var badge = r.status === 'Attending' ? '<span class="badge-y">Attending</span>' : '<span class="badge-n">Declined</span>';
-      var d = r.created_at ? new Date(r.created_at).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) : '—';
-      var isNew = i < (data.length - lastCount);
-      return '<tr class="' + (isNew ? 'row-new' : '') + '"><td class="px-4 py-3 font-mono text-xs text-gold-300">' + (r.id ? r.id.slice(0,6).toUpperCase() : '—') + '</td><td class="px-4 py-3 font-medium text-white">' + esc(r.name) + '</td><td class="px-4 py-3 text-neutral-400 text-xs hidden sm:table-cell">' + esc(r.email) + '</td><td class="px-4 py-3">' + badge + '</td><td class="px-4 py-3 text-neutral-400 hidden md:table-cell">' + (r.guests || 0) + '</td><td class="px-4 py-3 text-neutral-500 text-xs hidden lg:table-cell">' + d + '</td></tr>';
-    }).join('');
-    lastCount = data.length;
-  }
 
-  function updateStats(d) {
-    document.getElementById('s-t').textContent = d.length;
-    document.getElementById('s-a').textContent = d.filter(function(r){ return r.status === 'Attending'; }).length;
-    document.getElementById('s-d').textContent = d.filter(function(r){ return r.status === 'Declined'; }).length;
-    document.getElementById('s-g').textContent = d.reduce(function(s,r){ return s + (r.guests || 0); }, 0);
-  }
+    showOk();
+    launchConfetti();
+    fetchAll(); // refresh data
 
-  function clearAll() {
-    if (!confirm('Delete ALL RSVP data? This cannot be undone.')) return;
-    if (!db) return;
-    db.from('rsvps').delete().neq('id', '00000000-0000-0000-0000-000000000000').then(function() {
-      allData = [];
-      renderTable([]);
-    });
-  }
+    var row = res.data;
+    document.getElementById('c-id').textContent = 'RSVP-' + String(row.id).padStart(4, '0');
+    document.getElementById('c-name').textContent = row.name;
+    document.getElementById('c-status').innerHTML = row.status === 'Attending' ? '<span class="badge-y">✓ Attending</span>' : '<span class="badge-n">✗ Declined</span>';
+    document.getElementById('c-guests').textContent = row.guests;
+    document.getElementById('c-date').textContent = row.created_at ? new Date(row.created_at + 'Z').toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' }) : '—';
+    document.getElementById('conf-m').classList.add('on');
 
-  function exportCSV() {
-    if (!allData.length) { alert('No data.'); return; }
-    var h = ['ID','Name','Email','Phone','Status','Guests','Dietary','Message','Referral','Date'];
-    var rows = allData.map(function(r) {
-      return [r.id.slice(0,6), r.name, r.email, r.phone, r.status, r.guests, r.dietary, (r.message||'').replace(/,/g,';'), r.ref, new Date(r.created_at).toLocaleString()];
-    });
-    var csv = h.join(',') + '\n' + rows.map(function(r) { return r.map(function(c) { return '"'+c+'"'; }).join(','); }).join('\n');
-    var a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([csv], { type:'text/csv' }));
-    a.download = 'rsvp-' + new Date().toISOString().slice(0,10) + '.csv';
-    a.click();
-  }
-
-  function esc(s) { var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
-  function openLB(src) { document.getElementById('lb-img').src = src; document.getElementById('lb').classList.add('on'); }
-
-  function showOk() { var t = document.getElementById('toast-ok'); t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 3500); }
-  function showErr() { var t = document.getElementById('toast-err'); t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 3500); }
-
-  function launchConfetti() {
-    var cols = ['#d4a574','#e8b668','#f0c987','#e8b4b8','#d4868e','#a3b89c','#fff'];
-    for (var i = 0; i < 60; i++) {
-      var p = document.createElement('div');
-      p.className = 'confetti';
-      var size = Math.random()*8+5;
-      p.style.cssText = 'left:'+Math.random()*100+'vw;top:-10px;width:'+size+'px;height:'+size+'px;background:'+cols[Math.floor(Math.random()*cols.length)]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';opacity:'+(Math.random()*.7+.3);
-      document.body.appendChild(p);
-      var dur = Math.random()*2000+1500;
-      var xd = (Math.random()-.5)*200;
-      p.animate([
-        { transform:'translateY(0) translateX(0) rotate(0)', opacity:1 },
-        { transform:'translateY(100vh) translateX('+xd+'px) rotate('+(Math.random()*720)+'deg)', opacity:0 }
-      ],{ duration:dur, easing:'cubic-bezier(.25,.46,.45,.94)' }).onfinish = (function(el){ return function(){ el.remove(); }; })(p);
-    }
-  }
-
-  // Mobile menu
-  document.getElementById('mob-btn').addEventListener('click', function() {
-    document.getElementById('mob-menu').classList.toggle('hidden');
+    document.getElementById('rsvp-form').reset();
+    goStep(1);
+  })
+  .catch(function(e) {
+    btn.disabled = false;
+    txt.textContent = 'Submit RSVP';
+    spin.classList.add('hidden');
+    showErr();
+    alert('Network error: ' + e.message);
   });
-  document.querySelectorAll('#mob-menu a').forEach(function(a) {
-    a.addEventListener('click', function() { document.getElementById('mob-menu').classList.add('hidden'); });
-  });
+};
 
-  // Navbar scroll
-  window.addEventListener('scroll', function() {
-    var n = document.getElementById('nav');
-    if (window.scrollY > 80) {
-      n.style.background = 'rgba(8,8,13,.85)';
-      n.style.backdropFilter = 'blur(20px)';
-      n.style.borderBottom = '1px solid rgba(255,255,255,.05)';
-    } else {
-      n.style.background = 'transparent';
-      n.style.backdropFilter = 'none';
-      n.style.borderBottom = 'none';
-    }
-  });
+// ── Admin ──
+window.openAdmin = function() {
+  document.getElementById('admin-m').classList.add('on');
+  lastCount = allData.length;
+  renderTable(allData);
+  fetchAll();
+};
 
-  // Countdown
-  function tick() {
-    var diff = new Date('2025-06-14T16:00:00').getTime() - Date.now();
-    if (diff <= 0) { ['cd-d','cd-h','cd-m','cd-s'].forEach(function(id){ document.getElementById(id).textContent = '00'; }); return; }
-    document.getElementById('cd-d').textContent = String(Math.floor(diff/864e5)).padStart(2,'0');
-    document.getElementById('cd-h').textContent = String(Math.floor(diff%864e5/36e5)).padStart(2,'0');
-    document.getElementById('cd-m').textContent = String(Math.floor(diff%36e5/6e4)).padStart(2,'0');
-    document.getElementById('cd-s').textContent = String(Math.floor(diff%6e4/1e3)).padStart(2,'0');
+function renderTable(data) {
+  var tb = document.getElementById('admin-tb');
+  if (!data || data.length === 0) {
+    tb.innerHTML = '<tr><td colspan="6" class="text-center py-12 text-neutral-600">No responses yet — share your link!</td></tr>';
+    updateStats([]);
+    return;
   }
-  tick(); setInterval(tick, 1000);
+  updateStats(data);
+  tb.innerHTML = data.map(function(r, i) {
+    var badge = r.status === 'Attending' ? '<span class="badge-y">Attending</span>' : '<span class="badge-n">Declined</span>';
+    var d = r.created_at ? new Date(r.created_at + 'Z').toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) : '—';
+    var isNew = i < (data.length - lastCount);
+    return '<tr class="' + (isNew ? 'row-new' : '') + '"><td class="px-4 py-3 font-mono text-xs text-gold-300">RSVP-' + String(r.id).padStart(4,'0') + '</td><td class="px-4 py-3 font-medium text-white">' + esc(r.name) + '</td><td class="px-4 py-3 text-neutral-400 text-xs hidden sm:table-cell">' + esc(r.email) + '</td><td class="px-4 py-3">' + badge + '</td><td class="px-4 py-3 text-neutral-400 hidden md:table-cell">' + (r.guests || 0) + '</td><td class="px-4 py-3 text-neutral-500 text-xs hidden lg:table-cell">' + d + '</td></tr>';
+  }).join('');
+  lastCount = data.length;
+}
 
-  // Scroll animations
-  var obs = new IntersectionObserver(function(entries) {
-    entries.forEach(function(en) { if (en.isIntersecting) en.target.classList.add('v'); });
-  }, { threshold:.1, rootMargin:'0px 0px -50px 0px' });
-  document.querySelectorAll('.fade-up,.fade-l,.fade-r,.scale-in').forEach(function(el) { obs.observe(el); });
+function updateStats(d) {
+  document.getElementById('s-t').textContent = d.length;
+  document.getElementById('s-a').textContent = d.filter(function(r){ return r.status === 'Attending'; }).length;
+  document.getElementById('s-d').textContent = d.filter(function(r){ return r.status === 'Declined'; }).length;
+  document.getElementById('s-g').textContent = d.reduce(function(s,r){ return s + (r.guests || 0); }, 0);
+}
+
+window.clearAll = function() {
+  if (!confirm('Delete ALL RSVP data?')) return;
+  fetch(API + '?confirm=yes', { method: 'DELETE' })
+    .then(function(r){ return r.json(); })
+    .then(function() { allData = []; renderTable([]); });
+};
+
+window.exportCSV = function() {
+  if (!allData.length) { alert('No data.'); return; }
+  var h = ['ID','Name','Email','Phone','Status','Guests','Dietary','Message','Referral','Date'];
+  var rows = allData.map(function(r) {
+    return ['RSVP-'+String(r.id).padStart(4,'0'), r.name, r.email, r.phone, r.status, r.guests, r.dietary, (r.message||'').replace(/,/g,';'), r.ref, r.created_at || ''];
+  });
+  var csv = h.join(',') + '\n' + rows.map(function(r) { return r.map(function(c) { return '"'+c+'"'; }).join(','); }).join('\n');
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], { type:'text/csv' }));
+  a.download = 'rsvp-' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+};
+
+function esc(s) { var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+window.openLB = function(src) { document.getElementById('lb-img').src = src; document.getElementById('lb').classList.add('on'); };
+
+function showOk() { var t = document.getElementById('toast-ok'); t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 3500); }
+function showErr() { var t = document.getElementById('toast-err'); t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 3500); }
+
+function launchConfetti() {
+  var cols = ['#d4a574','#e8b668','#f0c987','#e8b4b8','#d4868e','#a3b89c','#fff'];
+  for (var i = 0; i < 60; i++) {
+    var p = document.createElement('div');
+    p.className = 'confetti';
+    var size = Math.random()*8+5;
+    p.style.cssText = 'left:'+Math.random()*100+'vw;top:-10px;width:'+size+'px;height:'+size+'px;background:'+cols[Math.floor(Math.random()*cols.length)]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';opacity:'+(Math.random()*.7+.3);
+    document.body.appendChild(p);
+    var dur = Math.random()*2000+1500;
+    var xd = (Math.random()-.5)*200;
+    p.animate([
+      { transform:'translateY(0) translateX(0) rotate(0)', opacity:1 },
+      { transform:'translateY(100vh) translateX('+xd+'px) rotate('+(Math.random()*720)+'deg)', opacity:0 }
+    ],{ duration:dur, easing:'cubic-bezier(.25,.46,.45,.94)' }).onfinish = (function(el){ return function(){ el.remove(); }; })(p);
+  }
+}
+
+// Mobile menu
+document.getElementById('mob-btn').addEventListener('click', function() { document.getElementById('mob-menu').classList.toggle('hidden'); });
+document.querySelectorAll('#mob-menu a').forEach(function(a) { a.addEventListener('click', function() { document.getElementById('mob-menu').classList.add('hidden'); }); });
+
+// Navbar scroll
+window.addEventListener('scroll', function() {
+  var n = document.getElementById('nav');
+  if (window.scrollY > 80) { n.style.background = 'rgba(8,8,13,.85)'; n.style.backdropFilter = 'blur(20px)'; n.style.borderBottom = '1px solid rgba(255,255,255,.05)'; }
+  else { n.style.background = 'transparent'; n.style.backdropFilter = 'none'; n.style.borderBottom = 'none'; }
+});
+
+// Countdown
+function tick() {
+  var diff = new Date('2025-06-14T16:00:00').getTime() - Date.now();
+  if (diff <= 0) { ['cd-d','cd-h','cd-m','cd-s'].forEach(function(id){ document.getElementById(id).textContent = '00'; }); return; }
+  document.getElementById('cd-d').textContent = String(Math.floor(diff/864e5)).padStart(2,'0');
+  document.getElementById('cd-h').textContent = String(Math.floor(diff%864e5/36e5)).padStart(2,'0');
+  document.getElementById('cd-m').textContent = String(Math.floor(diff%36e5/6e4)).padStart(2,'0');
+  document.getElementById('cd-s').textContent = String(Math.floor(diff%6e4/1e3)).padStart(2,'0');
+}
+tick(); setInterval(tick, 1000);
+
+// Scroll animations
+var obs = new IntersectionObserver(function(entries) { entries.forEach(function(en) { if (en.isIntersecting) en.target.classList.add('v'); }); }, { threshold:.1, rootMargin:'0px 0px -50px 0px' });
+document.querySelectorAll('.fade-up,.fade-l,.fade-r,.scale-in').forEach(function(el) { obs.observe(el); });
 
 })();
 </script>
 
-<!-- Three.js Background -->
+<!-- Three.js -->
 <script type="module">
 import * as THREE from 'three';
 var canvas = document.getElementById('bg-canvas');
@@ -839,7 +628,6 @@ R.setPixelRatio(Math.min(devicePixelRatio, 2));
 var S = new THREE.Scene();
 var C = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, .1, 1000);
 C.position.z = 5;
-
 var N = 1500, pos = new Float32Array(N*3), col = new Float32Array(N*3), sz = new Float32Array(N);
 var gc = new THREE.Color('#d4a574'), rc = new THREE.Color('#e8b4b8'), sc = new THREE.Color('#a3b89c');
 for (var i=0; i<N; i++) {
@@ -863,6 +651,5 @@ document.addEventListener('mousemove', function(e){ mx=(e.clientX/innerWidth-.5)
 (function loop(){ requestAnimationFrame(loop); P.rotation.y+=.0005; P.rotation.x+=.0002; C.position.x+=(mx-C.position.x)*.02; C.position.y+=(-my-C.position.y)*.02; C.lookAt(S.position); R.render(S,C); })();
 addEventListener('resize', function(){ C.aspect=innerWidth/innerHeight; C.updateProjectionMatrix(); R.setSize(innerWidth,innerHeight); });
 </script>
-
 </body>
 </html>
