@@ -1,1415 +1,1300 @@
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>James & Olivia — June 14, 2025</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          gold: { 50:'#fefaf3', 100:'#fef7ed', 200:'#f0c987', 300:'#e8b668', 400:'#d4a574', 500:'#c49a6c', 600:'#a67c52', 700:'#8a6440' },
-          rose: { 50:'#fff5f6', 100:'#fff1f2', 200:'#e8b4b8', 300:'#d4868e', 400:'#b8636e', 500:'#9e4a55' },
-          sage: { 200:'#c5d5c0', 300:'#a3b89c', 400:'#8aa87f' },
-          cream: { 100:'#faf6f0', 200:'#f5ede0' },
-          dark: { 900:'#08080d', 800:'#0e0e16', 700:'#16161f', 600:'#1e1e2a', 500:'#2a2a38' }
-        },
-        fontFamily: {
-          sans: ['Inter', 'sans-serif'],
-          serif: ['Playfair Display', 'serif']
-        }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>James & Olivia — June 14, 2025</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<!-- ⬇️⬇️ FIREBASE SDK - ADDED ⬇️⬇️ -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<!-- ⬆️⬆️ FIREBASE SDK - ADDED ⬆️⬆️ -->
+
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        gold: { 50:'#fefaf3', 100:'#fef7ed', 200:'#f0c987', 300:'#e8b668', 400:'#d4a574', 500:'#c49a6c', 600:'#a67c52', 700:'#8a6440' },
+        rose: { 50:'#fff5f6', 100:'#fff1f2', 200:'#e8b4b8', 300:'#d4868e', 400:'#b8636e', 500:'#9e4a55' },
+        sage: { 200:'#c5d5c0', 300:'#a3b89c', 400:'#8aa87f' },
+        cream: { 100:'#faf6f0', 200:'#f5ede0' },
+        dark: { 900:'#08080d', 800:'#0e0e16', 700:'#16161f', 600:'#1e1e2a', 500:'#2a2a38' }
+      },
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+        serif: ['Playfair Display', 'serif']
       }
     }
   }
-  </script>
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    html { scroll-behavior: smooth; }
-    body { font-family:'Inter',sans-serif; background:#08080d; color:#fff; overflow-x:hidden; }
-    ::-webkit-scrollbar { width:6px; }
-    ::-webkit-scrollbar-track { background:#08080d; }
-    ::-webkit-scrollbar-thumb { background:rgba(212,165,116,0.3); border-radius:3px; }
+}
+</script>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family:'Inter',sans-serif; background:#08080d; color:#fff; overflow-x:hidden; }
+  ::-webkit-scrollbar { width:6px; }
+  ::-webkit-scrollbar-track { background:#08080d; }
+  ::-webkit-scrollbar-thumb { background:rgba(212,165,116,0.3); border-radius:3px; }
 
-    #three-canvas { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
-    .section-wrapper { position:relative; z-index:1; }
+  #three-canvas { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+  .section-wrapper { position:relative; z-index:1; }
 
-    .text-gradient-gold { background:linear-gradient(135deg,#f0c987,#d4a574,#e8b668,#f0c987); background-size:200% 200%; animation:shimmer 3s ease infinite; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-    @keyframes shimmer { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+  .text-gradient-gold { background:linear-gradient(135deg,#f0c987,#d4a574,#e8b668,#f0c987); background-size:200% 200%; animation:shimmer 3s ease infinite; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+  @keyframes shimmer { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
 
-    .text-gradient-rose { background:linear-gradient(135deg,#e8b4b8,#d4868e); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+  .text-gradient-rose { background:linear-gradient(135deg,#e8b4b8,#d4868e); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
 
-    .divider { width:80px; height:1px; background:linear-gradient(to right,transparent,#d4a574,transparent); }
-    .divider-wide { width:200px; height:1px; background:linear-gradient(to right,transparent,rgba(212,165,116,0.3),transparent); }
+  .divider { width:80px; height:1px; background:linear-gradient(to right,transparent,#d4a574,transparent); }
+  .divider-wide { width:200px; height:1px; background:linear-gradient(to right,transparent,rgba(212,165,116,0.3),transparent); }
 
-    .card-glass { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); backdrop-filter:blur(16px); transition:all 0.5s cubic-bezier(0.25,0.46,0.45,0.94); }
-    .card-glass:hover { background:rgba(255,255,255,0.05); border-color:rgba(212,165,116,0.2); transform:translateY(-6px); box-shadow:0 30px 60px -15px rgba(0,0,0,0.5), 0 0 40px -10px rgba(212,165,116,0.08); }
+  .card-glass { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); backdrop-filter:blur(16px); transition:all 0.5s cubic-bezier(0.25,0.46,0.45,0.94); }
+  .card-glass:hover { background:rgba(255,255,255,0.05); border-color:rgba(212,165,116,0.2); transform:translateY(-6px); box-shadow:0 30px 60px -15px rgba(0,0,0,0.5), 0 0 40px -10px rgba(212,165,116,0.08); }
 
-    .card-gold-border { position:relative; overflow:hidden; }
-    .card-gold-border::before { content:''; position:absolute; inset:-1px; border-radius:inherit; padding:1px; background:linear-gradient(135deg,rgba(212,165,116,0.4),transparent 40%,transparent 60%,rgba(232,180,184,0.3)); -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0); -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none; }
+  .card-gold-border { position:relative; overflow:hidden; }
+  .card-gold-border::before { content:''; position:absolute; inset:-1px; border-radius:inherit; padding:1px; background:linear-gradient(135deg,rgba(212,165,116,0.4),transparent 40%,transparent 60%,rgba(232,180,184,0.3)); -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0); -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none; }
 
-    .btn-gold { background:linear-gradient(135deg,#d4a574,#e8b668,#d4a574); background-size:200% 200%; animation:shimmer 3s ease infinite; color:#08080d; font-weight:600; transition:all 0.3s ease; box-shadow:0 4px 20px -4px rgba(212,165,116,0.5); letter-spacing:0.05em; }
-    .btn-gold:hover { box-shadow:0 8px 35px -4px rgba(212,165,116,0.7); transform:translateY(-2px) scale(1.02); }
-    .btn-gold:active { transform:translateY(0) scale(0.98); }
+  .btn-gold { background:linear-gradient(135deg,#d4a574,#e8b668,#d4a574); background-size:200% 200%; animation:shimmer 3s ease infinite; color:#08080d; font-weight:600; transition:all 0.3s ease; box-shadow:0 4px 20px -4px rgba(212,165,116,0.5); letter-spacing:0.05em; }
+  .btn-gold:hover { box-shadow:0 8px 35px -4px rgba(212,165,116,0.7); transform:translateY(-2px) scale(1.02); }
+  .btn-gold:active { transform:translateY(0) scale(0.98); }
 
-    .btn-outline { border:1px solid rgba(212,165,116,0.3); color:#d4a574; transition:all 0.3s ease; }
-    .btn-outline:hover { background:rgba(212,165,116,0.08); border-color:#d4a574; box-shadow:0 0 20px -5px rgba(212,165,116,0.2); }
+  .btn-outline { border:1px solid rgba(212,165,116,0.3); color:#d4a574; transition:all 0.3s ease; }
+  .btn-outline:hover { background:rgba(212,165,116,0.08); border-color:#d4a574; box-shadow:0 0 20px -5px rgba(212,165,116,0.2); }
 
-    .btn-rose { background:linear-gradient(135deg,#d4868e,#e8b4b8); color:#fff; font-weight:600; box-shadow:0 4px 20px -4px rgba(212,134,142,0.4); transition:all 0.3s ease; }
-    .btn-rose:hover { box-shadow:0 8px 30px -4px rgba(212,134,142,0.6); transform:translateY(-2px); }
+  .btn-rose { background:linear-gradient(135deg,#d4868e,#e8b4b8); color:#fff; font-weight:600; box-shadow:0 4px 20px -4px rgba(212,134,142,0.4); transition:all 0.3s ease; }
+  .btn-rose:hover { box-shadow:0 8px 30px -4px rgba(212,134,142,0.6); transform:translateY(-2px); }
 
-    /* Animations */
-    .fade-up { opacity:0; transform:translateY(40px); transition:all 0.9s cubic-bezier(0.25,0.46,0.45,0.94); }
-    .fade-up.visible { opacity:1; transform:translateY(0); }
-    .fade-left { opacity:0; transform:translateX(-50px); transition:all 0.9s cubic-bezier(0.25,0.46,0.45,0.94); }
-    .fade-left.visible { opacity:1; transform:translateX(0); }
-    .fade-right { opacity:0; transform:translateX(50px); transition:all 0.9s cubic-bezier(0.25,0.46,0.45,0.94); }
-    .fade-right.visible { opacity:1; transform:translateX(0); }
-    .scale-in { opacity:0; transform:scale(0.85); transition:all 0.9s cubic-bezier(0.25,0.46,0.45,0.94); }
-    .scale-in.visible { opacity:1; transform:scale(1); }
-    .blur-in { opacity:0; filter:blur(10px); transition:all 1s cubic-bezier(0.25,0.46,0.45,0.94); }
-    .blur-in.visible { opacity:1; filter:blur(0); }
+  .fade-up { opacity:0; transform:translateY(40px); transition:all 0.9s cubic-bezier(0.25,0.46,0.45,0.94); }
+  .fade-up.visible { opacity:1; transform:translateY(0); }
+  .fade-left { opacity:0; transform:translateX(-50px); transition:all 0.9s cubic-bezier(0.25,0.46,0.45,0.94); }
+  .fade-left.visible { opacity:1; transform:translateX(0); }
+  .fade-right { opacity:0; transform:translateX(50px); transition:all 0.9s cubic-bezier(0.25,0.46,0.45,0.94); }
+  .fade-right.visible { opacity:1; transform:translateX(0); }
+  .scale-in { opacity:0; transform:scale(0.85); transition:all 0.9s cubic-bezier(0.25,0.46,0.45,0.94); }
+  .scale-in.visible { opacity:1; transform:scale(1); }
+  .blur-in { opacity:0; filter:blur(10px); transition:all 1s cubic-bezier(0.25,0.46,0.45,0.94); }
+  .blur-in.visible { opacity:1; filter:blur(0); }
 
-    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
-    .float-anim { animation:float 5s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  .float-anim { animation:float 5s ease-in-out infinite; }
 
-    @keyframes pulse-ring { 0%{box-shadow:0 0 0 0 rgba(212,165,116,0.3)} 70%{box-shadow:0 0 0 15px rgba(212,165,116,0)} 100%{box-shadow:0 0 0 0 rgba(212,165,116,0)} }
-    .pulse-ring { animation:pulse-ring 2s ease-out infinite; }
+  @keyframes pulse-ring { 0%{box-shadow:0 0 0 0 rgba(212,165,116,0.3)} 70%{box-shadow:0 0 0 15px rgba(212,165,116,0)} 100%{box-shadow:0 0 0 0 rgba(212,165,116,0)} }
+  .pulse-ring { animation:pulse-ring 2s ease-out infinite; }
 
-    @keyframes rotate-slow { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-    .rotate-slow { animation:rotate-slow 20s linear infinite; }
+  @keyframes rotate-slow { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+  .rotate-slow { animation:rotate-slow 20s linear infinite; }
 
-    .hero-gradient { background:linear-gradient(to bottom,rgba(8,8,13,0.2) 0%,rgba(8,8,13,0.5) 40%,rgba(8,8,13,0.92) 80%,rgba(8,8,13,1) 100%); }
+  .hero-gradient { background:linear-gradient(to bottom,rgba(8,8,13,0.2) 0%,rgba(8,8,13,0.5) 40%,rgba(8,8,13,0.92) 80%,rgba(8,8,13,1) 100%); }
 
-    .timeline-line { position:absolute; left:50%; top:0; bottom:0; width:1px; background:linear-gradient(to bottom,transparent,rgba(212,165,116,0.25),rgba(212,165,116,0.25),transparent); transform:translateX(-50%); }
-    .timeline-dot { width:14px; height:14px; border-radius:50%; background:linear-gradient(135deg,#d4a574,#e8b668); border:3px solid #08080d; box-shadow:0 0 0 4px rgba(212,165,116,0.15); }
+  .timeline-line { position:absolute; left:50%; top:0; bottom:0; width:1px; background:linear-gradient(to bottom,transparent,rgba(212,165,116,0.25),rgba(212,165,116,0.25),transparent); transform:translateX(-50%); }
+  .timeline-dot { width:14px; height:14px; border-radius:50%; background:linear-gradient(135deg,#d4a574,#e8b668); border:3px solid #08080d; box-shadow:0 0 0 4px rgba(212,165,116,0.15); }
 
-    .countdown-box { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); backdrop-filter:blur(10px); }
+  .countdown-box { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); backdrop-filter:blur(10px); }
 
-    .gallery-item { overflow:hidden; border-radius:20px; border:1px solid rgba(255,255,255,0.04); transition:all 0.6s ease; cursor:pointer; position:relative; }
-    .gallery-item::after { content:''; position:absolute; inset:0; background:linear-gradient(to top,rgba(8,8,13,0.6) 0%,transparent 50%); opacity:0; transition:opacity 0.4s ease; pointer-events:none; }
-    .gallery-item:hover::after { opacity:1; }
-    .gallery-item:hover { border-color:rgba(212,165,116,0.25); transform:scale(1.03); box-shadow:0 25px 50px -12px rgba(0,0,0,0.5); }
-    .gallery-item img { transition:transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94); }
-    .gallery-item:hover img { transform:scale(1.12); }
+  .gallery-item { overflow:hidden; border-radius:20px; border:1px solid rgba(255,255,255,0.04); transition:all 0.6s ease; cursor:pointer; position:relative; }
+  .gallery-item::after { content:''; position:absolute; inset:0; background:linear-gradient(to top,rgba(8,8,13,0.6) 0%,transparent 50%); opacity:0; transition:opacity 0.4s ease; pointer-events:none; }
+  .gallery-item:hover::after { opacity:1; }
+  .gallery-item:hover { border-color:rgba(212,165,116,0.25); transform:scale(1.03); box-shadow:0 25px 50px -12px rgba(0,0,0,0.5); }
+  .gallery-item img { transition:transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94); }
+  .gallery-item:hover img { transform:scale(1.12); }
 
-    .decor-card { position:relative; overflow:hidden; border-radius:24px; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02); transition:all 0.5s ease; }
-    .decor-card:hover { border-color:rgba(212,165,116,0.2); transform:translateY(-8px); box-shadow:0 30px 60px -15px rgba(0,0,0,0.4); }
-    .decor-card img { transition:transform 0.7s ease; }
-    .decor-card:hover img { transform:scale(1.08); }
+  .decor-card { position:relative; overflow:hidden; border-radius:24px; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02); transition:all 0.5s ease; }
+  .decor-card:hover { border-color:rgba(212,165,116,0.2); transform:translateY(-8px); box-shadow:0 30px 60px -15px rgba(0,0,0,0.4); }
+  .decor-card img { transition:transform 0.7s ease; }
+  .decor-card:hover img { transform:scale(1.08); }
 
-    .color-swatch { width:48px; height:48px; border-radius:50%; border:2px solid rgba(255,255,255,0.1); transition:all 0.3s ease; cursor:pointer; }
-    .color-swatch:hover { transform:scale(1.2); border-color:rgba(255,255,255,0.3); }
+  .color-swatch { width:48px; height:48px; border-radius:50%; border:2px solid rgba(255,255,255,0.1); transition:all 0.3s ease; cursor:pointer; }
+  .color-swatch:hover { transform:scale(1.2); border-color:rgba(255,255,255,0.3); }
 
-    input,textarea,select { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); color:#fff; transition:all 0.3s ease; outline:none; font-family:'Inter',sans-serif; }
-    input:focus,textarea:focus,select:focus { border-color:rgba(212,165,116,0.5); box-shadow:0 0 0 4px rgba(212,165,116,0.08); background:rgba(255,255,255,0.05); }
-    input::placeholder,textarea::placeholder { color:rgba(255,255,255,0.25); }
-    select option { background:#16161f; color:#fff; }
+  input,textarea,select { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); color:#fff; transition:all 0.3s ease; outline:none; font-family:'Inter',sans-serif; }
+  input:focus,textarea:focus,select:focus { border-color:rgba(212,165,116,0.5); box-shadow:0 0 0 4px rgba(212,165,116,0.08); background:rgba(255,255,255,0.05); }
+  input::placeholder,textarea::placeholder { color:rgba(255,255,255,0.25); }
+  select option { background:#16161f; color:#fff; }
 
-    .step-indicator { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; transition:all 0.4s ease; }
-    .step-active { background:linear-gradient(135deg,#d4a574,#e8b668); color:#08080d; box-shadow:0 0 20px -4px rgba(212,165,116,0.5); }
-    .step-done { background:rgba(163,184,156,0.2); color:#a3b89c; border:1px solid rgba(163,184,156,0.3); }
-    .step-pending { background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.3); border:1px solid rgba(255,255,255,0.08); }
+  .step-indicator { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; transition:all 0.4s ease; }
+  .step-active { background:linear-gradient(135deg,#d4a574,#e8b668); color:#08080d; box-shadow:0 0 20px -4px rgba(212,165,116,0.5); }
+  .step-done { background:rgba(163,184,156,0.2); color:#a3b89c; border:1px solid rgba(163,184,156,0.3); }
+  .step-pending { background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.3); border:1px solid rgba(255,255,255,0.08); }
 
-    .step-line { height:2px; flex:1; background:rgba(255,255,255,0.06); position:relative; overflow:hidden; }
-    .step-line-fill { position:absolute; inset:0; background:linear-gradient(to right,#d4a574,#e8b668); transform:scaleX(0); transform-origin:left; transition:transform 0.6s ease; }
-    .step-line-fill.filled { transform:scaleX(1); }
+  .step-line { height:2px; flex:1; background:rgba(255,255,255,0.06); position:relative; overflow:hidden; }
+  .step-line-fill { position:absolute; inset:0; background:linear-gradient(to right,#d4a574,#e8b668); transform:scaleX(0); transform-origin:left; transition:transform 0.6s ease; }
+  .step-line-fill.filled { transform:scaleX(1); }
 
-    .confirmation-card { background:linear-gradient(135deg,rgba(212,165,116,0.08),rgba(232,180,184,0.05)); border:1px solid rgba(212,165,116,0.2); border-radius:24px; }
+  .confirmation-card { background:linear-gradient(135deg,rgba(212,165,116,0.08),rgba(232,180,184,0.05)); border:1px solid rgba(212,165,116,0.2); border-radius:24px; }
 
-    .toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(120px); padding:16px 32px; border-radius:16px; font-weight:500; z-index:1000; transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1); backdrop-filter:blur(20px); }
-    .toast.show { transform:translateX(-50%) translateY(0); }
-    .toast-success { background:rgba(163,184,156,0.95); color:#08080d; box-shadow:0 10px 40px rgba(0,0,0,0.3); }
-    .toast-error { background:rgba(184,99,110,0.95); color:#fff; box-shadow:0 10px 40px rgba(0,0,0,0.3); }
+  .toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(120px); padding:16px 32px; border-radius:16px; font-weight:500; z-index:1000; transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1); backdrop-filter:blur(20px); }
+  .toast.show { transform:translateX(-50%) translateY(0); }
+  .toast-success { background:rgba(163,184,156,0.95); color:#08080d; box-shadow:0 10px 40px rgba(0,0,0,0.3); }
+  .toast-error { background:rgba(184,99,110,0.95); color:#fff; box-shadow:0 10px 40px rgba(0,0,0,0.3); }
 
-    .confetti-piece { position:fixed; width:10px; height:10px; z-index:999; pointer-events:none; }
+  .confetti-piece { position:fixed; width:10px; height:10px; z-index:999; pointer-events:none; }
 
-    .nav-link { position:relative; }
-    .nav-link::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:1px; background:linear-gradient(to right,#d4a574,#e8b668); transition:width 0.3s ease; border-radius:1px; }
-    .nav-link:hover::after { width:100%; }
+  .nav-link { position:relative; }
+  .nav-link::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:1px; background:linear-gradient(to right,#d4a574,#e8b668); transition:width 0.3s ease; border-radius:1px; }
+  .nav-link:hover::after { width:100%; }
 
-    .floral-border { position:relative; }
-    .floral-border::before,.floral-border::after { content:'✦'; position:absolute; color:rgba(212,165,116,0.15); font-size:12px; }
-    .floral-border::before { top:-8px; left:50%; transform:translateX(-50%); }
-    .floral-border::after { bottom:-8px; left:50%; transform:translateX(-50%); }
+  .admin-table th { background:rgba(212,165,116,0.08); }
+  .admin-table tr { border-bottom:1px solid rgba(255,255,255,0.04); }
+  .admin-table tr:hover { background:rgba(255,255,255,0.02); }
 
-    .admin-table th { background:rgba(212,165,116,0.08); }
-    .admin-table tr { border-bottom:1px solid rgba(255,255,255,0.04); }
-    .admin-table tr:hover { background:rgba(255,255,255,0.02); }
+  .badge-yes { background:rgba(163,184,156,0.15); color:#a3b89c; border:1px solid rgba(163,184,156,0.2); padding:2px 10px; border-radius:999px; font-size:11px; font-weight:500; }
+  .badge-no { background:rgba(184,99,110,0.15); color:#d4868e; border:1px solid rgba(184,99,110,0.2); padding:2px 10px; border-radius:999px; font-size:11px; font-weight:500; }
+  .badge-pending { background:rgba(240,201,135,0.15); color:#f0c987; border:1px solid rgba(240,201,135,0.2); padding:2px 10px; border-radius:999px; font-size:11px; font-weight:500; }
 
-    .badge-yes { background:rgba(163,184,156,0.15); color:#a3b89c; border:1px solid rgba(163,184,156,0.2); }
-    .badge-no { background:rgba(184,99,110,0.15); color:#d4868e; border:1px solid rgba(184,99,110,0.2); }
-    .badge-pending { background:rgba(240,201,135,0.15); color:#f0c987; border:1px solid rgba(240,201,135,0.2); }
+  @keyframes checkmark { 0%{stroke-dashoffset:50} 100%{stroke-dashoffset:0} }
 
-    @keyframes checkmark { 0%{stroke-dashoffset:50} 100%{stroke-dashoffset:0} }
+  .modal-overlay { position:fixed; inset:0; background:rgba(8,8,13,0.85); backdrop-filter:blur(8px); z-index:100; display:none; align-items:center; justify-content:center; padding:20px; }
+  .modal-overlay.active { display:flex; }
 
-    .modal-overlay { position:fixed; inset:0; background:rgba(8,8,13,0.85); backdrop-filter:blur(8px); z-index:100; display:none; align-items:center; justify-content:center; padding:20px; }
-    .modal-overlay.active { display:flex; }
+  .faq-item { border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02); border-radius:16px; overflow:hidden; transition:all 0.3s ease; }
+  .faq-item:hover { border-color:rgba(212,165,116,0.15); }
+  .faq-question { cursor:pointer; padding:20px 24px; display:flex; align-items:center; justify-content:between; gap:16px; user-select:none; }
+  .faq-answer { max-height:0; overflow:hidden; transition:max-height 0.4s ease, padding 0.4s ease; }
+  .faq-item.open .faq-answer { max-height:300px; padding:0 24px 20px; }
+  .faq-item.open .faq-chevron { transform:rotate(180deg); }
+  .faq-chevron { transition:transform 0.3s ease; flex-shrink:0; }
 
-    @media(max-width:768px) {
-      .timeline-line { left:20px; }
-    }
-  </style>
+  /* Firebase status indicator */
+  .firebase-status { display:inline-flex; align-items:center; gap:6px; font-size:10px; padding:4px 10px; border-radius:999px; }
+  .firebase-connected { background:rgba(163,184,156,0.1); color:#a3b89c; border:1px solid rgba(163,184,156,0.2); }
+  .firebase-disconnected { background:rgba(184,99,110,0.1); color:#d4868e; border:1px solid rgba(184,99,110,0.2); }
+  .firebase-dot { width:6px; height:6px; border-radius:50%; }
+  .firebase-connected .firebase-dot { background:#a3b89c; animation:pulse-ring 2s infinite; }
+  .firebase-disconnected .firebase-dot { background:#d4868e; }
 
-  <script type="importmap">
-  {
-    "imports": {
-      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-    }
+  @media(max-width:768px) {
+    .timeline-line { left:20px; }
   }
-  </script>
-  </head>
-  <body>
+</style>
 
-  <canvas id="three-canvas"></canvas>
-  <div id="toast" class="toast toast-success">✓ RSVP submitted successfully!</div>
-  <div id="toast-error" class="toast toast-error">✗ Please fill in all required fields</div>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
 
-  <!-- Confetti container -->
-  <div id="confetti-container"></div>
+<canvas id="three-canvas"></canvas>
+<div id="toast" class="toast toast-success">✓ RSVP submitted successfully!</div>
+<div id="toast-error" class="toast toast-error">✗ Please fill in all required fields</div>
+<div id="confetti-container"></div>
 
-  <!-- Image Lightbox Modal -->
-  <div id="lightbox" class="modal-overlay" onclick="this.classList.remove('active')">
-    <div class="max-w-4xl w-full" onclick="event.stopPropagation()">
-      <img id="lightbox-img" src="" alt="" class="w-full rounded-2xl border border-white/10 shadow-2xl">
-      <button onclick="document.getElementById('lightbox').classList.remove('active')" class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition-all">
+<!-- Image Lightbox Modal -->
+<div id="lightbox" class="modal-overlay" onclick="this.classList.remove('active')">
+  <div class="max-w-4xl w-full" onclick="event.stopPropagation()">
+    <img id="lightbox-img" src="" alt="" class="w-full rounded-2xl border border-white/10 shadow-2xl">
+    <button onclick="document.getElementById('lightbox').classList.remove('active')" class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition-all">
+      <i data-lucide="x" class="w-5 h-5"></i>
+    </button>
+  </div>
+</div>
+
+<!-- Admin Panel Modal -->
+<div id="admin-modal" class="modal-overlay" onclick="if(event.target===this)this.classList.remove('active')">
+  <div class="bg-dark-700 border border-white/10 rounded-3xl max-w-4xl w-full max-h-[85vh] overflow-hidden flex flex-col" onclick="event.stopPropagation()">
+    <div class="p-6 border-b border-white/5 flex items-center justify-between">
+      <div>
+        <div class="flex items-center gap-3">
+          <h3 class="font-serif text-xl">RSVP Dashboard</h3>
+          <span id="firebase-status" class="firebase-status firebase-disconnected">
+            <span class="firebase-dot"></span>
+            <span id="firebase-status-text">Connecting...</span>
+          </span>
+        </div>
+        <p class="text-xs text-neutral-500 mt-1">Real-time guest responses — synced across all devices</p>
+      </div>
+      <button onclick="document.getElementById('admin-modal').classList.remove('active')" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-all">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
     </div>
+    <div class="overflow-auto flex-1 p-6">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white/3 rounded-2xl p-4 text-center border border-white/5">
+          <p class="text-2xl font-serif text-gold-200" id="stat-total">0</p>
+          <p class="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">Total</p>
+        </div>
+        <div class="bg-white/3 rounded-2xl p-4 text-center border border-white/5">
+          <p class="text-2xl font-serif text-sage-300" id="stat-attending">0</p>
+          <p class="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">Attending</p>
+        </div>
+        <div class="bg-white/3 rounded-2xl p-4 text-center border border-white/5">
+          <p class="text-2xl font-serif text-rose-300" id="stat-declined">0</p>
+          <p class="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">Declined</p>
+        </div>
+        <div class="bg-white/3 rounded-2xl p-4 text-center border border-white/5">
+          <p class="text-2xl font-serif text-gold-300" id="stat-guests">0</p>
+          <p class="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">Total Guests</p>
+        </div>
+      </div>
+      <div class="overflow-x-auto rounded-xl border border-white/5">
+        <table class="admin-table w-full text-sm">
+          <thead>
+            <tr>
+              <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium">ID</th>
+              <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium">Name</th>
+              <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium hidden sm:table-cell">Email</th>
+              <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium">Status</th>
+              <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium hidden md:table-cell">Guests</th>
+              <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium hidden lg:table-cell">Date</th>
+            </tr>
+          </thead>
+          <tbody id="admin-table-body">
+            <tr><td colspan="6" class="text-center py-12 text-neutral-600">Loading from database...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="p-4 border-t border-white/5 flex items-center justify-between">
+      <button onclick="clearAllRSVPs()" class="text-xs text-rose-300 hover:text-rose-200 transition-colors">Clear All Data</button>
+      <button onclick="exportCSV()" class="btn-outline px-4 py-2 rounded-lg text-xs flex items-center gap-2">
+        <i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV
+      </button>
+    </div>
   </div>
+</div>
 
-  <!-- Admin Panel Modal -->
-  <div id="admin-modal" class="modal-overlay" onclick="if(event.target===this)this.classList.remove('active')">
-    <div class="bg-dark-700 border border-white/10 rounded-3xl max-w-4xl w-full max-h-[85vh] overflow-hidden flex flex-col" onclick="event.stopPropagation()">
-      <div class="p-6 border-b border-white/5 flex items-center justify-between">
-        <div>
-          <h3 class="font-serif text-xl">RSVP Dashboard</h3>
-          <p class="text-xs text-neutral-500 mt-1">Real-time guest responses</p>
-        </div>
-        <button onclick="document.getElementById('admin-modal').classList.remove('active')" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-all">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
+<!-- Confirmation Modal -->
+<div id="confirm-modal" class="modal-overlay" onclick="if(event.target===this)this.classList.remove('active')">
+  <div class="max-w-lg w-full" onclick="event.stopPropagation()">
+    <div class="confirmation-card p-8 sm:p-10 text-center">
+      <div class="w-20 h-20 rounded-full bg-sage-300/15 flex items-center justify-center mx-auto mb-6 pulse-ring">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+          <path d="M10 18L16 24L26 12" stroke="#a3b89c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="stroke-dasharray:50;animation:checkmark 0.6s ease 0.3s forwards;stroke-dashoffset:50"/>
+        </svg>
       </div>
-      <div class="overflow-auto flex-1 p-6">
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-          <div class="bg-white/3 rounded-2xl p-4 text-center border border-white/5">
-            <p class="text-2xl font-serif text-gold-200" id="stat-total">0</p>
-            <p class="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">Total</p>
-          </div>
-          <div class="bg-white/3 rounded-2xl p-4 text-center border border-white/5">
-            <p class="text-2xl font-serif text-sage-300" id="stat-attending">0</p>
-            <p class="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">Attending</p>
-          </div>
-          <div class="bg-white/3 rounded-2xl p-4 text-center border border-white/5">
-            <p class="text-2xl font-serif text-rose-300" id="stat-declined">0</p>
-            <p class="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">Declined</p>
-          </div>
-          <div class="bg-white/3 rounded-2xl p-4 text-center border border-white/5">
-            <p class="text-2xl font-serif text-gold-300" id="stat-guests">0</p>
-            <p class="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">Total Guests</p>
-          </div>
+      <p class="text-xs font-medium tracking-[0.2em] uppercase text-gold-400 mb-2">Confirmation</p>
+      <h3 class="font-serif text-2xl sm:text-3xl mb-2">You're <span class="text-gradient-gold">Confirmed</span></h3>
+      <p class="text-sm text-neutral-400 mb-6">We've received your response. Here are your details:</p>
+      <div class="bg-dark-900/50 rounded-2xl p-5 text-left space-y-3 mb-6 border border-white/5">
+        <div class="flex justify-between text-sm">
+          <span class="text-neutral-500">Confirmation #</span>
+          <span class="text-gold-200 font-mono font-medium" id="confirm-id">—</span>
         </div>
-        <div class="overflow-x-auto rounded-xl border border-white/5">
-          <table class="admin-table w-full text-sm">
-            <thead>
-              <tr>
-                <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium">ID</th>
-                <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium">Name</th>
-                <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium hidden sm:table-cell">Email</th>
-                <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium">Status</th>
-                <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium hidden md:table-cell">Guests</th>
-                <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium hidden lg:table-cell">Date</th>
-              </tr>
-            </thead>
-            <tbody id="admin-table-body">
-              <tr><td colspan="6" class="text-center py-12 text-neutral-600">No responses yet</td></tr>
-            </tbody>
-          </table>
+        <div class="flex justify-between text-sm">
+          <span class="text-neutral-500">Name</span>
+          <span class="text-white" id="confirm-name">—</span>
+        </div>
+        <div class="flex justify-between text-sm">
+          <span class="text-neutral-500">Response</span>
+          <span id="confirm-status">—</span>
+        </div>
+        <div class="flex justify-between text-sm">
+          <span class="text-neutral-500">Guests</span>
+          <span class="text-white" id="confirm-guests">—</span>
+        </div>
+        <div class="flex justify-between text-sm">
+          <span class="text-neutral-500">Date Submitted</span>
+          <span class="text-white text-xs" id="confirm-date">—</span>
         </div>
       </div>
-      <div class="p-4 border-t border-white/5 flex items-center justify-between">
-        <button onclick="clearAllRSVPs()" class="text-xs text-rose-300 hover:text-rose-200 transition-colors">Clear All Data</button>
-        <button onclick="exportCSV()" class="btn-outline px-4 py-2 rounded-lg text-xs flex items-center gap-2">
-          <i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV
+      <div class="flex flex-col sm:flex-row gap-3">
+        <button onclick="printConfirmation()" class="btn-gold flex-1 py-3 rounded-xl text-sm flex items-center justify-center gap-2">
+          <i data-lucide="printer" class="w-4 h-4"></i> Print
         </button>
+        <button onclick="closeConfirmation()" class="btn-outline flex-1 py-3 rounded-xl text-sm">Close</button>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Confirmation Modal -->
-  <div id="confirm-modal" class="modal-overlay" onclick="if(event.target===this)this.classList.remove('active')">
-    <div class="max-w-lg w-full" onclick="event.stopPropagation()">
-      <div class="confirmation-card p-8 sm:p-10 text-center">
-        <div class="w-20 h-20 rounded-full bg-sage-300/15 flex items-center justify-center mx-auto mb-6 pulse-ring">
-          <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-            <path d="M10 18L16 24L26 12" stroke="#a3b89c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="stroke-dasharray:50;animation:checkmark 0.6s ease 0.3s forwards;stroke-dashoffset:50"/>
-          </svg>
+<div class="section-wrapper">
+
+  <!-- Navigation -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500" style="background:transparent;">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <a href="#hero" class="font-serif text-2xl tracking-wide">
+        <span class="text-gold-200">J</span><span class="text-white/20 mx-1">&</span><span class="text-rose-200">O</span>
+      </a>
+      <div class="hidden lg:flex items-center gap-8">
+        <a href="#story" class="nav-link text-[13px] text-neutral-400 hover:text-gold-200 transition-colors">Our Story</a>
+        <a href="#decor" class="nav-link text-[13px] text-neutral-400 hover:text-gold-200 transition-colors">Decor</a>
+        <a href="#details" class="nav-link text-[13px] text-neutral-400 hover:text-gold-200 transition-colors">Details</a>
+        <a href="#gallery" class="nav-link text-[13px] text-neutral-400 hover:text-gold-200 transition-colors">Gallery</a>
+        <a href="#faq" class="nav-link text-[13px] text-neutral-400 hover:text-gold-200 transition-colors">FAQ</a>
+        <a href="#rsvp" class="nav-link text-[13px] text-neutral-400 hover:text-gold-200 transition-colors">RSVP</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <button onclick="openAdmin()" class="hidden sm:flex w-9 h-9 rounded-full border border-white/10 items-center justify-center text-neutral-500 hover:text-gold-200 hover:border-gold-400/30 transition-all" title="Admin Dashboard">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+        </button>
+        <a href="#rsvp" class="btn-gold px-5 py-2.5 rounded-full text-xs hidden md:inline-block">RSVP NOW</a>
+        <button id="mobile-menu-btn" class="lg:hidden text-white/60 hover:text-white transition-colors">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="lg:hidden hidden bg-dark-800/95 backdrop-blur-xl border-t border-white/5 px-6 py-2">
+      <a href="#story" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 transition-colors border-b border-white/5">Our Story</a>
+      <a href="#decor" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 transition-colors border-b border-white/5">Decor</a>
+      <a href="#details" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 transition-colors border-b border-white/5">Details</a>
+      <a href="#gallery" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 transition-colors border-b border-white/5">Gallery</a>
+      <a href="#faq" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 transition-colors border-b border-white/5">FAQ</a>
+      <a href="#rsvp" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 transition-colors">RSVP</a>
+      <div class="py-3 border-t border-white/5 mt-1">
+        <button onclick="openAdmin()" class="text-sm text-neutral-500 hover:text-gold-200 transition-colors flex items-center gap-2">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Admin Dashboard
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero" class="relative min-h-screen flex flex-col items-center justify-center px-6">
+    <div class="hero-gradient absolute inset-0 z-10"></div>
+    <div class="relative z-20 text-center max-w-4xl mx-auto">
+      <div class="fade-up mb-8">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold-400/15 bg-gold-400/5 mb-6">
+          <span class="w-2 h-2 rounded-full bg-sage-300 animate-pulse"></span>
+          <span class="text-[11px] font-medium tracking-widest uppercase text-gold-300">Save the Date</span>
         </div>
-        <p class="text-xs font-medium tracking-[0.2em] uppercase text-gold-400 mb-2">Confirmation</p>
-        <h3 class="font-serif text-2xl sm:text-3xl mb-2">You're <span class="text-gradient-gold">Confirmed</span></h3>
-        <p class="text-sm text-neutral-400 mb-6">We've received your response. Here are your details:</p>
-        <div class="bg-dark-900/50 rounded-2xl p-5 text-left space-y-3 mb-6 border border-white/5">
-          <div class="flex justify-between text-sm">
-            <span class="text-neutral-500">Confirmation #</span>
-            <span class="text-gold-200 font-mono font-medium" id="confirm-id">—</span>
+      </div>
+      <h1 class="fade-up font-serif text-6xl sm:text-8xl lg:text-9xl font-400 tracking-tight leading-[0.95] mb-6" style="transition-delay:0.15s">
+        James<br>
+        <span class="text-gradient-gold text-5xl sm:text-6xl lg:text-7xl italic font-400">&</span><br>
+        Olivia
+      </h1>
+      <div class="fade-up flex items-center justify-center gap-4 mt-4 mb-8" style="transition-delay:0.3s">
+        <div class="w-12 h-px bg-gradient-to-r from-transparent to-gold-400/40"></div>
+        <div class="w-2 h-2 rotate-45 border border-gold-400/40"></div>
+        <div class="w-12 h-px bg-gradient-to-l from-transparent to-gold-400/40"></div>
+      </div>
+      <p class="fade-up font-serif text-xl sm:text-2xl text-neutral-300 italic mb-1" style="transition-delay:0.4s">June Fourteenth</p>
+      <p class="fade-up text-sm text-neutral-500 mb-12" style="transition-delay:0.45s">Two Thousand Twenty-Five · Tuscany, Italy</p>
+
+      <div class="fade-up flex items-center justify-center gap-2 sm:gap-4" style="transition-delay:0.55s">
+        <div class="countdown-box rounded-2xl px-5 py-5 text-center min-w-[80px]">
+          <span id="cd-days" class="block text-3xl sm:text-4xl font-serif text-gold-200">--</span>
+          <span class="text-[9px] uppercase tracking-[0.2em] text-neutral-600 mt-1.5 block">Days</span>
+        </div>
+        <span class="text-gold-400/20 text-xl">:</span>
+        <div class="countdown-box rounded-2xl px-5 py-5 text-center min-w-[80px]">
+          <span id="cd-hours" class="block text-3xl sm:text-4xl font-serif text-gold-200">--</span>
+          <span class="text-[9px] uppercase tracking-[0.2em] text-neutral-600 mt-1.5 block">Hours</span>
+        </div>
+        <span class="text-gold-400/20 text-xl">:</span>
+        <div class="countdown-box rounded-2xl px-5 py-5 text-center min-w-[80px]">
+          <span id="cd-mins" class="block text-3xl sm:text-4xl font-serif text-gold-200">--</span>
+          <span class="text-[9px] uppercase tracking-[0.2em] text-neutral-600 mt-1.5 block">Mins</span>
+        </div>
+        <span class="text-gold-400/20 text-xl">:</span>
+        <div class="countdown-box rounded-2xl px-5 py-5 text-center min-w-[80px]">
+          <span id="cd-secs" class="block text-3xl sm:text-4xl font-serif text-gold-200">--</span>
+          <span class="text-[9px] uppercase tracking-[0.2em] text-neutral-600 mt-1.5 block">Secs</span>
+        </div>
+      </div>
+
+      <div class="fade-up mt-12 flex flex-col sm:flex-row items-center justify-center gap-4" style="transition-delay:0.7s">
+        <a href="#rsvp" class="btn-gold px-8 py-4 rounded-full text-sm">Confirm Your Attendance</a>
+        <a href="#story" class="btn-outline px-8 py-4 rounded-full text-sm">Our Story</a>
+      </div>
+    </div>
+
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 float-anim">
+      <span class="text-[9px] uppercase tracking-[0.25em] text-neutral-700">Scroll to explore</span>
+      <div class="w-5 h-8 rounded-full border border-neutral-700 flex items-start justify-center p-1">
+        <div class="w-1 h-2 rounded-full bg-gold-400/50 animate-bounce"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUR STORY -->
+  <section id="story" class="py-28 sm:py-36 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-24">
+        <p class="fade-up text-xs font-medium tracking-[0.3em] uppercase text-gold-400 mb-4">How It All Began</p>
+        <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4">Our <span class="text-gradient-gold">Love</span> Story</h2>
+        <div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-wide"></div></div>
+      </div>
+      <div class="relative">
+        <div class="timeline-line hidden md:block"></div>
+        <div class="fade-left relative flex flex-col md:flex-row items-center gap-8 mb-24">
+          <div class="md:w-1/2 md:text-right md:pr-20">
+            <span class="text-[11px] font-semibold tracking-[0.2em] uppercase text-gold-400">August 2019</span>
+            <h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3">First Meeting</h3>
+            <p class="text-neutral-400 text-sm leading-relaxed">A chance encounter at a friend's dinner party in Florence. James spilled wine on Olivia's dress — and spent the rest of the evening making her laugh about it.</p>
           </div>
-          <div class="flex justify-between text-sm">
-            <span class="text-neutral-500">Name</span>
-            <span class="text-white" id="confirm-name">—</span>
-          </div>
-          <div class="flex justify-between text-sm">
-            <span class="text-neutral-500">Response</span>
-            <span id="confirm-status">—</span>
-          </div>
-          <div class="flex justify-between text-sm">
-            <span class="text-neutral-500">Guests</span>
-            <span class="text-white" id="confirm-guests">—</span>
-          </div>
-          <div class="flex justify-between text-sm">
-            <span class="text-neutral-500">Date Submitted</span>
-            <span class="text-white text-xs" id="confirm-date">—</span>
+          <div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="timeline-dot pulse-ring"></div></div>
+          <div class="md:w-1/2 md:pl-20">
+            <div class="rounded-2xl overflow-hidden border border-white/5 gallery-item" onclick="openLightbox('https://picsum.photos/seed/wed-meet/800/600.jpg')">
+              <img src="https://picsum.photos/seed/wed-meet/800/600.jpg" alt="First meeting" class="w-full h-56 object-cover">
+            </div>
           </div>
         </div>
-        <div class="flex flex-col sm:flex-row gap-3">
-          <button onclick="printConfirmation()" class="btn-gold flex-1 py-3 rounded-xl text-sm flex items-center justify-center gap-2">
-            <i data-lucide="printer" class="w-4 h-4"></i> Print
-          </button>
-          <button onclick="closeConfirmation()" class="btn-outline flex-1 py-3 rounded-xl text-sm">Close</button>
+        <div class="fade-right relative flex flex-col md:flex-row-reverse items-center gap-8 mb-24">
+          <div class="md:w-1/2 md:text-left md:pl-20">
+            <span class="text-[11px] font-semibold tracking-[0.2em] uppercase text-gold-400">December 2020</span>
+            <h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3">First Date</h3>
+            <p class="text-neutral-400 text-sm leading-relaxed">A snowy evening walk along the Arno river turned into hours of conversation over espresso. They closed down the café and kept talking on a bench until dawn.</p>
+          </div>
+          <div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="timeline-dot pulse-ring"></div></div>
+          <div class="md:w-1/2 md:pr-20">
+            <div class="rounded-2xl overflow-hidden border border-white/5 gallery-item" onclick="openLightbox('https://picsum.photos/seed/wed-date/800/600.jpg')">
+              <img src="https://picsum.photos/seed/wed-date/800/600.jpg" alt="First date" class="w-full h-56 object-cover">
+            </div>
+          </div>
+        </div>
+        <div class="fade-left relative flex flex-col md:flex-row items-center gap-8 mb-24">
+          <div class="md:w-1/2 md:text-right md:pr-20">
+            <span class="text-[11px] font-semibold tracking-[0.2em] uppercase text-gold-400">June 2022</span>
+            <h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3">Moving In Together</h3>
+            <p class="text-neutral-400 text-sm leading-relaxed">A tiny apartment with a leaky faucet became their first home. They learned to cook together, argue about furniture, and fall deeper in love every single day.</p>
+          </div>
+          <div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="timeline-dot pulse-ring"></div></div>
+          <div class="md:w-1/2 md:pl-20">
+            <div class="rounded-2xl overflow-hidden border border-white/5 gallery-item" onclick="openLightbox('https://picsum.photos/seed/wed-home/800/600.jpg')">
+              <img src="https://picsum.photos/seed/wed-home/800/600.jpg" alt="Moving in" class="w-full h-56 object-cover">
+            </div>
+          </div>
+        </div>
+        <div class="fade-right relative flex flex-col md:flex-row-reverse items-center gap-8">
+          <div class="md:w-1/2 md:text-left md:pl-20">
+            <span class="text-[11px] font-semibold tracking-[0.2em] uppercase text-gold-400">September 2024</span>
+            <h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3">The Proposal</h3>
+            <p class="text-neutral-400 text-sm leading-relaxed">Under a canopy of stars in the Tuscan countryside, James got down on one knee. Olivia said yes before he even finished the question. Tears, laughter, and champagne followed.</p>
+          </div>
+          <div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="timeline-dot pulse-ring"></div></div>
+          <div class="md:w-1/2 md:pr-20">
+            <div class="rounded-2xl overflow-hidden border border-white/5 gallery-item" onclick="openLightbox('https://picsum.photos/seed/wed-prop/800/600.jpg')">
+              <img src="https://picsum.photos/seed/wed-prop/800/600.jpg" alt="Proposal" class="w-full h-56 object-cover">
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <div class="section-wrapper">
-
-    <!-- Navigation -->
-    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500" style="background:transparent;">
-      <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <a href="#hero" class="font-serif text-2xl tracking-wide">
-          <span class="text-gold-200">J</span><span class="text-white/20 mx-1">&</span><span class="text-rose-200">O</span>
-        </a>
-        <div class="hidden lg:flex items-center gap-8">
-          <a href="#story" class="nav-link text-[13px] text-neutral-400 hover:text-gold-200 transition-colors">Our Story</a>
-          <a href="#decor" class="nav-link text-[13px] text-neutral-400 hover:text-gold-200 transition-colors">Decor</a>
-          <a href="#details" class="nav-link text-[13px] text-neutral-400 hover:text-gold-200 transition-colors">Details</a>
-          <a href="#gallery" class="nav-link text-[13px] text-neutral-400 hover:text-gold-200 transition-colors">Gallery</a>
-          <a href="#faq" class="nav-link text-[13px] text-neutral-400 hover:text-gold-200 transition-colors">FAQ</a>
-          <a href="#rsvp" class="nav-link text-[13px] text-neutral-400 hover:text-gold-200 transition-colors">RSVP</a>
-        </div>
-        <div class="flex items-center gap-3">
-          <button onclick="openAdmin()" class="hidden sm:flex w-9 h-9 rounded-full border border-white/10 items-center justify-center text-neutral-500 hover:text-gold-200 hover:border-gold-400/30 transition-all" title="Admin Dashboard">
-            <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-          </button>
-          <a href="#rsvp" class="btn-gold px-5 py-2.5 rounded-full text-xs hidden md:inline-block">RSVP NOW</a>
-          <button id="mobile-menu-btn" class="lg:hidden text-white/60 hover:text-white transition-colors">
-            <i data-lucide="menu" class="w-6 h-6"></i>
-          </button>
+  <!-- WEDDING DECOR -->
+  <section id="decor" class="py-28 sm:py-36 px-6 relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-gold-400/[0.02] to-transparent pointer-events-none"></div>
+    <div class="max-w-6xl mx-auto relative">
+      <div class="text-center mb-20">
+        <p class="fade-up text-xs font-medium tracking-[0.3em] uppercase text-gold-400 mb-4">Design & Aesthetics</p>
+        <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4">Wedding <span class="text-gradient-gold">Decor</span></h2>
+        <div class="fade-up flex items-center justify-center gap-3 mt-5 mb-4"><div class="divider-wide"></div></div>
+        <p class="fade-up text-neutral-400 text-sm max-w-xl mx-auto">A romantic celebration inspired by Tuscan sunsets, golden hour light, and the timeless elegance of Italian countryside weddings.</p>
+      </div>
+      <div class="fade-up mb-16">
+        <h3 class="font-serif text-xl text-center mb-8">Color <span class="text-gradient-gold">Palette</span></h3>
+        <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+          <div class="text-center"><div class="color-swatch mx-auto" style="background:#d4a574"></div><p class="text-[10px] text-neutral-500 mt-2 tracking-wide">Gold</p></div>
+          <div class="text-center"><div class="color-swatch mx-auto" style="background:#e8b4b8"></div><p class="text-[10px] text-neutral-500 mt-2 tracking-wide">Rose</p></div>
+          <div class="text-center"><div class="color-swatch mx-auto" style="background:#a3b89c"></div><p class="text-[10px] text-neutral-500 mt-2 tracking-wide">Sage</p></div>
+          <div class="text-center"><div class="color-swatch mx-auto" style="background:#faf6f0"></div><p class="text-[10px] text-neutral-500 mt-2 tracking-wide">Ivory</p></div>
+          <div class="text-center"><div class="color-swatch mx-auto" style="background:#f5ede0"></div><p class="text-[10px] text-neutral-500 mt-2 tracking-wide">Champagne</p></div>
+          <div class="text-center"><div class="color-swatch mx-auto" style="background:#2a2a38"></div><p class="text-[10px] text-neutral-500 mt-2 tracking-wide">Charcoal</p></div>
         </div>
       </div>
-      <div id="mobile-menu" class="lg:hidden hidden bg-dark-800/95 backdrop-blur-xl border-t border-white/5 px-6 py-2">
-        <a href="#story" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 transition-colors border-b border-white/5">Our Story</a>
-        <a href="#decor" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 transition-colors border-b border-white/5">Decor</a>
-        <a href="#details" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 transition-colors border-b border-white/5">Details</a>
-        <a href="#gallery" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 transition-colors border-b border-white/5">Gallery</a>
-        <a href="#faq" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 transition-colors border-b border-white/5">FAQ</a>
-        <a href="#rsvp" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 transition-colors">RSVP</a>
-        <div class="py-3 border-t border-white/5 mt-1">
-          <button onclick="openAdmin()" class="text-sm text-neutral-500 hover:text-gold-200 transition-colors flex items-center gap-2">
-            <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Admin Dashboard
-          </button>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="scale-in decor-card" style="transition-delay:0s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-floral/600/400.jpg" alt="Floral" class="w-full h-52 object-cover"></div><div class="p-6"><div class="flex items-center gap-2 mb-2"><i data-lucide="flower-2" class="w-4 h-4 text-gold-400"></i><span class="text-[10px] font-semibold tracking-widest uppercase text-gold-400">Florals</span></div><h4 class="font-serif text-lg mb-2">Floral Arrangements</h4><p class="text-xs text-neutral-400 leading-relaxed">Lush garden-style bouquets with white roses, peonies, trailing ivy, and dried lavender from local Tuscan fields.</p></div></div>
+        <div class="scale-in decor-card" style="transition-delay:0.1s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-table/600/400.jpg" alt="Table" class="w-full h-52 object-cover"></div><div class="p-6"><div class="flex items-center gap-2 mb-2"><i data-lucide="utensils" class="w-4 h-4 text-rose-300"></i><span class="text-[10px] font-semibold tracking-widest uppercase text-rose-300">Tables</span></div><h4 class="font-serif text-lg mb-2">Table Settings</h4><p class="text-xs text-neutral-400 leading-relaxed">Long farmhouse tables with gold-rimmed china, linen runners, crystal glassware, and candlelit centerpieces.</p></div></div>
+        <div class="scale-in decor-card" style="transition-delay:0.2s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-lighting/600/400.jpg" alt="Lighting" class="w-full h-52 object-cover"></div><div class="p-6"><div class="flex items-center gap-2 mb-2"><i data-lucide="lamp" class="w-4 h-4 text-gold-300"></i><span class="text-[10px] font-semibold tracking-widest uppercase text-gold-300">Lighting</span></div><h4 class="font-serif text-lg mb-2">Ambient Lighting</h4><p class="text-xs text-neutral-400 leading-relaxed">Hundreds of fairy lights strung through olive trees, warm-toned uplighting, and floating candles in the pool.</p></div></div>
+        <div class="scale-in decor-card" style="transition-delay:0.15s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-ceremony2/600/400.jpg" alt="Arch" class="w-full h-52 object-cover"></div><div class="p-6"><div class="flex items-center gap-2 mb-2"><i data-lucide="arch" class="w-4 h-4 text-sage-300"></i><span class="text-[10px] font-semibold tracking-widest uppercase text-sage-300">Ceremony</span></div><h4 class="font-serif text-lg mb-2">Garden Arch</h4><p class="text-xs text-neutral-400 leading-relaxed">A hand-crafted wooden arch adorned with cascading white florals, silk ribbons, and delicate greenery.</p></div></div>
+        <div class="scale-in decor-card" style="transition-delay:0.25s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-cake2/600/400.jpg" alt="Cake" class="w-full h-52 object-cover"></div><div class="p-6"><div class="flex items-center gap-2 mb-2"><i data-lucide="cake-slice" class="w-4 h-4 text-rose-200"></i><span class="text-[10px] font-semibold tracking-widest uppercase text-rose-200">Cake</span></div><h4 class="font-serif text-lg mb-2">The Wedding Cake</h4><p class="text-xs text-neutral-400 leading-relaxed">Four-tiered buttercream cake with hand-painted gold detailing, fresh roses, and a porcelain topper.</p></div></div>
+        <div class="scale-in decor-card" style="transition-delay:0.3s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-favors/600/400.jpg" alt="Favors" class="w-full h-52 object-cover"></div><div class="p-6"><div class="flex items-center gap-2 mb-2"><i data-lucide="package" class="w-4 h-4 text-gold-400"></i><span class="text-[10px] font-semibold tracking-widest uppercase text-gold-400">Favors</span></div><h4 class="font-serif text-lg mb-2">Guest Favors</h4><p class="text-xs text-neutral-400 leading-relaxed">Mini bottles of Tuscan olive oil, custom-labeled with our names and wedding date in gold foil.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <section class="py-20 px-6 relative">
+    <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at center,rgba(212,165,116,0.03) 0%,transparent 70%)"></div>
+    <div class="max-w-3xl mx-auto text-center fade-up relative">
+      <div class="w-16 h-16 rounded-full border border-gold-400/10 flex items-center justify-center mx-auto mb-8 rotate-slow">
+        <i data-lucide="heart" class="w-6 h-6 text-gold-400/40"></i>
+      </div>
+      <p class="font-serif text-2xl sm:text-3xl lg:text-4xl italic text-neutral-200 leading-relaxed mb-6">"Whatever our souls are made of, his and mine are the same."</p>
+      <div class="flex items-center justify-center gap-3 mb-3">
+        <div class="w-8 h-px bg-gold-400/30"></div>
+        <span class="text-sm text-gold-400">Emily Brontë</span>
+        <div class="w-8 h-px bg-gold-400/30"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENT DETAILS -->
+  <section id="details" class="py-28 sm:py-36 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-20">
+        <p class="fade-up text-xs font-medium tracking-[0.3em] uppercase text-gold-400 mb-4">Join Us</p>
+        <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4">Wedding <span class="text-gradient-gold">Details</span></h2>
+        <div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-wide"></div></div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-5">
+        <div class="fade-up card-glass card-gold-border rounded-3xl p-8 sm:p-10">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400/15 to-gold-400/5 flex items-center justify-center mb-6"><i data-lucide="church" class="w-6 h-6 text-gold-300"></i></div>
+          <span class="text-[10px] font-semibold tracking-[0.2em] uppercase text-gold-400 mb-2 block">The Ceremony</span>
+          <h3 class="font-serif text-2xl sm:text-3xl mb-5">Exchange of Vows</h3>
+          <div class="space-y-4 text-sm text-neutral-400">
+            <div class="flex items-start gap-3"><i data-lucide="calendar" class="w-4 h-4 text-gold-400 mt-0.5 shrink-0"></i><span>Saturday, June 14, 2025</span></div>
+            <div class="flex items-start gap-3"><i data-lucide="clock" class="w-4 h-4 text-gold-400 mt-0.5 shrink-0"></i><span>4:00 PM — Doors open at 3:30 PM</span></div>
+            <div class="flex items-start gap-3"><i data-lucide="map-pin" class="w-4 h-4 text-gold-400 mt-0.5 shrink-0"></i><span>The Rosewood Estate Chapel<br>Via della Rosa, 42 — Tuscany, Italy</span></div>
+          </div>
+          <div class="mt-6 pt-6 border-t border-white/5"><p class="text-xs text-neutral-500 leading-relaxed">Garden ceremony with seating for 150 guests. In case of rain, the ceremony will move to the Grand Hall.</p></div>
+        </div>
+        <div class="fade-up card-glass card-gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:0.1s">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-200/15 to-rose-200/5 flex items-center justify-center mb-6"><i data-lucide="wine" class="w-6 h-6 text-rose-200"></i></div>
+          <span class="text-[10px] font-semibold tracking-[0.2em] uppercase text-rose-200 mb-2 block">The Reception</span>
+          <h3 class="font-serif text-2xl sm:text-3xl mb-5">Dinner & Dancing</h3>
+          <div class="space-y-4 text-sm text-neutral-400">
+            <div class="flex items-start gap-3"><i data-lucide="calendar" class="w-4 h-4 text-rose-200 mt-0.5 shrink-0"></i><span>Saturday, June 14, 2025</span></div>
+            <div class="flex items-start gap-3"><i data-lucide="clock" class="w-4 h-4 text-rose-200 mt-0.5 shrink-0"></i><span>6:00 PM — Until Midnight</span></div>
+            <div class="flex items-start gap-3"><i data-lucide="map-pin" class="w-4 h-4 text-rose-200 mt-0.5 shrink-0"></i><span>The Rosewood Terrace<br>Adjacent to the Chapel</span></div>
+          </div>
+          <div class="mt-6 pt-6 border-t border-white/5"><p class="text-xs text-neutral-500 leading-relaxed">Four-course dinner, live band, open bar. Dress code: Black tie optional. Comfortable dancing shoes recommended.</p></div>
+        </div>
+        <div class="fade-up card-glass card-gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:0.15s">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sage-300/15 to-sage-300/5 flex items-center justify-center mb-6"><i data-lucide="bed-double" class="w-6 h-6 text-sage-300"></i></div>
+          <span class="text-[10px] font-semibold tracking-[0.2em] uppercase text-sage-300 mb-2 block">Accommodation</span>
+          <h3 class="font-serif text-2xl sm:text-3xl mb-5">Where to Stay</h3>
+          <p class="text-sm text-neutral-400 leading-relaxed mb-4">We've reserved a block of rooms at the Villa Toscana Inn, a 5-minute walk from the venue. Use code <span class="text-gold-200 font-semibold bg-gold-400/10 px-2 py-0.5 rounded-md">JANDO2025</span> for the discounted rate.</p>
+          <a href="#" class="inline-flex items-center gap-2 text-sm text-sage-300 hover:text-sage-200 transition-colors font-medium">Book your room <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></a>
+        </div>
+        <div class="fade-up card-glass card-gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:0.2s">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-200/15 to-rose-200/5 flex items-center justify-center mb-6"><i data-lucide="gift" class="w-6 h-6 text-rose-200"></i></div>
+          <span class="text-[10px] font-semibold tracking-[0.2em] uppercase text-rose-200 mb-2 block">Registry</span>
+          <h3 class="font-serif text-2xl sm:text-3xl mb-5">Your Presence Is Enough</h3>
+          <p class="text-sm text-neutral-400 leading-relaxed mb-4">Your love and presence at our wedding is the greatest gift. If you wish to honor us, we have a small registry and a honeymoon fund.</p>
+          <a href="#" class="inline-flex items-center gap-2 text-sm text-rose-200 hover:text-rose-300 transition-colors font-medium">View registry <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></a>
         </div>
       </div>
-    </nav>
-
-    <!-- HERO -->
-    <section id="hero" class="relative min-h-screen flex flex-col items-center justify-center px-6">
-      <div class="hero-gradient absolute inset-0 z-10"></div>
-      <div class="relative z-20 text-center max-w-4xl mx-auto">
-        <div class="fade-up mb-8">
-          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold-400/15 bg-gold-400/5 mb-6">
-            <span class="w-2 h-2 rounded-full bg-sage-300 animate-pulse"></span>
-            <span class="text-[11px] font-medium tracking-widest uppercase text-gold-300">Save the Date</span>
+      <div class="fade-up mt-8 card-glass card-gold-border rounded-3xl p-8 sm:p-10">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400/15 to-rose-200/10 flex items-center justify-center shrink-0"><i data-lucide="shirt" class="w-6 h-6 text-gold-300"></i></div>
+          <div class="flex-1">
+            <span class="text-[10px] font-semibold tracking-[0.2em] uppercase text-gold-400 mb-1 block">Dress Code</span>
+            <h3 class="font-serif text-xl mb-2">Black Tie Optional</h3>
+            <p class="text-sm text-neutral-400 leading-relaxed">We kindly ask guests to dress in formal or semi-formal attire. Think elegant evening wear — tuxedos, dark suits, evening gowns, or cocktail dresses. Please avoid white or ivory.</p>
           </div>
-        </div>
-        <h1 class="fade-up font-serif text-6xl sm:text-8xl lg:text-9xl font-400 tracking-tight leading-[0.95] mb-6" style="transition-delay:0.15s">
-          James<br>
-          <span class="text-gradient-gold text-5xl sm:text-6xl lg:text-7xl italic font-400">&</span><br>
-          Olivia
-        </h1>
-        <div class="fade-up flex items-center justify-center gap-4 mt-4 mb-8" style="transition-delay:0.3s">
-          <div class="w-12 h-px bg-gradient-to-r from-transparent to-gold-400/40"></div>
-          <div class="w-2 h-2 rotate-45 border border-gold-400/40"></div>
-          <div class="w-12 h-px bg-gradient-to-l from-transparent to-gold-400/40"></div>
-        </div>
-        <p class="fade-up font-serif text-xl sm:text-2xl text-neutral-300 italic mb-1" style="transition-delay:0.4s">June Fourteenth</p>
-        <p class="fade-up text-sm text-neutral-500 mb-12" style="transition-delay:0.45s">Two Thousand Twenty-Five · Tuscany, Italy</p>
-
-        <!-- Countdown -->
-        <div class="fade-up flex items-center justify-center gap-2 sm:gap-4" style="transition-delay:0.55s">
-          <div class="countdown-box rounded-2xl px-5 py-5 text-center min-w-[80px]">
-            <span id="cd-days" class="block text-3xl sm:text-4xl font-serif text-gold-200">--</span>
-            <span class="text-[9px] uppercase tracking-[0.2em] text-neutral-600 mt-1.5 block">Days</span>
-          </div>
-          <span class="text-gold-400/20 text-xl">:</span>
-          <div class="countdown-box rounded-2xl px-5 py-5 text-center min-w-[80px]">
-            <span id="cd-hours" class="block text-3xl sm:text-4xl font-serif text-gold-200">--</span>
-            <span class="text-[9px] uppercase tracking-[0.2em] text-neutral-600 mt-1.5 block">Hours</span>
-          </div>
-          <span class="text-gold-400/20 text-xl">:</span>
-          <div class="countdown-box rounded-2xl px-5 py-5 text-center min-w-[80px]">
-            <span id="cd-mins" class="block text-3xl sm:text-4xl font-serif text-gold-200">--</span>
-            <span class="text-[9px] uppercase tracking-[0.2em] text-neutral-600 mt-1.5 block">Mins</span>
-          </div>
-          <span class="text-gold-400/20 text-xl">:</span>
-          <div class="countdown-box rounded-2xl px-5 py-5 text-center min-w-[80px]">
-            <span id="cd-secs" class="block text-3xl sm:text-4xl font-serif text-gold-200">--</span>
-            <span class="text-[9px] uppercase tracking-[0.2em] text-neutral-600 mt-1.5 block">Secs</span>
-          </div>
-        </div>
-
-        <div class="fade-up mt-12 flex flex-col sm:flex-row items-center justify-center gap-4" style="transition-delay:0.7s">
-          <a href="#rsvp" class="btn-gold px-8 py-4 rounded-full text-sm">Confirm Your Attendance</a>
-          <a href="#story" class="btn-outline px-8 py-4 rounded-full text-sm">Our Story</a>
-        </div>
-      </div>
-
-      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 float-anim">
-        <span class="text-[9px] uppercase tracking-[0.25em] text-neutral-700">Scroll to explore</span>
-        <div class="w-5 h-8 rounded-full border border-neutral-700 flex items-start justify-center p-1">
-          <div class="w-1 h-2 rounded-full bg-gold-400/50 animate-bounce"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- OUR STORY -->
-    <section id="story" class="py-28 sm:py-36 px-6">
-      <div class="max-w-5xl mx-auto">
-        <div class="text-center mb-24">
-          <p class="fade-up text-xs font-medium tracking-[0.3em] uppercase text-gold-400 mb-4">How It All Began</p>
-          <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4">Our <span class="text-gradient-gold">Love</span> Story</h2>
-          <div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-wide"></div></div>
-        </div>
-        <div class="relative">
-          <div class="timeline-line hidden md:block"></div>
-
-          <div class="fade-left relative flex flex-col md:flex-row items-center gap-8 mb-24">
-            <div class="md:w-1/2 md:text-right md:pr-20">
-              <span class="text-[11px] font-semibold tracking-[0.2em] uppercase text-gold-400">August 2019</span>
-              <h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3">First Meeting</h3>
-              <p class="text-neutral-400 text-sm leading-relaxed">A chance encounter at a friend's dinner party in Florence. James spilled wine on Olivia's dress — and spent the rest of the evening making her laugh about it.</p>
-            </div>
-            <div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="timeline-dot pulse-ring"></div></div>
-            <div class="md:w-1/2 md:pl-20">
-              <div class="rounded-2xl overflow-hidden border border-white/5 gallery-item" onclick="openLightbox('https://picsum.photos/seed/wed-meet/800/600.jpg')">
-                <img src="https://picsum.photos/seed/wed-meet/800/600.jpg" alt="First meeting" class="w-full h-56 object-cover">
-              </div>
-            </div>
-          </div>
-
-          <div class="fade-right relative flex flex-col md:flex-row-reverse items-center gap-8 mb-24">
-            <div class="md:w-1/2 md:text-left md:pl-20">
-              <span class="text-[11px] font-semibold tracking-[0.2em] uppercase text-gold-400">December 2020</span>
-              <h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3">First Date</h3>
-              <p class="text-neutral-400 text-sm leading-relaxed">A snowy evening walk along the Arno river turned into hours of conversation over espresso. They closed down the café and kept talking on a bench until dawn.</p>
-            </div>
-            <div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="timeline-dot pulse-ring"></div></div>
-            <div class="md:w-1/2 md:pr-20">
-              <div class="rounded-2xl overflow-hidden border border-white/5 gallery-item" onclick="openLightbox('https://picsum.photos/seed/wed-date/800/600.jpg')">
-                <img src="https://picsum.photos/seed/wed-date/800/600.jpg" alt="First date" class="w-full h-56 object-cover">
-              </div>
-            </div>
-          </div>
-
-          <div class="fade-left relative flex flex-col md:flex-row items-center gap-8 mb-24">
-            <div class="md:w-1/2 md:text-right md:pr-20">
-              <span class="text-[11px] font-semibold tracking-[0.2em] uppercase text-gold-400">June 2022</span>
-              <h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3">Moving In Together</h3>
-              <p class="text-neutral-400 text-sm leading-relaxed">A tiny apartment with a leaky faucet became their first home. They learned to cook together, argue about furniture, and fall deeper in love every single day.</p>
-            </div>
-            <div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="timeline-dot pulse-ring"></div></div>
-            <div class="md:w-1/2 md:pl-20">
-              <div class="rounded-2xl overflow-hidden border border-white/5 gallery-item" onclick="openLightbox('https://picsum.photos/seed/wed-home/800/600.jpg')">
-                <img src="https://picsum.photos/seed/wed-home/800/600.jpg" alt="Moving in" class="w-full h-56 object-cover">
-              </div>
-            </div>
-          </div>
-
-          <div class="fade-right relative flex flex-col md:flex-row-reverse items-center gap-8">
-            <div class="md:w-1/2 md:text-left md:pl-20">
-              <span class="text-[11px] font-semibold tracking-[0.2em] uppercase text-gold-400">September 2024</span>
-              <h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3">The Proposal</h3>
-              <p class="text-neutral-400 text-sm leading-relaxed">Under a canopy of stars in the Tuscan countryside, James got down on one knee. Olivia said yes before he even finished the question. Tears, laughter, and champagne followed.</p>
-            </div>
-            <div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="timeline-dot pulse-ring"></div></div>
-            <div class="md:w-1/2 md:pr-20">
-              <div class="rounded-2xl overflow-hidden border border-white/5 gallery-item" onclick="openLightbox('https://picsum.photos/seed/wed-prop/800/600.jpg')">
-                <img src="https://picsum.photos/seed/wed-prop/800/600.jpg" alt="Proposal" class="w-full h-56 object-cover">
-              </div>
-            </div>
+          <div class="flex gap-2 shrink-0">
+            <div class="w-8 h-8 rounded-lg" style="background:#1a1a2e;border:1px solid rgba(255,255,255,0.1)"></div>
+            <div class="w-8 h-8 rounded-lg" style="background:#2a1a1a;border:1px solid rgba(255,255,255,0.1)"></div>
+            <div class="w-8 h-8 rounded-lg" style="background:#1a2a1a;border:1px solid rgba(255,255,255,0.1)"></div>
+            <div class="w-8 h-8 rounded-lg" style="background:#d4a574;border:1px solid rgba(255,255,255,0.1)"></div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- WEDDING DECOR -->
-    <section id="decor" class="py-28 sm:py-36 px-6 relative">
-      <div class="absolute inset-0 bg-gradient-to-b from-transparent via-gold-400/[0.02] to-transparent pointer-events-none"></div>
-      <div class="max-w-6xl mx-auto relative">
-        <div class="text-center mb-20">
-          <p class="fade-up text-xs font-medium tracking-[0.3em] uppercase text-gold-400 mb-4">Design & Aesthetics</p>
-          <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4">Wedding <span class="text-gradient-gold">Decor</span></h2>
-          <div class="fade-up flex items-center justify-center gap-3 mt-5 mb-4"><div class="divider-wide"></div></div>
-          <p class="fade-up text-neutral-400 text-sm max-w-xl mx-auto">A romantic celebration inspired by Tuscan sunsets, golden hour light, and the timeless elegance of Italian countryside weddings.</p>
+  <!-- GALLERY -->
+  <section id="gallery" class="py-28 sm:py-36 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <p class="fade-up text-xs font-medium tracking-[0.3em] uppercase text-gold-400 mb-4">Moments</p>
+        <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4">Our <span class="text-gradient-gold">Gallery</span></h2>
+        <div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-wide"></div></div>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+        <div class="scale-in gallery-item col-span-2 md:col-span-2 row-span-2" style="transition-delay:0s" onclick="openLightbox('https://picsum.photos/seed/gal-hero/1000/1000.jpg')"><img src="https://picsum.photos/seed/gal-hero/1000/1000.jpg" alt="Gallery" class="w-full h-full object-cover" style="min-height:300px"></div>
+        <div class="scale-in gallery-item" style="transition-delay:0.08s" onclick="openLightbox('https://picsum.photos/seed/gal-2/600/600.jpg')"><img src="https://picsum.photos/seed/gal-2/600/600.jpg" alt="Gallery" class="w-full h-44 sm:h-full object-cover"></div>
+        <div class="scale-in gallery-item" style="transition-delay:0.16s" onclick="openLightbox('https://picsum.photos/seed/gal-3/600/600.jpg')"><img src="https://picsum.photos/seed/gal-3/600/600.jpg" alt="Gallery" class="w-full h-44 sm:h-full object-cover"></div>
+        <div class="scale-in gallery-item" style="transition-delay:0.12s" onclick="openLightbox('https://picsum.photos/seed/gal-4/600/600.jpg')"><img src="https://picsum.photos/seed/gal-4/600/600.jpg" alt="Gallery" class="w-full h-44 sm:h-full object-cover"></div>
+        <div class="scale-in gallery-item" style="transition-delay:0.2s" onclick="openLightbox('https://picsum.photos/seed/gal-5/600/600.jpg')"><img src="https://picsum.photos/seed/gal-5/600/600.jpg" alt="Gallery" class="w-full h-44 sm:h-full object-cover"></div>
+        <div class="scale-in gallery-item" style="transition-delay:0.24s" onclick="openLightbox('https://picsum.photos/seed/gal-6/600/600.jpg')"><img src="https://picsum.photos/seed/gal-6/600/600.jpg" alt="Gallery" class="w-full h-44 sm:h-full object-cover"></div>
+        <div class="scale-in gallery-item" style="transition-delay:0.28s" onclick="openLightbox('https://picsum.photos/seed/gal-7/600/600.jpg')"><img src="https://picsum.photos/seed/gal-7/600/600.jpg" alt="Gallery" class="w-full h-44 sm:h-full object-cover"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="py-28 sm:py-36 px-6">
+    <div class="max-w-3xl mx-auto">
+      <div class="text-center mb-16">
+        <p class="fade-up text-xs font-medium tracking-[0.3em] uppercase text-gold-400 mb-4">Questions</p>
+        <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4">Frequently <span class="text-gradient-gold">Asked</span></h2>
+        <div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-wide"></div></div>
+      </div>
+      <div class="space-y-3">
+        <div class="fade-up faq-item" style="transition-delay:0s">
+          <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            <span class="flex-1 text-sm font-medium">Is there parking available at the venue?</span>
+            <i data-lucide="chevron-down" class="w-4 h-4 text-neutral-500 faq-chevron"></i>
+          </div>
+          <div class="faq-answer text-sm text-neutral-400 leading-relaxed">Yes, complimentary valet parking will be available for all guests. Self-parking is also available in the estate's main lot, a short 2-minute walk to the chapel.</div>
         </div>
-
-        <!-- Color Palette -->
-        <div class="fade-up mb-16">
-          <h3 class="font-serif text-xl text-center mb-8">Color <span class="text-gradient-gold">Palette</span></h3>
-          <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-            <div class="text-center">
-              <div class="color-swatch mx-auto" style="background:#d4a574" title="Antique Gold"></div>
-              <p class="text-[10px] text-neutral-500 mt-2 tracking-wide">Gold</p>
-            </div>
-            <div class="text-center">
-              <div class="color-swatch mx-auto" style="background:#e8b4b8" title="Dusty Rose"></div>
-              <p class="text-[10px] text-neutral-500 mt-2 tracking-wide">Rose</p>
-            </div>
-            <div class="text-center">
-              <div class="color-swatch mx-auto" style="background:#a3b89c" title="Sage Green"></div>
-              <p class="text-[10px] text-neutral-500 mt-2 tracking-wide">Sage</p>
-            </div>
-            <div class="text-center">
-              <div class="color-swatch mx-auto" style="background:#faf6f0" title="Ivory Cream"></div>
-              <p class="text-[10px] text-neutral-500 mt-2 tracking-wide">Ivory</p>
-            </div>
-            <div class="text-center">
-              <div class="color-swatch mx-auto" style="background:#f5ede0" title="Champagne"></div>
-              <p class="text-[10px] text-neutral-500 mt-2 tracking-wide">Champagne</p>
-            </div>
-            <div class="text-center">
-              <div class="color-swatch mx-auto" style="background:#2a2a38" title="Charcoal"></div>
-              <p class="text-[10px] text-neutral-500 mt-2 tracking-wide">Charcoal</p>
-            </div>
+        <div class="fade-up faq-item" style="transition-delay:0.05s">
+          <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            <span class="flex-1 text-sm font-medium">Can I bring a plus-one?</span>
+            <i data-lucide="chevron-down" class="w-4 h-4 text-neutral-500 faq-chevron"></i>
           </div>
+          <div class="faq-answer text-sm text-neutral-400 leading-relaxed">Your invitation will indicate whether a plus-one is included. If you're unsure, please reach out to us directly and we'll do our best to accommodate.</div>
         </div>
-
-        <!-- Decor Cards Grid -->
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          <div class="scale-in decor-card" style="transition-delay:0s">
-            <div class="overflow-hidden rounded-t-[23px]">
-              <img src="https://picsum.photos/seed/decor-floral/600/400.jpg" alt="Floral Arrangements" class="w-full h-52 object-cover">
-            </div>
-            <div class="p-6">
-              <div class="flex items-center gap-2 mb-2">
-                <i data-lucide="flower-2" class="w-4 h-4 text-gold-400"></i>
-                <span class="text-[10px] font-semibold tracking-widest uppercase text-gold-400">Florals</span>
-              </div>
-              <h4 class="font-serif text-lg mb-2">Floral Arrangements</h4>
-              <p class="text-xs text-neutral-400 leading-relaxed">Lush garden-style bouquets with white roses, peonies, trailing ivy, and dried lavender from local Tuscan fields.</p>
-            </div>
+        <div class="fade-up faq-item" style="transition-delay:0.1s">
+          <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            <span class="flex-1 text-sm font-medium">Are children welcome?</span>
+            <i data-lucide="chevron-down" class="w-4 h-4 text-neutral-500 faq-chevron"></i>
           </div>
-
-          <div class="scale-in decor-card" style="transition-delay:0.1s">
-            <div class="overflow-hidden rounded-t-[23px]">
-              <img src="https://picsum.photos/seed/decor-table/600/400.jpg" alt="Table Setting" class="w-full h-52 object-cover">
-            </div>
-            <div class="p-6">
-              <div class="flex items-center gap-2 mb-2">
-                <i data-lucide="utensils" class="w-4 h-4 text-rose-300"></i>
-                <span class="text-[10px] font-semibold tracking-widest uppercase text-rose-300">Tables</span>
-              </div>
-              <h4 class="font-serif text-lg mb-2">Table Settings</h4>
-              <p class="text-xs text-neutral-400 leading-relaxed">Long farmhouse tables with gold-rimmed china, linen runners, crystal glassware, and candlelit centerpieces.</p>
-            </div>
+          <div class="faq-answer text-sm text-neutral-400 leading-relaxed">We love your little ones! Children are welcome at the ceremony. A supervised kids' area with activities and a special menu will be available during the reception.</div>
+        </div>
+        <div class="fade-up faq-item" style="transition-delay:0.15s">
+          <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            <span class="flex-1 text-sm font-medium">What if I have dietary restrictions?</span>
+            <i data-lucide="chevron-down" class="w-4 h-4 text-neutral-500 faq-chevron"></i>
           </div>
-
-          <div class="scale-in decor-card" style="transition-delay:0.2s">
-            <div class="overflow-hidden rounded-t-[23px]">
-              <img src="https://picsum.photos/seed/decor-lighting/600/400.jpg" alt="Lighting" class="w-full h-52 object-cover">
-            </div>
-            <div class="p-6">
-              <div class="flex items-center gap-2 mb-2">
-                <i data-lucide="lamp" class="w-4 h-4 text-gold-300"></i>
-                <span class="text-[10px] font-semibold tracking-widest uppercase text-gold-300">Lighting</span>
-              </div>
-              <h4 class="font-serif text-lg mb-2">Ambient Lighting</h4>
-              <p class="text-xs text-neutral-400 leading-relaxed">Hundreds of fairy lights strung through olive trees, warm-toned uplighting, and floating candles in the pool.</p>
-            </div>
+          <div class="faq-answer text-sm text-neutral-400 leading-relaxed">Please let us know about any dietary requirements or allergies when you submit your RSVP. Our chef is happy to accommodate vegetarian, vegan, gluten-free, and other dietary needs.</div>
+        </div>
+        <div class="fade-up faq-item" style="transition-delay:0.2s">
+          <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            <span class="flex-1 text-sm font-medium">What happens if it rains?</span>
+            <i data-lucide="chevron-down" class="w-4 h-4 text-neutral-500 faq-chevron"></i>
           </div>
-
-          <div class="scale-in decor-card" style="transition-delay:0.15s">
-            <div class="overflow-hidden rounded-t-[23px]">
-              <img src="https://picsum.photos/seed/decor-ceremony2/600/400.jpg" alt="Ceremony Arch" class="w-full h-52 object-cover">
-            </div>
-            <div class="p-6">
-              <div class="flex items-center gap-2 mb-2">
-                <i data-lucide="arch" class="w-4 h-4 text-sage-300"></i>
-                <span class="text-[10px] font-semibold tracking-widest uppercase text-sage-300">Ceremony</span>
-              </div>
-              <h4 class="font-serif text-lg mb-2">Garden Arch</h4>
-              <p class="text-xs text-neutral-400 leading-relaxed">A hand-crafted wooden arch adorned with cascading white florals, silk ribbons, and delicate greenery.</p>
-            </div>
+          <div class="faq-answer text-sm text-neutral-400 leading-relaxed">Don't worry — we have a beautiful backup plan! The Rosewood Grand Hall will serve as our indoor alternative, with the same romantic atmosphere and décor.</div>
+        </div>
+        <div class="fade-up faq-item" style="transition-delay:0.25s">
+          <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            <span class="flex-1 text-sm font-medium">When is the RSVP deadline?</span>
+            <i data-lucide="chevron-down" class="w-4 h-4 text-neutral-500 faq-chevron"></i>
           </div>
-
-          <div class="scale-in decor-card" style="transition-delay:0.25s">
-            <div class="overflow-hidden rounded-t-[23px]">
-              <img src="https://picsum.photos/seed/decor-cake2/600/400.jpg" alt="Wedding Cake" class="w-full h-52 object-cover">
-            </div>
-            <div class="p-6">
-              <div class="flex items-center gap-2 mb-2">
-                <i data-lucide="cake-slice" class="w-4 h-4 text-rose-200"></i>
-                <span class="text-[10px] font-semibold tracking-widest uppercase text-rose-200">Cake</span>
-              </div>
-              <h4 class="font-serif text-lg mb-2">The Wedding Cake</h4>
-              <p class="text-xs text-neutral-400 leading-relaxed">Four-tiered buttercream cake with hand-painted gold detailing, fresh roses, and a porcelain topper.</p>
-            </div>
-          </div>
-
-          <div class="scale-in decor-card" style="transition-delay:0.3s">
-            <div class="overflow-hidden rounded-t-[23px]">
-              <img src="https://picsum.photos/seed/decor-favors/600/400.jpg" alt="Favors" class="w-full h-52 object-cover">
-            </div>
-            <div class="p-6">
-              <div class="flex items-center gap-2 mb-2">
-                <i data-lucide="package" class="w-4 h-4 text-gold-400"></i>
-                <span class="text-[10px] font-semibold tracking-widest uppercase text-gold-400">Favors</span>
-              </div>
-              <h4 class="font-serif text-lg mb-2">Guest Favors</h4>
-              <p class="text-xs text-neutral-400 leading-relaxed">Mini bottles of Tuscan olive oil, custom-labeled with our names and wedding date in gold foil.</p>
-            </div>
-          </div>
+          <div class="faq-answer text-sm text-neutral-400 leading-relaxed">Please submit your RSVP by May 15, 2025. This helps us finalize catering, seating, and accommodation arrangements. Early responses are greatly appreciated!</div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- QUOTE -->
-    <section class="py-20 px-6 relative">
-      <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at center,rgba(212,165,116,0.03) 0%,transparent 70%)"></div>
-      <div class="max-w-3xl mx-auto text-center fade-up relative">
-        <div class="w-16 h-16 rounded-full border border-gold-400/10 flex items-center justify-center mx-auto mb-8 rotate-slow">
-          <i data-lucide="heart" class="w-6 h-6 text-gold-400/40"></i>
-        </div>
-        <p class="font-serif text-2xl sm:text-3xl lg:text-4xl italic text-neutral-200 leading-relaxed mb-6">
-          "Whatever our souls are made of, his and mine are the same."
-        </p>
-        <div class="flex items-center justify-center gap-3 mb-3">
-          <div class="w-8 h-px bg-gold-400/30"></div>
-          <span class="text-sm text-gold-400">Emily Brontë</span>
-          <div class="w-8 h-px bg-gold-400/30"></div>
-        </div>
+  <!-- RSVP -->
+  <section id="rsvp" class="py-28 sm:py-36 px-6 relative">
+    <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at center bottom,rgba(212,165,116,0.04) 0%,transparent 60%)"></div>
+    <div class="max-w-2xl mx-auto relative">
+      <div class="text-center mb-12">
+        <p class="fade-up text-xs font-medium tracking-[0.3em] uppercase text-gold-400 mb-4">Respond</p>
+        <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4">RSVP</h2>
+        <div class="fade-up flex items-center justify-center gap-3 mt-5 mb-4"><div class="divider-wide"></div></div>
+        <p class="fade-up text-neutral-400 text-sm">Kindly respond by May 15, 2025</p>
       </div>
-    </section>
 
-    <!-- EVENT DETAILS -->
-    <section id="details" class="py-28 sm:py-36 px-6">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-20">
-          <p class="fade-up text-xs font-medium tracking-[0.3em] uppercase text-gold-400 mb-4">Join Us</p>
-          <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4">Wedding <span class="text-gradient-gold">Details</span></h2>
-          <div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-wide"></div></div>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-5">
-          <div class="fade-up card-glass card-gold-border rounded-3xl p-8 sm:p-10">
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400/15 to-gold-400/5 flex items-center justify-center mb-6">
-              <i data-lucide="church" class="w-6 h-6 text-gold-300"></i>
-            </div>
-            <span class="text-[10px] font-semibold tracking-[0.2em] uppercase text-gold-400 mb-2 block">The Ceremony</span>
-            <h3 class="font-serif text-2xl sm:text-3xl mb-5">Exchange of Vows</h3>
-            <div class="space-y-4 text-sm text-neutral-400">
-              <div class="flex items-start gap-3"><i data-lucide="calendar" class="w-4 h-4 text-gold-400 mt-0.5 shrink-0"></i><span>Saturday, June 14, 2025</span></div>
-              <div class="flex items-start gap-3"><i data-lucide="clock" class="w-4 h-4 text-gold-400 mt-0.5 shrink-0"></i><span>4:00 PM — Doors open at 3:30 PM</span></div>
-              <div class="flex items-start gap-3"><i data-lucide="map-pin" class="w-4 h-4 text-gold-400 mt-0.5 shrink-0"></i><span>The Rosewood Estate Chapel<br>Via della Rosa, 42 — Tuscany, Italy</span></div>
-            </div>
-            <div class="mt-6 pt-6 border-t border-white/5">
-              <p class="text-xs text-neutral-500 leading-relaxed">Garden ceremony with seating for 150 guests. In case of rain, the ceremony will move to the Grand Hall.</p>
-            </div>
-          </div>
-
-          <div class="fade-up card-glass card-gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:0.1s">
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-200/15 to-rose-200/5 flex items-center justify-center mb-6">
-              <i data-lucide="wine" class="w-6 h-6 text-rose-200"></i>
-            </div>
-            <span class="text-[10px] font-semibold tracking-[0.2em] uppercase text-rose-200 mb-2 block">The Reception</span>
-            <h3 class="font-serif text-2xl sm:text-3xl mb-5">Dinner & Dancing</h3>
-            <div class="space-y-4 text-sm text-neutral-400">
-              <div class="flex items-start gap-3"><i data-lucide="calendar" class="w-4 h-4 text-rose-200 mt-0.5 shrink-0"></i><span>Saturday, June 14, 2025</span></div>
-              <div class="flex items-start gap-3"><i data-lucide="clock" class="w-4 h-4 text-rose-200 mt-0.5 shrink-0"></i><span>6:00 PM — Until Midnight</span></div>
-              <div class="flex items-start gap-3"><i data-lucide="map-pin" class="w-4 h-4 text-rose-200 mt-0.5 shrink-0"></i><span>The Rosewood Terrace<br>Adjacent to the Chapel</span></div>
-            </div>
-            <div class="mt-6 pt-6 border-t border-white/5">
-              <p class="text-xs text-neutral-500 leading-relaxed">Four-course dinner, live band, open bar. Dress code: Black tie optional. Comfortable dancing shoes recommended.</p>
-            </div>
-          </div>
-
-          <div class="fade-up card-glass card-gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:0.15s">
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sage-300/15 to-sage-300/5 flex items-center justify-center mb-6">
-              <i data-lucide="bed-double" class="w-6 h-6 text-sage-300"></i>
-            </div>
-            <span class="text-[10px] font-semibold tracking-[0.2em] uppercase text-sage-300 mb-2 block">Accommodation</span>
-            <h3 class="font-serif text-2xl sm:text-3xl mb-5">Where to Stay</h3>
-            <p class="text-sm text-neutral-400 leading-relaxed mb-4">We've reserved a block of rooms at the Villa Toscana Inn, a 5-minute walk from the venue. Use code <span class="text-gold-200 font-semibold bg-gold-400/10 px-2 py-0.5 rounded-md">JANDO2025</span> for the discounted rate.</p>
-            <a href="#" class="inline-flex items-center gap-2 text-sm text-sage-300 hover:text-sage-200 transition-colors font-medium">Book your room <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></a>
-          </div>
-
-          <div class="fade-up card-glass card-gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:0.2s">
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-200/15 to-rose-200/5 flex items-center justify-center mb-6">
-              <i data-lucide="gift" class="w-6 h-6 text-rose-200"></i>
-            </div>
-            <span class="text-[10px] font-semibold tracking-[0.2em] uppercase text-rose-200 mb-2 block">Registry</span>
-            <h3 class="font-serif text-2xl sm:text-3xl mb-5">Your Presence Is Enough</h3>
-            <p class="text-sm text-neutral-400 leading-relaxed mb-4">Your love and presence at our wedding is the greatest gift. If you wish to honor us, we have a small registry and a honeymoon fund.</p>
-            <a href="#" class="inline-flex items-center gap-2 text-sm text-rose-200 hover:text-rose-300 transition-colors font-medium">View registry <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></a>
-          </div>
-        </div>
-
-        <!-- Dress Code -->
-        <div class="fade-up mt-8 card-glass card-gold-border rounded-3xl p-8 sm:p-10">
-          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6">
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400/15 to-rose-200/10 flex items-center justify-center shrink-0">
-              <i data-lucide="shirt" class="w-6 h-6 text-gold-300"></i>
-            </div>
-            <div class="flex-1">
-              <span class="text-[10px] font-semibold tracking-[0.2em] uppercase text-gold-400 mb-1 block">Dress Code</span>
-              <h3 class="font-serif text-xl mb-2">Black Tie Optional</h3>
-              <p class="text-sm text-neutral-400 leading-relaxed">We kindly ask guests to dress in formal or semi-formal attire. Think elegant evening wear — tuxedos, dark suits, evening gowns, or cocktail dresses. Please avoid white or ivory.</p>
-            </div>
-            <div class="flex gap-2 shrink-0">
-              <div class="w-8 h-8 rounded-lg" style="background:#1a1a2e;border:1px solid rgba(255,255,255,0.1)" title="Navy"></div>
-              <div class="w-8 h-8 rounded-lg" style="background:#2a1a1a;border:1px solid rgba(255,255,255,0.1)" title="Burgundy"></div>
-              <div class="w-8 h-8 rounded-lg" style="background:#1a2a1a;border:1px solid rgba(255,255,255,0.1)" title="Forest"></div>
-              <div class="w-8 h-8 rounded-lg" style="background:#d4a574;border:1px solid rgba(255,255,255,0.1)" title="Gold accent"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- GALLERY -->
-    <section id="gallery" class="py-28 sm:py-36 px-6">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-16">
-          <p class="fade-up text-xs font-medium tracking-[0.3em] uppercase text-gold-400 mb-4">Moments</p>
-          <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4">Our <span class="text-gradient-gold">Gallery</span></h2>
-          <div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-wide"></div></div>
-        </div>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
-          <div class="scale-in gallery-item col-span-2 md:col-span-2 row-span-2" style="transition-delay:0s" onclick="openLightbox('https://picsum.photos/seed/gal-hero/1000/1000.jpg')">
-            <img src="https://picsum.photos/seed/gal-hero/1000/1000.jpg" alt="Gallery" class="w-full h-full object-cover" style="min-height:300px">
-          </div>
-          <div class="scale-in gallery-item" style="transition-delay:0.08s" onclick="openLightbox('https://picsum.photos/seed/gal-2/600/600.jpg')">
-            <img src="https://picsum.photos/seed/gal-2/600/600.jpg" alt="Gallery" class="w-full h-44 sm:h-full object-cover">
-          </div>
-          <div class="scale-in gallery-item" style="transition-delay:0.16s" onclick="openLightbox('https://picsum.photos/seed/gal-3/600/600.jpg')">
-            <img src="https://picsum.photos/seed/gal-3/600/600.jpg" alt="Gallery" class="w-full h-44 sm:h-full object-cover">
-          </div>
-          <div class="scale-in gallery-item" style="transition-delay:0.12s" onclick="openLightbox('https://picsum.photos/seed/gal-4/600/600.jpg')">
-            <img src="https://picsum.photos/seed/gal-4/600/600.jpg" alt="Gallery" class="w-full h-44 sm:h-full object-cover">
-          </div>
-          <div class="scale-in gallery-item col-span-2" style="transition-delay:0.2s" onclick="openLightbox('https://picsum.photos/seed/gal-5/1000/500.jpg')">
-            <img src="https://picsum.photos/seed/gal-5/1000/500.jpg" alt="Gallery" class="w-full h-44 object-cover">
-          </div>
-          <div class="scale-in gallery-item" style="transition-delay:0.16s" onclick="openLightbox('https://picsum.photos/seed/gal-6/600/600.jpg')">
-            <img src="https://picsum.photos/seed/gal-6/600/600.jpg" alt="Gallery" class="w-full h-44 sm:h-full object-cover">
-          </div>
-          <div class="scale-in gallery-item col-span-2" style="transition-delay:0.24s" onclick="openLightbox('https://picsum.photos/seed/gal-7/1000/500.jpg')">
-            <img src="https://picsum.photos/seed/gal-7/1000/500.jpg" alt="Gallery" class="w-full h-44 object-cover">
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FAQ -->
-    <section id="faq" class="py-28 sm:py-36 px-6">
-      <div class="max-w-2xl mx-auto">
-        <div class="text-center mb-16">
-          <p class="fade-up text-xs font-medium tracking-[0.3em] uppercase text-gold-400 mb-4">Questions</p>
-          <h2 class="fade-up font-serif text-4xl sm:text-5xl tracking-tight mb-4">Frequently <span class="text-gradient-gold">Asked</span></h2>
-          <div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-wide"></div></div>
-        </div>
-        <div class="space-y-3" id="faq-container">
-          <div class="fade-up faq-item card-glass rounded-2xl overflow-hidden" style="transition-delay:0s">
-            <button class="faq-btn w-full text-left p-5 sm:p-6 flex items-center justify-between gap-4" onclick="toggleFaq(this)">
-              <span class="text-sm font-medium">Can I bring a plus-one?</span>
-              <i data-lucide="plus" class="w-4 h-4 text-gold-400 shrink-0 faq-icon transition-transform duration-300"></i>
-            </button>
-            <div class="faq-answer max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
-              <p class="px-5 sm:px-6 pb-5 sm:pb-6 text-sm text-neutral-400 leading-relaxed">Your RSVP includes a guest count field. If your invitation specifies "plus one," please include them. If not, we kindly ask that you come solo to keep within our venue capacity.</p>
-            </div>
-          </div>
-          <div class="fade-up faq-item card-glass rounded-2xl overflow-hidden" style="transition-delay:0.05s">
-            <button class="faq-btn w-full text-left p-5 sm:p-6 flex items-center justify-between gap-4" onclick="toggleFaq(this)">
-              <span class="text-sm font-medium">Is there parking at the venue?</span>
-              <i data-lucide="plus" class="w-4 h-4 text-gold-400 shrink-0 faq-icon transition-transform duration-300"></i>
-            </button>
-            <div class="faq-answer max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
-              <p class="px-5 sm:px-6 pb-5 sm:pb-6 text-sm text-neutral-400 leading-relaxed">Yes, complimentary valet parking will be available. There's also a free parking lot a 2-minute walk from the chapel. We'll include a map in your welcome packet.</p>
-            </div>
-          </div>
-          <div class="fade-up faq-item card-glass rounded-2xl overflow-hidden" style="transition-delay:0.1s">
-            <button class="faq-btn w-full text-left p-5 sm:p-6 flex items-center justify-between gap-4" onclick="toggleFaq(this)">
-              <span class="text-sm font-medium">Will the wedding be indoors or outdoors?</span>
-              <i data-lucide="plus" class="w-4 h-4 text-gold-400 shrink-0 faq-icon transition-transform duration-300"></i>
-            </button>
-            <div class="faq-answer max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
-              <p class="px-5 sm:px-6 pb-5 sm:pb-6 text-sm text-neutral-400 leading-relaxed">The ceremony will be in the garden (weather permitting) and the reception on the covered terrace. Both have beautiful indoor backup options in case of rain.</p>
-            </div>
-          </div>
-          <div class="fade-up faq-item card-glass rounded-2xl overflow-hidden" style="transition-delay:0.15s">
-            <button class="faq-btn w-full text-left p-5 sm:p-6 flex items-center justify-between gap-4" onclick="toggleFaq(this)">
-              <span class="text-sm font-medium">Are children welcome?</span>
-              <i data-lucide="plus" class="w-4 h-4 text-gold-400 shrink-0 faq-icon transition-transform duration-300"></i>
-            </button>
-            <div class="faq-answer max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
-              <p class="px-5 sm:px-6 pb-5 sm:pb-6 text-sm text-neutral-400 leading-relaxed">We love your little ones! Children are welcome at the ceremony. During the reception, we'll have a supervised kids' corner with activities and a dedicated children's menu.</p>
-            </div>
-          </div>
-          <div class="fade-up faq-item card-glass rounded-2xl overflow-hidden" style="transition-delay:0.2s">
-            <button class="faq-btn w-full text-left p-5 sm:p-6 flex items-center justify-between gap-4" onclick="toggleFaq(this)">
-              <span class="text-sm font-medium">Can I take photos during the ceremony?</span>
-              <i data-lucide="plus" class="w-4 h-4 text-gold-400 shrink-0 faq-icon transition-transform duration-300"></i>
-            </button>
-            <div class="faq-answer max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
-              <p class="px-5 sm:px-6 pb-5 sm:pb-6 text-sm text-neutral-400 leading-relaxed">We kindly ask for an unplugged ceremony — please put phones away and be fully present. Our photographer and videographer will capture every moment, and we'll share all photos with you afterward!</p>
-            </div>
-          </div>
-          <div class="fade-up faq-item card-glass rounded-2xl overflow-hidden" style="transition-delay:0.25s">
-            <button class="faq-btn w-full text-left p-5 sm:p-6 flex items-center justify-between gap-4" onclick="toggleFaq(this)">
-              <span class="text-sm font-medium">How do I get to the venue from the airport?</span>
-              <i data-lucide="plus" class="w-4 h-4 text-gold-400 shrink-0 faq-icon transition-transform duration-300"></i>
-            </button>
-            <div class="faq-answer max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
-              <p class="px-5 sm:px-6 pb-5 sm:pb-6 text-sm text-neutral-400 leading-relaxed">Florence Airport (FLR) is 45 minutes away. We've arranged a complimentary shuttle bus departing from the Villa Toscana Inn at 3:00 PM on the wedding day. Alternatively, taxis are available at the airport.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- RSVP MULTI-STEP FORM -->
-    <section id="rsvp" class="py-28 sm:py-36 px-6 relative">
-      <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at bottom,rgba(212,165,116,0.04) 0%,transparent 60%)"></div>
-      <div class="max-w-2xl mx-auto relative">
-        <div class="text-center mb-12">
-          <p class="fade-up text-xs font-medium tracking-[0.3em] uppercase text-gold-400 mb-4">Be There</p>
-          <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4">RS<span class="text-gradient-gold">V</span>P</h2>
-          <div class="fade-up flex items-center justify-center gap-3 mt-5 mb-4"><div class="divider-wide"></div></div>
-          <p class="fade-up text-neutral-400 text-sm max-w-md mx-auto">Kindly respond by May 15, 2025. We can't wait to celebrate with you!</p>
-        </div>
-
+      <div class="fade-up card-glass card-gold-border rounded-3xl p-8 sm:p-10">
         <!-- Step Indicators -->
-        <div class="fade-up flex items-center justify-center gap-0 mb-10 px-4" id="step-indicators">
-          <div class="step-indicator step-active" id="si-1">1</div>
-          <div class="step-line mx-2 sm:mx-4"><div class="step-line-fill" id="sl-1"></div></div>
-          <div class="step-indicator step-pending" id="si-2">2</div>
-          <div class="step-line mx-2 sm:mx-4"><div class="step-line-fill" id="sl-2"></div></div>
-          <div class="step-indicator step-pending" id="si-3">3</div>
+        <div class="flex items-center justify-center gap-0 mb-10 px-4">
+          <div id="step-ind-1" class="step-indicator step-active">1</div>
+          <div class="step-line"><div id="step-line-1" class="step-line-fill"></div></div>
+          <div id="step-ind-2" class="step-indicator step-pending">2</div>
+          <div class="step-line"><div id="step-line-2" class="step-line-fill"></div></div>
+          <div id="step-ind-3" class="step-indicator step-pending">3</div>
         </div>
 
-        <div class="fade-up card-glass card-gold-border rounded-3xl p-7 sm:p-10">
-          <form id="rsvp-form" onsubmit="return false;">
-
-            <!-- Step 1: Personal Info -->
-            <div id="step-1" class="space-y-5">
-              <div class="text-center mb-6">
-                <h3 class="font-serif text-xl mb-1">Your Information</h3>
-                <p class="text-xs text-neutral-500">Let us know who you are</p>
-              </div>
-              <div class="grid sm:grid-cols-2 gap-5">
-                <div>
-                  <label class="block text-[11px] font-semibold tracking-wider uppercase text-neutral-400 mb-2">First Name *</label>
-                  <input type="text" id="f-first" required placeholder="Jane" class="w-full px-4 py-3.5 rounded-xl text-sm">
-                </div>
-                <div>
-                  <label class="block text-[11px] font-semibold tracking-wider uppercase text-neutral-400 mb-2">Last Name *</label>
-                  <input type="text" id="f-last" required placeholder="Doe" class="w-full px-4 py-3.5 rounded-xl text-sm">
-                </div>
-              </div>
-              <div>
-                <label class="block text-[11px] font-semibold tracking-wider uppercase text-neutral-400 mb-2">Email *</label>
-                <input type="email" id="f-email" required placeholder="jane@example.com" class="w-full px-4 py-3.5 rounded-xl text-sm">
-              </div>
-              <div>
-                <label class="block text-[11px] font-semibold tracking-wider uppercase text-neutral-400 mb-2">Phone</label>
-                <input type="tel" id="f-phone" placeholder="+1 (555) 000-0000" class="w-full px-4 py-3.5 rounded-xl text-sm">
-              </div>
-              <button type="button" onclick="goToStep(2)" class="btn-gold w-full py-4 rounded-xl text-sm">Continue →</button>
+        <form id="rsvp-form" onsubmit="return false;">
+          <!-- Step 1: Personal Info -->
+          <div id="form-step-1" class="space-y-5">
+            <div>
+              <label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">Full Name *</label>
+              <input type="text" id="rsvp-name" placeholder="Your full name" required class="w-full px-4 py-3.5 rounded-xl text-sm">
             </div>
+            <div>
+              <label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">Email Address *</label>
+              <input type="email" id="rsvp-email" placeholder="your@email.com" required class="w-full px-4 py-3.5 rounded-xl text-sm">
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">Phone Number</label>
+              <input type="tel" id="rsvp-phone" placeholder="+1 (555) 000-0000" class="w-full px-4 py-3.5 rounded-xl text-sm">
+            </div>
+            <div class="flex justify-end pt-2">
+              <button type="button" onclick="nextStep(2)" class="btn-gold px-8 py-3 rounded-xl text-sm flex items-center gap-2">Continue <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+            </div>
+          </div>
 
-            <!-- Step 2: Attendance -->
-            <div id="step-2" class="space-y-5 hidden">
-              <div class="text-center mb-6">
-                <h3 class="font-serif text-xl mb-1">Your Attendance</h3>
-                <p class="text-xs text-neutral-500">Will you be joining us?</p>
-              </div>
-              <div>
-                <label class="block text-[11px] font-semibold tracking-wider uppercase text-neutral-400 mb-2">Will you attend? *</label>
-                <select id="f-attend" required class="w-full px-4 py-3.5 rounded-xl text-sm appearance-none cursor-pointer">
-                  <option value="" disabled selected>Select your response</option>
-                  <option value="yes">Joyfully Accept ✨</option>
-                  <option value="no">Regretfully Decline 💔</option>
-                </select>
-              </div>
-              <div id="guest-count-wrap">
-                <label class="block text-[11px] font-semibold tracking-wider uppercase text-neutral-400 mb-2">Number of Guests</label>
-                <select id="f-guests" class="w-full px-4 py-3.5 rounded-xl text-sm appearance-none cursor-pointer">
-                  <option value="1">1 Guest (just me)</option>
-                  <option value="2" selected>2 Guests</option>
-                  <option value="3">3 Guests</option>
-                  <option value="4">4 Guests</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-[11px] font-semibold tracking-wider uppercase text-neutral-400 mb-2">Dietary Requirements</label>
-                <textarea id="f-dietary" rows="3" placeholder="Any allergies or dietary needs..." class="w-full px-4 py-3.5 rounded-xl text-sm resize-none"></textarea>
-              </div>
-              <div class="flex gap-3">
-                <button type="button" onclick="goToStep(1)" class="btn-outline flex-1 py-4 rounded-xl text-sm">← Back</button>
-                <button type="button" onclick="goToStep(3)" class="btn-gold flex-1 py-4 rounded-xl text-sm">Continue →</button>
+          <!-- Step 2: Attendance -->
+          <div id="form-step-2" class="space-y-5 hidden">
+            <div>
+              <label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-3">Will you attend? *</label>
+              <div class="grid grid-cols-2 gap-3">
+                <label class="cursor-pointer">
+                  <input type="radio" name="attendance" value="yes" class="hidden peer" required>
+                  <div class="peer-checked:border-sage-300 peer-checked:bg-sage-300/10 border border-white/8 rounded-xl p-4 text-center transition-all hover:border-white/20">
+                    <i data-lucide="check-circle" class="w-6 h-6 mx-auto mb-2 text-sage-300 opacity-0 peer-checked:opacity-100"></i>
+                    <p class="text-sm font-medium">Joyfully Accept</p>
+                    <p class="text-[10px] text-neutral-500 mt-1">I'll be there!</p>
+                  </div>
+                </label>
+                <label class="cursor-pointer">
+                  <input type="radio" name="attendance" value="no" class="hidden peer">
+                  <div class="peer-checked:border-rose-300 peer-checked:bg-rose-300/10 border border-white/8 rounded-xl p-4 text-center transition-all hover:border-white/20">
+                    <p class="text-sm font-medium">Regretfully Decline</p>
+                    <p class="text-[10px] text-neutral-500 mt-1">Can't make it</p>
+                  </div>
+                </label>
               </div>
             </div>
-
-            <!-- Step 3: Extras & Submit -->
-            <div id="step-3" class="space-y-5 hidden">
-              <div class="text-center mb-6">
-                <h3 class="font-serif text-xl mb-1">Almost There!</h3>
-                <p class="text-xs text-neutral-500">A few more details (optional)</p>
-              </div>
-              <div>
-                <label class="block text-[11px] font-semibold tracking-wider uppercase text-neutral-400 mb-2">Song Request</label>
-                <input type="text" id="f-song" placeholder="What song gets you on the dance floor?" class="w-full px-4 py-3.5 rounded-xl text-sm">
-              </div>
-              <div>
-                <label class="block text-[11px] font-semibold tracking-wider uppercase text-neutral-400 mb-2">Message for the Couple</label>
-                <textarea id="f-message" rows="3" placeholder="Share your love and wishes..." class="w-full px-4 py-3.5 rounded-xl text-sm resize-none"></textarea>
-              </div>
-              <div class="flex items-start gap-3 p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                <input type="checkbox" id="f-newsletter" class="mt-1 accent-[#d4a574]">
-                <label for="f-newsletter" class="text-xs text-neutral-400 leading-relaxed cursor-pointer">Send me updates about the wedding (rehearsal dinner details, day-of info, etc.)</label>
-              </div>
-              <div class="flex gap-3">
-                <button type="button" onclick="goToStep(2)" class="btn-outline flex-1 py-4 rounded-xl text-sm">← Back</button>
-                <button type="button" onclick="submitRSVP()" class="btn-gold flex-1 py-4 rounded-xl text-sm flex items-center justify-center gap-2" id="submit-btn">
-                  <span id="submit-text">Send Response</span>
-                  <svg id="submit-spinner" class="hidden animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="30 70"/></svg>
-                </button>
-              </div>
+            <div id="guests-section">
+              <label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">Number of Guests (including you)</label>
+              <select id="rsvp-guests" class="w-full px-4 py-3.5 rounded-xl text-sm">
+                <option value="1">1 Guest</option>
+                <option value="2" selected>2 Guests</option>
+                <option value="3">3 Guests</option>
+                <option value="4">4 Guests</option>
+                <option value="5">5 Guests</option>
+              </select>
             </div>
-          </form>
-        </div>
-        <p class="text-[10px] text-neutral-700 text-center mt-6">Your information is private and stored locally for demo purposes.</p>
+            <div class="flex justify-between pt-2">
+              <button type="button" onclick="prevStep(1)" class="btn-outline px-6 py-3 rounded-xl text-sm flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Back</button>
+              <button type="button" onclick="nextStep(3)" class="btn-gold px-8 py-3 rounded-xl text-sm flex items-center gap-2">Continue <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+            </div>
+          </div>
+
+          <!-- Step 3: Additional -->
+          <div id="form-step-3" class="space-y-5 hidden">
+            <div>
+              <label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">Dietary Requirements</label>
+              <select id="rsvp-dietary" class="w-full px-4 py-3.5 rounded-xl text-sm">
+                <option value="None">No restrictions</option>
+                <option value="Vegetarian">Vegetarian</option>
+                <option value="Vegan">Vegan</option>
+                <option value="Gluten-Free">Gluten-Free</option>
+                <option value="Halal">Halal</option>
+                <option value="Kosher">Kosher</option>
+                <option value="Other">Other (specify in message)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">Message for the Couple</label>
+              <textarea id="rsvp-message" rows="3" placeholder="Share your love, song requests, or anything else..." class="w-full px-4 py-3.5 rounded-xl text-sm resize-none"></textarea>
+            </div>
+            <div class="flex justify-between pt-2">
+              <button type="button" onclick="prevStep(2)" class="btn-outline px-6 py-3 rounded-xl text-sm flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Back</button>
+              <button type="button" id="submit-btn" onclick="submitRSVP()" class="btn-gold px-8 py-3 rounded-xl text-sm flex items-center gap-2">
+                <span id="submit-text">Submit RSVP</span>
+                <span id="submit-spinner" class="hidden w-4 h-4 border-2 border-dark-900/30 border-t-dark-900 rounded-full animate-spin"></span>
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- FOOTER -->
-    <footer class="py-20 px-6 border-t border-white/5">
-      <div class="max-w-4xl mx-auto text-center">
-        <h2 class="font-serif text-4xl sm:text-5xl mb-2">James <span class="text-gradient-gold">&</span> Olivia</h2>
-        <p class="text-sm text-neutral-500 mb-8 font-serif italic">June 14, 2025 · Tuscany, Italy</p>
-        <div class="flex items-center justify-center gap-4 mb-10">
-          <a href="#" class="w-11 h-11 rounded-full border border-white/8 flex items-center justify-center text-neutral-500 hover:text-gold-300 hover:border-gold-400/30 hover:bg-gold-400/5 transition-all">
-            <i data-lucide="instagram" class="w-4 h-4"></i>
-          </a>
-          <a href="#" class="w-11 h-11 rounded-full border border-white/8 flex items-center justify-center text-neutral-500 hover:text-gold-300 hover:border-gold-400/30 hover:bg-gold-400/5 transition-all">
-            <i data-lucide="camera" class="w-4 h-4"></i>
-          </a>
-          <a href="#" class="w-11 h-11 rounded-full border border-white/8 flex items-center justify-center text-neutral-500 hover:text-gold-300 hover:border-gold-400/30 hover:bg-gold-400/5 transition-all">
-            <i data-lucide="heart" class="w-4 h-4"></i>
-          </a>
-          <a href="#" class="w-11 h-11 rounded-full border border-white/8 flex items-center justify-center text-neutral-500 hover:text-gold-300 hover:border-gold-400/30 hover:bg-gold-400/5 transition-all">
-            <i data-lucide="music" class="w-4 h-4"></i>
-          </a>
-        </div>
-        <div class="divider-wide mx-auto mb-8"></div>
-        <p class="text-[11px] text-neutral-700">Made with love · #JamesAndOlivia · © 2025</p>
-      </div>
-    </footer>
-  </div>
+  <!-- FOOTER -->
+  <footer class="py-16 px-6 border-t border-white/5">
+    <div class="max-w-4xl mx-auto text-center">
+      <p class="font-serif text-3xl mb-4"><span class="text-gold-200">J</span><span class="text-white/20 mx-1">&</span><span class="text-rose-200">O</span></p>
+      <p class="text-xs text-neutral-600 tracking-widest uppercase mb-6">June 14, 2025 · Tuscany, Italy</p>
+      <div class="flex items-center justify-center gap-3 mb-8"><div class="divider-wide"></div></div>
+      <p class="text-xs text-neutral-600">Made with love</p>
+    </div>
+  </footer>
 
-  <!-- THREE.JS 3D SCENE -->
-  <script type="module">
-  import * as THREE from 'three';
+</div><!-- end section-wrapper -->
 
-  const canvas = document.getElementById('three-canvas');
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.3;
+<!-- ═══════════════════════════════════════════════════════════════
+     ⬇️⬇️⬇️ ALL JAVASCRIPT — FIREBASE INTEGRATED ⬇️⬇️⬇️
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+// ──────────────────────────────────────────────
+// 🔥 FIREBASE CONFIGURATION
+// ──────────────────────────────────────────────
+// ⚠️ REPLACE THESE 6 VALUES with your own from Firebase Console → Project Settings → Your apps
+const firebaseConfig = {
+  apiKey: "⬇️ PASTE YOUR apiKey HERE",
+  authDomain: "⬇️ PASTE YOUR authDomain HERE",    // e.g. "my-project.firebaseapp.com"
+  databaseURL: "⬇️ PASTE YOUR databaseURL HERE",  // e.g. "https://my-project-default-rtdb.firebaseio.com"
+  projectId: "⬇️ PASTE YOUR projectId HERE",       // e.g. "my-project"
+  storageBucket: "⬇️ PASTE YOUR storageBucket HERE", // e.g. "my-project.appspot.com"
+  messagingSenderId: "⬇️ PASTE YOUR messagingSenderId HERE",
+  appId: "⬇️ PASTE YOUR appId HERE"
+};
 
-  const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x08080d, 0.02);
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+let allRSVPs = []; // Cache of all RSVP data from Firebase
 
-  const camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 100);
-  camera.position.set(0, 1.5, 14);
-  camera.lookAt(0, 0, 0);
-
-  // Lights
-  scene.add(new THREE.AmbientLight(0xfff5e6, 0.25));
-  const dirLight = new THREE.DirectionalLight(0xffeedd, 0.7);
-  dirLight.position.set(5, 8, 5);
-  scene.add(dirLight);
-
-  const ptLight1 = new THREE.PointLight(0xd4a574, 2.5, 25);
-  ptLight1.position.set(-4, 3, 3);
-  scene.add(ptLight1);
-
-  const ptLight2 = new THREE.PointLight(0xe8b4b8, 1.8, 25);
-  ptLight2.position.set(4, -2, 4);
-  scene.add(ptLight2);
-
-  const ptLight3 = new THREE.PointLight(0xa3b89c, 1.2, 20);
-  ptLight3.position.set(0, 4, -3);
-  scene.add(ptLight3);
-
-  // Materials
-  const goldMat = new THREE.MeshStandardMaterial({ color:0xd4a574, metalness:0.92, roughness:0.12, emissive:0xd4a574, emissiveIntensity:0.04 });
-  const roseGoldMat = new THREE.MeshStandardMaterial({ color:0xe8b4b8, metalness:0.88, roughness:0.18, emissive:0xe8b4b8, emissiveIntensity:0.03 });
-  const diamondMat = new THREE.MeshStandardMaterial({ color:0xffffff, metalness:0.05, roughness:0.0, emissive:0xffffff, emissiveIntensity:0.4, transparent:true, opacity:0.92 });
-
-  // Ring 1
-  const ring1 = new THREE.Mesh(new THREE.TorusGeometry(Math.max(0.01,1.3), Math.max(0.01,0.09), 32, 120), goldMat);
-  ring1.position.set(-1.3, 0.6, 0);
-  ring1.rotation.set(Math.PI*0.35, Math.PI*0.15, 0);
-  scene.add(ring1);
-
-  // Ring 2
-  const ring2 = new THREE.Mesh(new THREE.TorusGeometry(Math.max(0.01,1.05), Math.max(0.01,0.075), 32, 120), roseGoldMat);
-  ring2.position.set(1.1, -0.3, 0.6);
-  ring2.rotation.set(Math.PI*0.55, 0, Math.PI*0.25);
-  scene.add(ring2);
-
-  // Diamond
-  const diamond = new THREE.Mesh(new THREE.OctahedronGeometry(Math.max(0.01,0.2), 0), diamondMat);
-  diamond.position.set(0, 1.3, 0);
-  ring1.add(diamond);
-
-  // Small decorative ring
-  const smallRing = new THREE.Mesh(new THREE.TorusGeometry(Math.max(0.01,0.5), Math.max(0.01,0.03), 16, 60), goldMat.clone());
-  smallRing.position.set(2.5, 2, -2);
-  smallRing.rotation.set(Math.PI*0.7, 0.3, 0);
-  scene.add(smallRing);
-
-  // Petal-like particles
-  const petalCount = 200;
-  const petalGeo = new THREE.BufferGeometry();
-  const petalPos = new Float32Array(petalCount * 3);
-  const petalVel = [];
-  for (let i = 0; i < petalCount; i++) {
-    petalPos[i*3] = (Math.random()-0.5)*35;
-    petalPos[i*3+1] = (Math.random()-0.5)*25;
-    petalPos[i*3+2] = (Math.random()-0.5)*20 - 5;
-    petalVel.push({ x:(Math.random()-0.5)*0.005, y:Math.random()*0.005+0.002, z:(Math.random()-0.5)*0.003, r:Math.random()*Math.PI*2 });
+// ──────────────────────────────────────────────
+// 🔥 CONNECTION STATUS
+// ──────────────────────────────────────────────
+db.ref('.info/connected').on('value', (snap) => {
+  const statusEl = document.getElementById('firebase-status');
+  const textEl = document.getElementById('firebase-status-text');
+  if (snap.val() === true) {
+    statusEl.className = 'firebase-status firebase-connected';
+    textEl.textContent = 'Live';
+  } else {
+    statusEl.className = 'firebase-status firebase-disconnected';
+    textEl.textContent = 'Offline';
   }
-  petalGeo.setAttribute('position', new THREE.BufferAttribute(petalPos, 3));
-  const petalMat = new THREE.PointsMaterial({ color:0xe8b4b8, size:0.06, transparent:true, opacity:0.5, sizeAttenuation:true, blending:THREE.AdditiveBlending, depthWrite:false });
-  scene.add(new THREE.Points(petalGeo, petalMat));
+});
 
-  // Gold dust particles
-  const dustCount = 600;
-  const dustGeo = new THREE.BufferGeometry();
-  const dustPos = new Float32Array(dustCount * 3);
-  for (let i = 0; i < dustCount; i++) {
-    dustPos[i*3] = (Math.random()-0.5)*30;
-    dustPos[i*3+1] = (Math.random()-0.5)*20;
-    dustPos[i*3+2] = (Math.random()-0.5)*20 - 5;
-  }
-  dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
-  const dustMat = new THREE.PointsMaterial({ color:0xd4a574, size:0.035, transparent:true, opacity:0.55, sizeAttenuation:true, blending:THREE.AdditiveBlending, depthWrite:false });
-  scene.add(new THREE.Points(dustGeo, dustMat));
-
-  // Sage particles
-  const sageCount = 200;
-  const sageGeo = new THREE.BufferGeometry();
-  const sagePos = new Float32Array(sageCount * 3);
-  for (let i = 0; i < sageCount; i++) {
-    sagePos[i*3] = (Math.random()-0.5)*28;
-    sagePos[i*3+1] = (Math.random()-0.5)*22;
-    sagePos[i*3+2] = (Math.random()-0.5)*18 - 4;
-  }
-  sageGeo.setAttribute('position', new THREE.BufferAttribute(sagePos, 3));
-  const sageMat = new THREE.PointsMaterial({ color:0xa3b89c, size:0.025, transparent:true, opacity:0.3, sizeAttenuation:true, blending:THREE.AdditiveBlending, depthWrite:false });
-  scene.add(new THREE.Points(sageGeo, sageMat));
-
-  let mouseX=0, mouseY=0, tMouseX=0, tMouseY=0, scrollY=0;
-  document.addEventListener('mousemove', e => { tMouseX=(e.clientX/window.innerWidth-0.5)*2; tMouseY=(e.clientY/window.innerHeight-0.5)*2; });
-  window.addEventListener('scroll', () => { scrollY=window.scrollY; });
-
-  const clock = new THREE.Clock();
-  function animate() {
-    requestAnimationFrame(animate);
-    const t = clock.getElapsedTime();
-    const sf = scrollY / (document.body.scrollHeight - window.innerHeight);
-
-    mouseX += (tMouseX-mouseX)*0.04;
-    mouseY += (tMouseY-mouseY)*0.04;
-
-    ring1.rotation.z = t*0.3 + mouseX*0.2;
-    ring1.rotation.x = Math.PI*0.35 + Math.sin(t*0.5)*0.12 + mouseY*0.12;
-    ring1.position.y = 0.6 + Math.sin(t*0.4)*0.35;
-
-    ring2.rotation.z = -t*0.25 + mouseX*0.15;
-    ring2.rotation.x = Math.PI*0.55 + Math.cos(t*0.4)*0.1 + mouseY*0.1;
-    ring2.position.y = -0.3 + Math.cos(t*0.35)*0.3;
-
-    smallRing.rotation.x += 0.008;
-    smallRing.rotation.y += 0.005;
-    smallRing.position.y = 2 + Math.sin(t*0.6)*0.5;
-
-    diamond.rotation.y = t*2.5;
-    diamond.rotation.x = t*1.8;
-    diamond.scale.setScalar(1 + Math.sin(t*3)*0.1);
-
-    camera.position.y = 1.5 - sf*5;
-    camera.position.z = 14 - sf*5;
-    camera.rotation.x = sf*0.15 + mouseY*0.025;
-    camera.rotation.y = mouseX*0.025;
-
-    ptLight1.intensity = 2.5 + Math.sin(t*0.8)*0.6;
-    ptLight2.intensity = 1.8 + Math.cos(t*0.6)*0.5;
-    ptLight3.intensity = 1.2 + Math.sin(t*1.1)*0.3;
-
-    const fade = Math.max(0, 1 - sf*2.2);
-    dustMat.opacity = 0.55 * fade;
-    petalMat.opacity = 0.5 * fade;
-    sageMat.opacity = 0.3 * fade;
-
-    // Animate particles
-    const dp = dustGeo.attributes.position.array;
-    for(let i=0;i<dustCount;i++) { dp[i*3+1]+=0.002; dp[i*3]+=Math.sin(t+i)*0.0008; if(dp[i*3+1]>10)dp[i*3+1]=-10; }
-    dustGeo.attributes.position.needsUpdate=true;
-
-    const pp = petalGeo.attributes.position.array;
-    for(let i=0;i<petalCount;i++) {
-      pp[i*3]+=petalVel[i].x+Math.sin(t+petalVel[i].r)*0.002;
-      pp[i*3+1]+=petalVel[i].y;
-      pp[i*3+2]+=petalVel[i].z;
-      if(pp[i*3+1]>12){pp[i*3+1]=-12;pp[i*3]=(Math.random()-0.5)*35;}
-    }
-    petalGeo.attributes.position.needsUpdate=true;
-
-    const sp = sageGeo.attributes.position.array;
-    for(let i=0;i<sageCount;i++){sp[i*3+1]+=0.0015;sp[i*3]+=Math.cos(t*0.5+i*0.3)*0.001;if(sp[i*3+1]>11)sp[i*3+1]=-11;}
-    sageGeo.attributes.position.needsUpdate=true;
-
-    renderer.render(scene, camera);
-  }
-  animate();
-
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth/window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+// ──────────────────────────────────────────────
+// 🔥 LISTEN FOR RSVPs IN REAL-TIME (from ALL devices)
+// ──────────────────────────────────────────────
+db.ref('rsvps').on('value', (snapshot) => {
+  allRSVPs = [];
+  snapshot.forEach((child) => {
+    allRSVPs.push({ key: child.key, ...child.val() });
   });
-  </script>
-
-  <!-- UI LOGIC -->
-  <script>
-  lucide.createIcons();
-
-  // === BACKEND SIMULATION (localStorage) ===
-  const DB_KEY = 'wedding_rsvps';
-
-  function getRSVPs() {
-    try { return JSON.parse(localStorage.getItem(DB_KEY)) || []; } catch { return []; }
+  // Sort by timestamp, newest first
+  allRSVPs.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+  // If admin panel is open, refresh it
+  if (document.getElementById('admin-modal').classList.contains('active')) {
+    renderAdminTable(allRSVPs);
   }
-  function saveRSVP(data) {
-    const list = getRSVPs();
-    list.push(data);
-    localStorage.setItem(DB_KEY, JSON.stringify(list));
-    return data;
-  }
-  function clearAllRSVPs() {
-    if(confirm('Delete all RSVP data?')) {
-      localStorage.removeItem(DB_KEY);
-      refreshAdminTable();
-      showToast('Data cleared', 'error');
-    }
-  }
-  function generateId() {
-    return 'JO-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substr(2,4).toUpperCase();
-  }
+});
 
-  // === NAVBAR ===
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    if(window.scrollY > 60) {
-      navbar.style.background = 'rgba(8,8,13,0.88)';
-      navbar.style.backdropFilter = 'blur(20px)';
-      navbar.style.borderBottom = '1px solid rgba(255,255,255,0.04)';
-    } else {
-      navbar.style.background = 'transparent';
-      navbar.style.backdropFilter = 'none';
-      navbar.style.borderBottom = 'none';
-    }
+// ──────────────────────────────────────────────
+// 🔥 SAVE RSVP TO FIREBASE (replaces localStorage)
+// ──────────────────────────────────────────────
+function saveToFirebase(data) {
+  const newRef = db.ref('rsvps').push();
+  const id = newRef.key.slice(-6).toUpperCase();
+  return newRef.set({
+    ...data,
+    id: id,
+    timestamp: Date.now()
+  }).then(() => {
+    return { success: true, id: id };
+  }).catch((error) => {
+    console.error('Firebase save error:', error);
+    return { success: false, error: error.message };
   });
+}
 
-  // === MOBILE MENU ===
-  document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-    document.getElementById('mobile-menu').classList.toggle('hidden');
-  });
-  document.querySelectorAll('#mobile-menu a').forEach(l => l.addEventListener('click', () => {
-    document.getElementById('mobile-menu').classList.add('hidden');
-  }));
+// ──────────────────────────────────────────────
+// RSVP FORM LOGIC
+// ──────────────────────────────────────────────
+let currentStep = 1;
 
-  // === SCROLL ANIMATIONS ===
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold:0.08, rootMargin:'0px 0px -40px 0px' });
-  document.querySelectorAll('.fade-up,.fade-left,.fade-right,.scale-in,.blur-in').forEach(el => obs.observe(el));
-
-  // === COUNTDOWN ===
-  function updateCD() {
-    const w = new Date('2025-06-14T16:00:00+02:00');
-    let d = Math.max(0, w - new Date());
-    document.getElementById('cd-days').textContent = String(Math.floor(d/864e5)).padStart(2,'0');
-    document.getElementById('cd-hours').textContent = String(Math.floor(d%864e5/36e5)).padStart(2,'0');
-    document.getElementById('cd-mins').textContent = String(Math.floor(d%36e5/6e4)).padStart(2,'0');
-    document.getElementById('cd-secs').textContent = String(Math.floor(d%6e4/1e3)).padStart(2,'0');
-  }
-  updateCD(); setInterval(updateCD, 1000);
-
-  // === FAQ ACCORDION ===
-  function toggleFaq(btn) {
-    const item = btn.parentElement;
-    const answer = item.querySelector('.faq-answer');
-    const icon = btn.querySelector('.faq-icon');
-    const isOpen = answer.style.maxHeight && answer.style.maxHeight !== '0px';
-
-    // Close all
-    document.querySelectorAll('.faq-answer').forEach(a => a.style.maxHeight = '0px');
-    document.querySelectorAll('.faq-icon').forEach(i => i.style.transform = 'rotate(0deg)');
-
-    if(!isOpen) {
-      answer.style.maxHeight = answer.scrollHeight + 'px';
-      icon.style.transform = 'rotate(45deg)';
-    }
-  }
-
-  // === MULTI-STEP RSVP ===
-  let currentStep = 1;
-
-  function goToStep(step) {
-    // Validate current step
-    if(step > currentStep) {
-      if(currentStep === 1) {
-        const f = document.getElementById('f-first').value.trim();
-        const l = document.getElementById('f-last').value.trim();
-        const e = document.getElementById('f-email').value.trim();
-        if(!f || !l || !e) { showToast('Please fill in all required fields', 'error'); return; }
-        if(!e.includes('@')) { showToast('Please enter a valid email', 'error'); return; }
-      }
-      if(currentStep === 2) {
-        const a = document.getElementById('f-attend').value;
-        if(!a) { showToast('Please select your attendance', 'error'); return; }
-      }
-    }
-
-    document.getElementById('step-'+currentStep).classList.add('hidden');
-    document.getElementById('step-'+step).classList.remove('hidden');
-    currentStep = step;
-    updateStepIndicators();
-  }
-
-  function updateStepIndicators() {
-    for(let i=1;i<=3;i++) {
-      const si = document.getElementById('si-'+i);
-      si.className = 'step-indicator ' + (i < currentStep ? 'step-done' : i === currentStep ? 'step-active' : 'step-pending');
-      if(i < currentStep) si.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg>';
-      else si.textContent = i;
-    }
-    for(let i=1;i<=2;i++) {
-      const sl = document.getElementById('sl-'+i);
-      sl.className = 'step-line-fill' + (i < currentStep ? ' filled' : '');
-    }
-  }
-
-  // Toggle guest count visibility
-  document.getElementById('f-attend').addEventListener('change', function() {
-    document.getElementById('guest-count-wrap').style.display = this.value === 'no' ? 'none' : 'block';
-  });
-
-  // === SUBMIT RSVP ===
-  function submitRSVP() {
-    const btn = document.getElementById('submit-btn');
-    const txt = document.getElementById('submit-text');
-    const spinner = document.getElementById('submit-spinner');
-
-    btn.disabled = true;
-    txt.textContent = 'Submitting...';
-    spinner.classList.remove('hidden');
-
-    // Simulate backend delay
-    setTimeout(() => {
-      const data = {
-        id: generateId(),
-        firstName: document.getElementById('f-first').value.trim(),
-        lastName: document.getElementById('f-last').value.trim(),
-        email: document.getElementById('f-email').value.trim(),
-        phone: document.getElementById('f-phone').value.trim(),
-        attending: document.getElementById('f-attend').value,
-        guests: document.getElementById('f-attend').value === 'no' ? 0 : parseInt(document.getElementById('f-guests').value),
-        dietary: document.getElementById('f-dietary').value.trim(),
-        song: document.getElementById('f-song').value.trim(),
-        message: document.getElementById('f-message').value.trim(),
-        newsletter: document.getElementById('f-newsletter').checked,
-        submittedAt: new Date().toISOString()
-      };
-
-      // Save to "backend"
-      const saved = saveRSVP(data);
-
-      // Reset form
-      btn.disabled = false;
-      txt.textContent = 'Send Response';
-      spinner.classList.add('hidden');
-      document.getElementById('rsvp-form').reset();
-      goToStep(1);
-
-      // Show confirmation
-      showConfirmation(saved);
-
-      // Confetti!
-      launchConfetti();
-
-      showToast('RSVP submitted successfully! ✨', 'success');
-    }, 1500);
-  }
-
-  // === CONFIRMATION MODAL ===
-  function showConfirmation(data) {
-    document.getElementById('confirm-id').textContent = data.id;
-    document.getElementById('confirm-name').textContent = data.firstName + ' ' + data.lastName;
-    const statusEl = document.getElementById('confirm-status');
-    if(data.attending === 'yes') {
-      statusEl.innerHTML = '<span class="badge-yes text-xs px-2.5 py-1 rounded-full font-medium">Joyfully Attending ✨</span>';
-    } else {
-      statusEl.innerHTML = '<span class="badge-no text-xs px-2.5 py-1 rounded-full font-medium">Regretfully Declined</span>';
-    }
-    document.getElementById('confirm-guests').textContent = data.guests + (data.guests === 1 ? ' guest' : ' guests');
-    document.getElementById('confirm-date').textContent = new Date(data.submittedAt).toLocaleString();
-    document.getElementById('confirm-modal').classList.add('active');
-  }
-
-  function closeConfirmation() {
-    document.getElementById('confirm-modal').classList.remove('active');
-  }
-
-  function printConfirmation() {
-    window.print();
-  }
-
-  // === CONFETTI ===
-  function launchConfetti() {
-    const container = document.getElementById('confetti-container');
-    const colors = ['#d4a574','#e8b668','#f0c987','#e8b4b8','#d4868e','#a3b89c','#ffffff'];
-    const shapes = ['square','circle'];
-
-    for(let i=0; i<80; i++) {
-      const piece = document.createElement('div');
-      piece.className = 'confetti-piece';
-      const color = colors[Math.floor(Math.random()*colors.length)];
-      const shape = shapes[Math.floor(Math.random()*shapes.length)];
-      const size = Math.random()*8+5;
-      piece.style.width = size+'px';
-      piece.style.height = shape==='square' ? size+'px' : size+'px';
-      piece.style.borderRadius = shape==='circle' ? '50%' : '2px';
-      piece.style.background = color;
-      piece.style.left = (Math.random()*100)+'%';
-      piece.style.top = '-10px';
-      piece.style.opacity = Math.random()*0.7+0.3;
-      container.appendChild(piece);
-
-      const destX = (Math.random()-0.5)*300;
-      const destY = window.innerHeight + 50;
-      const rot = Math.random()*720 - 360;
-      const dur = Math.random()*2000+2000;
-
-      piece.animate([
-        { transform:'translate(0,0) rotate(0deg)', opacity:1 },
-        { transform:`translate(${destX}px,${destY}px) rotate(${rot}deg)`, opacity:0 }
-      ], { duration:dur, easing:'cubic-bezier(0.25,0.46,0.45,0.94)' }).onfinish = () => piece.remove();
-    }
-  }
-
-  // === TOAST ===
-  function showToast(msg, type) {
-    const el = type === 'error' ? document.getElementById('toast-error') : document.getElementById('toast');
-    el.textContent = msg;
-    el.classList.add('show');
-    setTimeout(() => el.classList.remove('show'), 3500);
-  }
-
-  // === LIGHTBOX ===
-  function openLightbox(src) {
-    document.getElementById('lightbox-img').src = src;
-    document.getElementById('lightbox').classList.add('active');
-  }
-
-  // === ADMIN PANEL ===
-  function openAdmin() {
-    document.getElementById('admin-modal').classList.add('active');
-    refreshAdminTable();
-  }
-
-  function refreshAdminTable() {
-    const data = getRSVPs();
-    const tbody = document.getElementById('admin-table-body');
-
-    // Stats
-    const attending = data.filter(d => d.attending==='yes');
-    const declined = data.filter(d => d.attending==='no');
-    const totalGuests = attending.reduce((s,d) => s+d.guests, 0);
-
-    document.getElementById('stat-total').textContent = data.length;
-    document.getElementById('stat-attending').textContent = attending.length;
-    document.getElementById('stat-declined').textContent = declined.length;
-    document.getElementById('stat-guests').textContent = totalGuests;
-
-    if(data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="6" class="text-center py-12 text-neutral-600 text-sm">No responses yet. Submit an RSVP to see data here.</td></tr>';
+function nextStep(step) {
+  // Validate current step
+  if (currentStep === 1) {
+    const name = document.getElementById('rsvp-name').value.trim();
+    const email = document.getElementById('rsvp-email').value.trim();
+    if (!name || !email) {
+      showToastError();
       return;
     }
-
-    tbody.innerHTML = data.reverse().map(d => `
-      <tr class="transition-colors">
-        <td class="px-4 py-3 text-xs font-mono text-neutral-500">${d.id}</td>
-        <td class="px-4 py-3 text-sm font-medium">${d.firstName} ${d.lastName}</td>
-        <td class="px-4 py-3 text-xs text-neutral-400 hidden sm:table-cell">${d.email}</td>
-        <td class="px-4 py-3"><span class="${d.attending==='yes'?'badge-yes':'badge-no'} text-[10px] px-2 py-0.5 rounded-full font-medium">${d.attending==='yes'?'Attending':'Declined'}</span></td>
-        <td class="px-4 py-3 text-sm text-neutral-400 hidden md:table-cell">${d.guests}</td>
-        <td class="px-4 py-3 text-xs text-neutral-500 hidden lg:table-cell">${new Date(d.submittedAt).toLocaleDateString()}</td>
-      </tr>
-    `).join('');
-
-    lucide.createIcons();
   }
-
-  // === EXPORT CSV ===
-  function exportCSV() {
-    const data = getRSVPs();
-    if(!data.length) { showToast('No data to export', 'error'); return; }
-    const headers = ['ID','First Name','Last Name','Email','Phone','Attending','Guests','Dietary','Song','Message','Date'];
-    const rows = data.map(d => [d.id,d.firstName,d.lastName,d.email,d.phone,d.attending,d.guests,d.dietary,d.song,d.message,new Date(d.submittedAt).toLocaleString()]);
-    const csv = [headers,...rows].map(r => r.map(c => '"'+(c||'').replace(/"/g,'""')+'"').join(',')).join('\n');
-    const blob = new Blob([csv], {type:'text/csv'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'wedding_rsvps.csv';
-    a.click();
-    showToast('CSV exported! 📊', 'success');
+  if (currentStep === 2) {
+    const attendance = document.querySelector('input[name="attendance"]:checked');
+    if (!attendance) {
+      showToastError();
+      return;
+    }
   }
+  goToStep(step);
+}
 
-  // === HERO ANIMATIONS ON LOAD ===
-  window.addEventListener('load', () => {
-    document.querySelectorAll('#hero .fade-up').forEach(el => el.classList.add('visible'));
+function prevStep(step) {
+  goToStep(step);
+}
+
+function goToStep(step) {
+  document.getElementById('form-step-' + currentStep).classList.add('hidden');
+  document.getElementById('form-step-' + step).classList.remove('hidden');
+  // Update indicators
+  for (let i = 1; i <= 3; i++) {
+    const ind = document.getElementById('step-ind-' + i);
+    ind.className = 'step-indicator ' + (i < step ? 'step-done' : i === step ? 'step-active' : 'step-pending');
+    if (i < step) ind.innerHTML = '✓';
+    else ind.innerHTML = i;
+  }
+  // Update lines
+  for (let i = 1; i <= 2; i++) {
+    const line = document.getElementById('step-line-' + i);
+    if (i < step) line.classList.add('filled');
+    else line.classList.remove('filled');
+  }
+  // Show/hide guests section based on attendance
+  if (step === 2) {
+    const radios = document.querySelectorAll('input[name="attendance"]');
+    radios.forEach(r => r.addEventListener('change', () => {
+      document.getElementById('guests-section').style.display = r.value === 'no' ? 'none' : 'block';
+    }));
+  }
+  currentStep = step;
+  lucide.createIcons();
+}
+
+async function submitRSVP() {
+  const btn = document.getElementById('submit-btn');
+  const text = document.getElementById('submit-text');
+  const spinner = document.getElementById('submit-spinner');
+
+  const name = document.getElementById('rsvp-name').value.trim();
+  const email = document.getElementById('rsvp-email').value.trim();
+  const phone = document.getElementById('rsvp-phone').value.trim();
+  const attendanceEl = document.querySelector('input[name="attendance"]:checked');
+  const guests = document.getElementById('rsvp-guests').value;
+  const dietary = document.getElementById('rsvp-dietary').value;
+  const message = document.getElementById('rsvp-message').value.trim();
+
+  if (!attendanceEl) { showToastError(); return; }
+
+  const status = attendanceEl.value === 'yes' ? 'Attending' : 'Declined';
+  const guestCount = attendanceEl.value === 'no' ? 0 : parseInt(guests);
+
+  // Show loading state
+  btn.disabled = true;
+  text.textContent = 'Submitting...';
+  spinner.classList.remove('hidden');
+
+  // Get referral code from URL if exists
+  const urlParams = new URLSearchParams(window.location.search);
+  const ref = urlParams.get('ref') || '';
+
+  const rsvpData = {
+    name: name,
+    email: email,
+    phone: phone,
+    status: status,
+    guests: guestCount,
+    dietary: dietary,
+    message: message,
+    ref: ref,
+    date: new Date().toISOString()
+  };
+
+  // 🔥 SAVE TO FIREBASE (not localStorage!)
+  const result = await saveToFirebase(rsvpData);
+
+  // Reset button
+  btn.disabled = false;
+  text.textContent = 'Submit RSVP';
+  spinner.classList.add('hidden');
+
+  if (result.success) {
+    showToastSuccess();
+    launchConfetti();
+
+    // Show confirmation modal
+    document.getElementById('confirm-id').textContent = result.id;
+    document.getElementById('confirm-name').textContent = name;
+    document.getElementById('confirm-status').innerHTML = status === 'Attending'
+      ? '<span class="badge-yes">✓ Attending</span>'
+      : '<span class="badge-no">✗ Declined</span>';
+    document.getElementById('confirm-guests').textContent = guestCount;
+    document.getElementById('confirm-date').textContent = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' });
+    document.getElementById('confirm-modal').classList.add('active');
+
+    // Reset form
+    document.getElementById('rsvp-form').reset();
+    goToStep(1);
+  } else {
+    showToastError();
+    alert('Failed to submit. Error: ' + result.error);
+  }
+}
+
+// ──────────────────────────────────────────────
+// ADMIN DASHBOARD (reads from Firebase, not localStorage)
+// ──────────────────────────────────────────────
+function openAdmin() {
+  document.getElementById('admin-modal').classList.add('active');
+  renderAdminTable(allRSVPs);
+  lucide.createIcons();
+}
+
+function renderAdminTable(data) {
+  const tbody = document.getElementById('admin-table-body');
+  if (!data || data.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" class="text-center py-12 text-neutral-600">No responses yet — share your link!</td></tr>';
+    updateStats([]);
+    return;
+  }
+  updateStats(data);
+  tbody.innerHTML = data.map((r, i) => {
+    const statusBadge = r.status === 'Attending'
+      ? '<span class="badge-yes">Attending</span>'
+      : '<span class="badge-no">Declined</span>';
+    const dateStr = r.timestamp ? new Date(r.timestamp).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) : '—';
+    return `<tr>
+      <td class="px-4 py-3 font-mono text-xs text-gold-300">${r.id || '—'}</td>
+      <td class="px-4 py-3 font-medium">${escapeHtml(r.name || '—')}</td>
+      <td class="px-4 py-3 text-neutral-400 text-xs hidden sm:table-cell">${escapeHtml(r.email || '—')}</td>
+      <td class="px-4 py-3">${statusBadge}</td>
+      <td class="px-4 py-3 text-neutral-400 hidden md:table-cell">${r.guests || 0}</td>
+      <td class="px-4 py-3 text-neutral-500 text-xs hidden lg:table-cell">${dateStr}</td>
+    </tr>`;
+  }).join('');
+}
+
+function updateStats(data) {
+  const total = data.length;
+  const attending = data.filter(r => r.status === 'Attending').length;
+  const declined = data.filter(r => r.status === 'Declined').length;
+  const totalGuests = data.reduce((sum, r) => sum + (r.guests || 0), 0);
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-attending').textContent = attending;
+  document.getElementById('stat-declined').textContent = declined;
+  document.getElementById('stat-guests').textContent = totalGuests;
+}
+
+function clearAllRSVPs() {
+  if (!confirm('Are you sure you want to delete ALL RSVP data? This cannot be undone.')) return;
+  db.ref('rsvps').remove().then(() => {
+    allRSVPs = [];
+    renderAdminTable([]);
   });
-  </script>
+}
 
-  </body>
-  </html>
+function exportCSV() {
+  if (!allRSVPs || allRSVPs.length === 0) {
+    alert('No data to export.');
+    return;
+  }
+  const headers = ['ID', 'Name', 'Email', 'Phone', 'Status', 'Guests', 'Dietary', 'Message', 'Referral', 'Date'];
+  const rows = allRSVPs.map(r => [
+    r.id || '',
+    r.name || '',
+    r.email || '',
+    r.phone || '',
+    r.status || '',
+    r.guests || 0,
+    r.dietary || '',
+    (r.message || '').replace(/,/g, ';'),
+    r.ref || '',
+    r.timestamp ? new Date(r.timestamp).toLocaleString() : ''
+  ]);
+  let csv = headers.join(',') + '\n' + rows.map(r => r.map(c => '"' + c + '"').join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'rsvp-data-' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ──────────────────────────────────────────────
+// CONFIRMATION MODAL
+// ──────────────────────────────────────────────
+function closeConfirmation() {
+  document.getElementById('confirm-modal').classList.remove('active');
+}
+
+function printConfirmation() {
+  window.print();
+}
+
+// ──────────────────────────────────────────────
+// TOAST NOTIFICATIONS
+// ──────────────────────────────────────────────
+function showToastSuccess() {
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+function showToastError() {
+  const t = document.getElementById('toast-error');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ──────────────────────────────────────────────
+// CONFETTI
+// ──────────────────────────────────────────────
+function launchConfetti() {
+  const container = document.getElementById('confetti-container');
+  const colors = ['#d4a574','#e8b668','#f0c987','#e8b4b8','#d4868e','#a3b89c','#fff'];
+  for (let i = 0; i < 60; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + 'vw';
+    piece.style.top = '-10px';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    piece.style.width = (Math.random() * 8 + 5) + 'px';
+    piece.style.height = (Math.random() * 8 + 5) + 'px';
+    piece.style.opacity = Math.random() * 0.7 + 0.3;
+    container.appendChild(piece);
+    const duration = Math.random() * 2000 + 1500;
+    const xDrift = (Math.random() - 0.5) * 200;
+    piece.animate([
+      { transform: 'translateY(0) translateX(0) rotate(0deg)', opacity: 1 },
+      { transform: `translateY(100vh) translateX(${xDrift}px) rotate(${Math.random()*720}deg)`, opacity: 0 }
+    ], { duration, easing: 'cubic-bezier(0.25,0.46,0.45,0.94)' }).onfinish = () => piece.remove();
+  }
+}
+
+// ──────────────────────────────────────────────
+// LIGHTBOX
+// ──────────────────────────────────────────────
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('active');
+}
+
+// ──────────────────────────────────────────────
+// MOBILE MENU
+// ──────────────────────────────────────────────
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+// Close mobile menu on link click
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.add('hidden');
+  });
+});
+
+// ──────────────────────────────────────────────
+// NAVBAR SCROLL EFFECT
+// ──────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('navbar');
+  if (window.scrollY > 80) {
+    nav.style.background = 'rgba(8,8,13,0.85)';
+    nav.style.backdropFilter = 'blur(20px)';
+    nav.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+  } else {
+    nav.style.background = 'transparent';
+    nav.style.backdropFilter = 'none';
+    nav.style.borderBottom = 'none';
+  }
+});
+
+// ──────────────────────────────────────────────
+// COUNTDOWN TIMER
+// ──────────────────────────────────────────────
+function updateCountdown() {
+  const wedding = new Date('2025-06-14T16:00:00').getTime();
+  const now = Date.now();
+  const diff = wedding - now;
+  if (diff <= 0) {
+    document.getElementById('cd-days').textContent = '00';
+    document.getElementById('cd-hours').textContent = '00';
+    document.getElementById('cd-mins').textContent = '00';
+    document.getElementById('cd-secs').textContent = '00';
+    return;
+  }
+  const d = Math.floor(diff / (1000*60*60*24));
+  const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+  const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+  const s = Math.floor((diff % (1000*60)) / 1000);
+  document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
+  document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+  document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
+  document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// ──────────────────────────────────────────────
+// SCROLL ANIMATIONS (IntersectionObserver)
+// ──────────────────────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.fade-up,.fade-left,.fade-right,.scale-in,.blur-in').forEach(el => {
+  observer.observe(el);
+});
+
+// ──────────────────────────────────────────────
+// INIT LUCIDE ICONS
+// ──────────────────────────────────────────────
+lucide.createIcons();
+</script>
+
+<!-- Three.js Background (module script) -->
+<script type="module">
+import * as THREE from 'three';
+
+const canvas = document.getElementById('three-canvas');
+const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.z = 5;
+
+// Particle system
+const particleCount = 1500;
+const positions = new Float32Array(particleCount * 3);
+const colors = new Float32Array(particleCount * 3);
+const sizes = new Float32Array(particleCount);
+const goldColor = new THREE.Color('#d4a574');
+const roseColor = new THREE.Color('#e8b4b8');
+const sageColor = new THREE.Color('#a3b89c');
+
+for (let i = 0; i < particleCount; i++) {
+  positions[i*3] = (Math.random() - 0.5) * 20;
+  positions[i*3+1] = (Math.random() - 0.5) * 20;
+  positions[i*3+2] = (Math.random() - 0.5) * 20;
+  const colorChoice = Math.random();
+  const c = colorChoice < 0.5 ? goldColor : colorChoice < 0.8 ? roseColor : sageColor;
+  colors[i*3] = c.r;
+  colors[i*3+1] = c.g;
+  colors[i*3+2] = c.b;
+  sizes[i] = Math.random() * 2 + 0.5;
+}
+
+const geometry = new THREE.BufferGeometry();
+geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+geometry.setAttribute('aColor', new THREE.BufferAttribute(colors, 3));
+geometry.setAttribute('aSize', new THREE.BufferAttribute(sizes, 1));
+
+const material = new THREE.ShaderMaterial({
+  vertexShader: `
+    attribute vec3 aColor;
+    attribute float aSize;
+    varying vec3 vColor;
+    varying float vAlpha;
+    void main() {
+      vColor = aColor;
+      vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
+      gl_PointSize = aSize * (200.0 / -mvPos.z);
+      gl_Position = projectionMatrix * mvPos;
+      vAlpha = smoothstep(0.0, 3.0, aSize) * 0.6;
+    }
+  `,
+  fragmentShader: `
+    varying vec3 vColor;
+    varying float vAlpha;
+    void main() {
+      float d = length(gl_PointCoord - vec2(0.5));
+      if (d > 0.5) discard;
+      float alpha = smoothstep(0.5, 0.1, d) * vAlpha;
+      gl_FragColor = vec4(vColor, alpha);
+    }
+  `,
+  transparent: true,
+  depthWrite: false,
+  blending: THREE.AdditiveBlending
+});
+
+const particles = new THREE.Points(geometry, material);
+scene.add(particles);
+
+let mouseX = 0, mouseY = 0;
+document.addEventListener('mousemove', (e) => {
+  mouseX = (e.clientX / window.innerWidth - 0.5) * 0.5;
+  mouseY = (e.clientY / window.innerHeight - 0.5) * 0.5;
+});
+
+function animate() {
+  requestAnimationFrame(animate);
+  particles.rotation.y += 0.0005;
+  particles.rotation.x += 0.0002;
+  camera.position.x += (mouseX - camera.position.x) * 0.02;
+  camera.position.y += (-mouseY - camera.position.y) * 0.02;
+  camera.lookAt(scene.position);
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+
+</body>
+</html>
