@@ -5,1295 +5,863 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>James & Olivia — June 14, 2025</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
 
-<!-- ⬇️⬇️ FIREBASE SDK - ADDED ⬇️⬇️ -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-<!-- ⬆️⬆️ FIREBASE SDK - ADDED ⬆️⬆️ -->
+<!-- 🔒 ICONS INITIALIZED FIRST — separate from database code -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  if (window.lucide) lucide.createIcons();
+});
+</script>
 
 <script>
-tailwind.config = {
-  theme: {
-    extend: {
-      colors: {
-        gold: { 50:'#fefaf3', 100:'#fef7ed', 200:'#f0c987', 300:'#e8b668', 400:'#d4a574', 500:'#c49a6c', 600:'#a67c52', 700:'#8a6440' },
-        rose: { 50:'#fff5f6', 100:'#fff1f2', 200:'#e8b4b8', 300:'#d4868e', 400:'#b8636e', 500:'#9e4a55' },
-        sage: { 200:'#c5d5c0', 300:'#a3b89c', 400:'#8aa87f' },
-        cream: { 100:'#faf6f0', 200:'#f5ede0' },
-        dark: { 900:'#08080d', 800:'#0e0e16', 700:'#16161f', 600:'#1e1e2a', 500:'#2a2a38' }
-      },
-      fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        serif: ['Playfair Display', 'serif']
-      }
-    }
-  }
-}
+tailwind.config={theme:{extend:{colors:{gold:{50:'#fefaf3',100:'#fef7ed',200:'#f0c987',300:'#e8b668',400:'#d4a574',500:'#c49a6c',600:'#a67c52',700:'#8a6440'},rose:{50:'#fff5f6',100:'#fff1f2',200:'#e8b4b8',300:'#d4868e',400:'#b8636e',500:'#9e4a55'},sage:{200:'#c5d5c0',300:'#a3b89c',400:'#8aa87f'},cream:{100:'#faf6f0',200:'#f5ede0'},dark:{900:'#08080d',800:'#0e0e16',700:'#16161f',600:'#1e1e2a',500:'#2a2a38'}},fontFamily:{sans:['Inter','sans-serif'],serif:['Playfair Display','serif']}}}}
 </script>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; }
-  html { scroll-behavior: smooth; }
-  body { font-family:'Inter',sans-serif; background:#08080d; color:#fff; overflow-x:hidden; }
-  ::-webkit-scrollbar { width:6px; }
-  ::-webkit-scrollbar-track { background:#08080d; }
-  ::-webkit-scrollbar-thumb { background:rgba(212,165,116,0.3); border-radius:3px; }
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:#08080d;color:#fff;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#08080d}
+::-webkit-scrollbar-thumb{background:rgba(212,165,116,0.3);border-radius:3px}
 
-  #three-canvas { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
-  .section-wrapper { position:relative; z-index:1; }
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+.z1{position:relative;z-index:1}
 
-  .text-gradient-gold { background:linear-gradient(135deg,#f0c987,#d4a574,#e8b668,#f0c987); background-size:200% 200%; animation:shimmer 3s ease infinite; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-  @keyframes shimmer { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+.text-gold-grad{background:linear-gradient(135deg,#f0c987,#d4a574,#e8b668,#f0c987);background-size:200% 200%;animation:shimmer 3s ease infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 
-  .text-gradient-rose { background:linear-gradient(135deg,#e8b4b8,#d4868e); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.divider{width:80px;height:1px;background:linear-gradient(to right,transparent,#d4a574,transparent)}
+.divider-w{width:200px;height:1px;background:linear-gradient(to right,transparent,rgba(212,165,116,0.3),transparent)}
 
-  .divider { width:80px; height:1px; background:linear-gradient(to right,transparent,#d4a574,transparent); }
-  .divider-wide { width:200px; height:1px; background:linear-gradient(to right,transparent,rgba(212,165,116,0.3),transparent); }
+.glass{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);backdrop-filter:blur(16px);transition:all .5s cubic-bezier(.25,.46,.45,.94)}
+.glass:hover{background:rgba(255,255,255,0.05);border-color:rgba(212,165,116,0.2);transform:translateY(-6px);box-shadow:0 30px 60px -15px rgba(0,0,0,.5),0 0 40px -10px rgba(212,165,116,.08)}
 
-  .card-glass { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); backdrop-filter:blur(16px); transition:all 0.5s cubic-bezier(0.25,0.46,0.45,0.94); }
-  .card-glass:hover { background:rgba(255,255,255,0.05); border-color:rgba(212,165,116,0.2); transform:translateY(-6px); box-shadow:0 30px 60px -15px rgba(0,0,0,0.5), 0 0 40px -10px rgba(212,165,116,0.08); }
+.gold-border{position:relative;overflow:hidden}
+.gold-border::before{content:'';position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(212,165,116,.4),transparent 40%,transparent 60%,rgba(232,180,184,.3));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
 
-  .card-gold-border { position:relative; overflow:hidden; }
-  .card-gold-border::before { content:''; position:absolute; inset:-1px; border-radius:inherit; padding:1px; background:linear-gradient(135deg,rgba(212,165,116,0.4),transparent 40%,transparent 60%,rgba(232,180,184,0.3)); -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0); -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none; }
+/* ✅ BUTTONS — guaranteed visible text */
+.btn-g{background:linear-gradient(135deg,#d4a574,#e8b668,#d4a574);background-size:200% 200%;animation:shimmer 3s ease infinite;color:#08080d !important;font-weight:600;transition:all .3s;box-shadow:0 4px 20px -4px rgba(212,165,116,.5);letter-spacing:.05em;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn-g:hover{box-shadow:0 8px 35px -4px rgba(212,165,116,.7);transform:translateY(-2px) scale(1.02)}
+.btn-g:active{transform:translateY(0) scale(.98)}
+.btn-g:disabled{opacity:.5;cursor:not-allowed;transform:none !important}
 
-  .btn-gold { background:linear-gradient(135deg,#d4a574,#e8b668,#d4a574); background-size:200% 200%; animation:shimmer 3s ease infinite; color:#08080d; font-weight:600; transition:all 0.3s ease; box-shadow:0 4px 20px -4px rgba(212,165,116,0.5); letter-spacing:0.05em; }
-  .btn-gold:hover { box-shadow:0 8px 35px -4px rgba(212,165,116,0.7); transform:translateY(-2px) scale(1.02); }
-  .btn-gold:active { transform:translateY(0) scale(0.98); }
+.btn-o{border:1px solid rgba(212,165,116,.3);color:#d4a574 !important;transition:all .3s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn-o:hover{background:rgba(212,165,116,.08);border-color:#d4a574;box-shadow:0 0 20px -5px rgba(212,165,116,.2)}
 
-  .btn-outline { border:1px solid rgba(212,165,116,0.3); color:#d4a574; transition:all 0.3s ease; }
-  .btn-outline:hover { background:rgba(212,165,116,0.08); border-color:#d4a574; box-shadow:0 0 20px -5px rgba(212,165,116,0.2); }
+/* ✅ ICON-ONLY BUTTONS — always have visible content */
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);font-size:16px;transition:all .3s;cursor:pointer;background:transparent}
+.icon-btn:hover{color:#d4a574;border-color:rgba(212,165,116,.3);background:rgba(212,165,116,.05)}
+.icon-btn svg{width:16px;height:16px}
 
-  .btn-rose { background:linear-gradient(135deg,#d4868e,#e8b4b8); color:#fff; font-weight:600; box-shadow:0 4px 20px -4px rgba(212,134,142,0.4); transition:all 0.3s ease; }
-  .btn-rose:hover { box-shadow:0 8px 30px -4px rgba(212,134,142,0.6); transform:translateY(-2px); }
+.fade-up{opacity:0;transform:translateY(40px);transition:all .9s cubic-bezier(.25,.46,.45,.94)}
+.fade-up.v{opacity:1;transform:translateY(0)}
+.fade-l{opacity:0;transform:translateX(-50px);transition:all .9s cubic-bezier(.25,.46,.45,.94)}
+.fade-l.v{opacity:1;transform:translateX(0)}
+.fade-r{opacity:0;transform:translateX(50px);transition:all .9s cubic-bezier(.25,.46,.45,.94)}
+.fade-r.v{opacity:1;transform:translateX(0)}
+.scale-in{opacity:0;transform:scale(.85);transition:all .9s cubic-bezier(.25,.46,.45,.94)}
+.scale-in.v{opacity:1;transform:scale(1)}
 
-  .fade-up { opacity:0; transform:translateY(40px); transition:all 0.9s cubic-bezier(0.25,0.46,0.45,0.94); }
-  .fade-up.visible { opacity:1; transform:translateY(0); }
-  .fade-left { opacity:0; transform:translateX(-50px); transition:all 0.9s cubic-bezier(0.25,0.46,0.45,0.94); }
-  .fade-left.visible { opacity:1; transform:translateX(0); }
-  .fade-right { opacity:0; transform:translateX(50px); transition:all 0.9s cubic-bezier(0.25,0.46,0.45,0.94); }
-  .fade-right.visible { opacity:1; transform:translateX(0); }
-  .scale-in { opacity:0; transform:scale(0.85); transition:all 0.9s cubic-bezier(0.25,0.46,0.45,0.94); }
-  .scale-in.visible { opacity:1; transform:scale(1); }
-  .blur-in { opacity:0; filter:blur(10px); transition:all 1s cubic-bezier(0.25,0.46,0.45,0.94); }
-  .blur-in.visible { opacity:1; filter:blur(0); }
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.float{animation:float 5s ease-in-out infinite}
+@keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(212,165,116,.3)}70%{box-shadow:0 0 0 15px rgba(212,165,116,0)}100%{box-shadow:0 0 0 0 rgba(212,165,116,0)}}
+.pulse-r{animation:pulse-ring 2s ease-out infinite}
+@keyframes spin-slow{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.spin-s{animation:spin-slow 20s linear infinite}
 
-  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
-  .float-anim { animation:float 5s ease-in-out infinite; }
+.hero-bg{background:linear-gradient(to bottom,rgba(8,8,13,.2) 0%,rgba(8,8,13,.5) 40%,rgba(8,8,13,.92) 80%,#08080d 100%)}
+.cd-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(10px)}
 
-  @keyframes pulse-ring { 0%{box-shadow:0 0 0 0 rgba(212,165,116,0.3)} 70%{box-shadow:0 0 0 15px rgba(212,165,116,0)} 100%{box-shadow:0 0 0 0 rgba(212,165,116,0)} }
-  .pulse-ring { animation:pulse-ring 2s ease-out infinite; }
+.tl-line{position:absolute;left:50%;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,rgba(212,165,116,.25),rgba(212,165,116,.25),transparent);transform:translateX(-50%)}
+.tl-dot{width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#d4a574,#e8b668);border:3px solid #08080d;box-shadow:0 0 0 4px rgba(212,165,116,.15)}
 
-  @keyframes rotate-slow { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-  .rotate-slow { animation:rotate-slow 20s linear infinite; }
+.gal-item{overflow:hidden;border-radius:20px;border:1px solid rgba(255,255,255,.04);transition:all .6s;cursor:pointer;position:relative}
+.gal-item::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,13,.6) 0%,transparent 50%);opacity:0;transition:opacity .4s;pointer-events:none}
+.gal-item:hover::after{opacity:1}
+.gal-item:hover{border-color:rgba(212,165,116,.25);transform:scale(1.03);box-shadow:0 25px 50px -12px rgba(0,0,0,.5)}
+.gal-item img{transition:transform .8s cubic-bezier(.25,.46,.45,.94)}
+.gal-item:hover img{transform:scale(1.12)}
 
-  .hero-gradient { background:linear-gradient(to bottom,rgba(8,8,13,0.2) 0%,rgba(8,8,13,0.5) 40%,rgba(8,8,13,0.92) 80%,rgba(8,8,13,1) 100%); }
+.dec-card{position:relative;overflow:hidden;border-radius:24px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);transition:all .5s}
+.dec-card:hover{border-color:rgba(212,165,116,.2);transform:translateY(-8px);box-shadow:0 30px 60px -15px rgba(0,0,0,.4)}
+.dec-card img{transition:transform .7s}
+.dec-card:hover img{transform:scale(1.08)}
 
-  .timeline-line { position:absolute; left:50%; top:0; bottom:0; width:1px; background:linear-gradient(to bottom,transparent,rgba(212,165,116,0.25),rgba(212,165,116,0.25),transparent); transform:translateX(-50%); }
-  .timeline-dot { width:14px; height:14px; border-radius:50%; background:linear-gradient(135deg,#d4a574,#e8b668); border:3px solid #08080d; box-shadow:0 0 0 4px rgba(212,165,116,0.15); }
+.swatch{width:48px;height:48px;border-radius:50%;border:2px solid rgba(255,255,255,.1);transition:all .3s;cursor:pointer}
+.swatch:hover{transform:scale(1.2);border-color:rgba(255,255,255,.3)}
 
-  .countdown-box { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); backdrop-filter:blur(10px); }
+input,textarea,select{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);color:#fff;transition:all .3s;outline:none;font-family:'Inter',sans-serif}
+input:focus,textarea:focus,select:focus{border-color:rgba(212,165,116,.5);box-shadow:0 0 0 4px rgba(212,165,116,.08);background:rgba(255,255,255,.05)}
+input::placeholder,textarea::placeholder{color:rgba(255,255,255,.25)}
+select option{background:#16161f;color:#fff}
 
-  .gallery-item { overflow:hidden; border-radius:20px; border:1px solid rgba(255,255,255,0.04); transition:all 0.6s ease; cursor:pointer; position:relative; }
-  .gallery-item::after { content:''; position:absolute; inset:0; background:linear-gradient(to top,rgba(8,8,13,0.6) 0%,transparent 50%); opacity:0; transition:opacity 0.4s ease; pointer-events:none; }
-  .gallery-item:hover::after { opacity:1; }
-  .gallery-item:hover { border-color:rgba(212,165,116,0.25); transform:scale(1.03); box-shadow:0 25px 50px -12px rgba(0,0,0,0.5); }
-  .gallery-item img { transition:transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94); }
-  .gallery-item:hover img { transform:scale(1.12); }
+.si{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;transition:all .4s}
+.si-a{background:linear-gradient(135deg,#d4a574,#e8b668);color:#08080d;box-shadow:0 0 20px -4px rgba(212,165,116,.5)}
+.si-d{background:rgba(163,184,156,.2);color:#a3b89c;border:1px solid rgba(163,184,156,.3)}
+.si-p{background:rgba(255,255,255,.05);color:rgba(255,255,255,.3);border:1px solid rgba(255,255,255,.08)}
+.sl{height:2px;flex:1;background:rgba(255,255,255,.06);position:relative;overflow:hidden}
+.slf{position:absolute;inset:0;background:linear-gradient(to right,#d4a574,#e8b668);transform:scaleX(0);transform-origin:left;transition:transform .6s}
+.slf.f{transform:scaleX(1)}
 
-  .decor-card { position:relative; overflow:hidden; border-radius:24px; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02); transition:all 0.5s ease; }
-  .decor-card:hover { border-color:rgba(212,165,116,0.2); transform:translateY(-8px); box-shadow:0 30px 60px -15px rgba(0,0,0,0.4); }
-  .decor-card img { transition:transform 0.7s ease; }
-  .decor-card:hover img { transform:scale(1.08); }
+.conf-card{background:linear-gradient(135deg,rgba(212,165,116,.08),rgba(232,180,184,.05));border:1px solid rgba(212,165,116,.2);border-radius:24px}
 
-  .color-swatch { width:48px; height:48px; border-radius:50%; border:2px solid rgba(255,255,255,0.1); transition:all 0.3s ease; cursor:pointer; }
-  .color-swatch:hover { transform:scale(1.2); border-color:rgba(255,255,255,0.3); }
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(120px);padding:16px 32px;border-radius:16px;font-weight:500;z-index:1000;transition:all .5s cubic-bezier(.34,1.56,.64,1);backdrop-filter:blur(20px);white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast-ok{background:rgba(163,184,156,.95);color:#08080d;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+.toast-err{background:rgba(184,99,110,.95);color:#fff;box-shadow:0 10px 40px rgba(0,0,0,.3)}
 
-  input,textarea,select { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); color:#fff; transition:all 0.3s ease; outline:none; font-family:'Inter',sans-serif; }
-  input:focus,textarea:focus,select:focus { border-color:rgba(212,165,116,0.5); box-shadow:0 0 0 4px rgba(212,165,116,0.08); background:rgba(255,255,255,0.05); }
-  input::placeholder,textarea::placeholder { color:rgba(255,255,255,0.25); }
-  select option { background:#16161f; color:#fff; }
+.confetti{position:fixed;pointer-events:none;z-index:999}
 
-  .step-indicator { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; transition:all 0.4s ease; }
-  .step-active { background:linear-gradient(135deg,#d4a574,#e8b668); color:#08080d; box-shadow:0 0 20px -4px rgba(212,165,116,0.5); }
-  .step-done { background:rgba(163,184,156,0.2); color:#a3b89c; border:1px solid rgba(163,184,156,0.3); }
-  .step-pending { background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.3); border:1px solid rgba(255,255,255,0.08); }
+.nav-l{position:relative;color:rgba(255,255,255,.6) !important}
+.nav-l::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:linear-gradient(to right,#d4a574,#e8b668);transition:width .3s;border-radius:1px}
+.nav-l:hover{color:#d4a574 !important}
+.nav-l:hover::after{width:100%}
 
-  .step-line { height:2px; flex:1; background:rgba(255,255,255,0.06); position:relative; overflow:hidden; }
-  .step-line-fill { position:absolute; inset:0; background:linear-gradient(to right,#d4a574,#e8b668); transform:scaleX(0); transform-origin:left; transition:transform 0.6s ease; }
-  .step-line-fill.filled { transform:scaleX(1); }
+.at th{background:rgba(212,165,116,.08)}
+.at tr{border-bottom:1px solid rgba(255,255,255,.04)}
+.at tr:hover{background:rgba(255,255,255,.02)}
+.badge-y{background:rgba(163,184,156,.15);color:#a3b89c;border:1px solid rgba(163,184,156,.2);padding:2px 10px;border-radius:999px;font-size:11px;font-weight:500}
+.badge-n{background:rgba(184,99,110,.15);color:#d4868e;border:1px solid rgba(184,99,110,.2);padding:2px 10px;border-radius:999px;font-size:11px;font-weight:500}
 
-  .confirmation-card { background:linear-gradient(135deg,rgba(212,165,116,0.08),rgba(232,180,184,0.05)); border:1px solid rgba(212,165,116,0.2); border-radius:24px; }
+@keyframes check{0%{stroke-dashoffset:50}100%{stroke-dashoffset:0}}
 
-  .toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(120px); padding:16px 32px; border-radius:16px; font-weight:500; z-index:1000; transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1); backdrop-filter:blur(20px); }
-  .toast.show { transform:translateX(-50%) translateY(0); }
-  .toast-success { background:rgba(163,184,156,0.95); color:#08080d; box-shadow:0 10px 40px rgba(0,0,0,0.3); }
-  .toast-error { background:rgba(184,99,110,0.95); color:#fff; box-shadow:0 10px 40px rgba(0,0,0,0.3); }
+.modal{position:fixed;inset:0;background:rgba(8,8,13,.85);backdrop-filter:blur(8px);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
+.modal.on{display:flex}
 
-  .confetti-piece { position:fixed; width:10px; height:10px; z-index:999; pointer-events:none; }
+.faq-i{border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);border-radius:16px;overflow:hidden;transition:all .3s}
+.faq-i:hover{border-color:rgba(212,165,116,.15)}
+.faq-q{cursor:pointer;padding:20px 24px;display:flex;align-items:center;gap:16px;user-select:none}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s,padding .4s}
+.faq-i.open .faq-a{max-height:300px;padding:0 24px 20px}
+.faq-i.open .faq-chev{transform:rotate(180deg)}
+.faq-chev{transition:transform .3s;flex-shrink:0}
 
-  .nav-link { position:relative; }
-  .nav-link::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:1px; background:linear-gradient(to right,#d4a574,#e8b668); transition:width 0.3s ease; border-radius:1px; }
-  .nav-link:hover::after { width:100%; }
+.db-dot{width:6px;height:6px;border-radius:50%;display:inline-block}
+.db-on{color:#a3b89c;background:rgba(163,184,156,.1);border:1px solid rgba(163,184,156,.2)}
+.db-on .db-dot{background:#a3b89c;animation:pulse-ring 2s infinite}
+.db-off{color:#d4868e;background:rgba(184,99,110,.1);border:1px solid rgba(184,99,110,.2)}
+.db-off .db-dot{background:#d4868e}
 
-  .admin-table th { background:rgba(212,165,116,0.08); }
-  .admin-table tr { border-bottom:1px solid rgba(255,255,255,0.04); }
-  .admin-table tr:hover { background:rgba(255,255,255,0.02); }
+.row-new{animation:rowFlash 1.5s ease}
+@keyframes rowFlash{0%{background:rgba(212,165,116,.15)}100%{background:transparent}}
 
-  .badge-yes { background:rgba(163,184,156,0.15); color:#a3b89c; border:1px solid rgba(163,184,156,0.2); padding:2px 10px; border-radius:999px; font-size:11px; font-weight:500; }
-  .badge-no { background:rgba(184,99,110,0.15); color:#d4868e; border:1px solid rgba(184,99,110,0.2); padding:2px 10px; border-radius:999px; font-size:11px; font-weight:500; }
-  .badge-pending { background:rgba(240,201,135,0.15); color:#f0c987; border:1px solid rgba(240,201,135,0.2); padding:2px 10px; border-radius:999px; font-size:11px; font-weight:500; }
+/* ✅ Inline SVG icon fallback — always visible */
+.svg-icon{width:16px;height:16px;flex-shrink:0}
+.svg-icon-sm{width:14px;height:14px;flex-shrink:0}
 
-  @keyframes checkmark { 0%{stroke-dashoffset:50} 100%{stroke-dashoffset:0} }
-
-  .modal-overlay { position:fixed; inset:0; background:rgba(8,8,13,0.85); backdrop-filter:blur(8px); z-index:100; display:none; align-items:center; justify-content:center; padding:20px; }
-  .modal-overlay.active { display:flex; }
-
-  .faq-item { border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02); border-radius:16px; overflow:hidden; transition:all 0.3s ease; }
-  .faq-item:hover { border-color:rgba(212,165,116,0.15); }
-  .faq-question { cursor:pointer; padding:20px 24px; display:flex; align-items:center; justify-content:between; gap:16px; user-select:none; }
-  .faq-answer { max-height:0; overflow:hidden; transition:max-height 0.4s ease, padding 0.4s ease; }
-  .faq-item.open .faq-answer { max-height:300px; padding:0 24px 20px; }
-  .faq-item.open .faq-chevron { transform:rotate(180deg); }
-  .faq-chevron { transition:transform 0.3s ease; flex-shrink:0; }
-
-  /* Firebase status indicator */
-  .firebase-status { display:inline-flex; align-items:center; gap:6px; font-size:10px; padding:4px 10px; border-radius:999px; }
-  .firebase-connected { background:rgba(163,184,156,0.1); color:#a3b89c; border:1px solid rgba(163,184,156,0.2); }
-  .firebase-disconnected { background:rgba(184,99,110,0.1); color:#d4868e; border:1px solid rgba(184,99,110,0.2); }
-  .firebase-dot { width:6px; height:6px; border-radius:50%; }
-  .firebase-connected .firebase-dot { background:#a3b89c; animation:pulse-ring 2s infinite; }
-  .firebase-disconnected .firebase-dot { background:#d4868e; }
-
-  @media(max-width:768px) {
-    .timeline-line { left:20px; }
-  }
+@media(max-width:768px){.tl-line{left:20px}}
 </style>
 
 <script type="importmap">
-{
-  "imports": {
-    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-  }
-}
+{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
 </script>
 </head>
 <body>
 
-<canvas id="three-canvas"></canvas>
-<div id="toast" class="toast toast-success">✓ RSVP submitted successfully!</div>
-<div id="toast-error" class="toast toast-error">✗ Please fill in all required fields</div>
-<div id="confetti-container"></div>
+<canvas id="bg-canvas"></canvas>
 
-<!-- Image Lightbox Modal -->
-<div id="lightbox" class="modal-overlay" onclick="this.classList.remove('active')">
+<!-- Toasts -->
+<div id="toast-ok" class="toast toast-ok">✓ RSVP submitted successfully!</div>
+<div id="toast-err" class="toast toast-err">✗ Please fill in all required fields</div>
+
+<!-- Lightbox -->
+<div id="lb" class="modal" onclick="this.classList.remove('on')">
   <div class="max-w-4xl w-full" onclick="event.stopPropagation()">
-    <img id="lightbox-img" src="" alt="" class="w-full rounded-2xl border border-white/10 shadow-2xl">
-    <button onclick="document.getElementById('lightbox').classList.remove('active')" class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition-all">
-      <i data-lucide="x" class="w-5 h-5"></i>
-    </button>
+    <img id="lb-img" src="" class="w-full rounded-2xl border border-white/10 shadow-2xl">
+    <button onclick="document.getElementById('lb').classList.remove('on')" class="absolute top-6 right-6 icon-btn" style="width:40px;height:40px;color:rgba(255,255,255,.6)">✕</button>
   </div>
 </div>
 
-<!-- Admin Panel Modal -->
-<div id="admin-modal" class="modal-overlay" onclick="if(event.target===this)this.classList.remove('active')">
+<!-- Admin Modal -->
+<div id="admin-m" class="modal" onclick="if(event.target===this)this.classList.remove('on')">
   <div class="bg-dark-700 border border-white/10 rounded-3xl max-w-4xl w-full max-h-[85vh] overflow-hidden flex flex-col" onclick="event.stopPropagation()">
     <div class="p-6 border-b border-white/5 flex items-center justify-between">
       <div>
-        <div class="flex items-center gap-3">
-          <h3 class="font-serif text-xl">RSVP Dashboard</h3>
-          <span id="firebase-status" class="firebase-status firebase-disconnected">
-            <span class="firebase-dot"></span>
-            <span id="firebase-status-text">Connecting...</span>
-          </span>
+        <div class="flex items-center gap-3 flex-wrap">
+          <h3 class="font-serif text-xl text-white">RSVP Dashboard</h3>
+          <span id="db-stat" class="text-[10px] px-2.5 py-1 rounded-full db-off flex items-center gap-1.5"><span class="db-dot"></span><span id="db-txt">Connecting</span></span>
         </div>
-        <p class="text-xs text-neutral-500 mt-1">Real-time guest responses — synced across all devices</p>
+        <p class="text-xs text-neutral-500 mt-1">All guest responses — synced in real-time</p>
       </div>
-      <button onclick="document.getElementById('admin-modal').classList.remove('active')" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-all">
-        <i data-lucide="x" class="w-5 h-5"></i>
-      </button>
+      <button onclick="document.getElementById('admin-m').classList.remove('on')" class="icon-btn" style="color:rgba(255,255,255,.4)">✕</button>
     </div>
     <div class="overflow-auto flex-1 p-6">
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-        <div class="bg-white/3 rounded-2xl p-4 text-center border border-white/5">
-          <p class="text-2xl font-serif text-gold-200" id="stat-total">0</p>
-          <p class="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">Total</p>
-        </div>
-        <div class="bg-white/3 rounded-2xl p-4 text-center border border-white/5">
-          <p class="text-2xl font-serif text-sage-300" id="stat-attending">0</p>
-          <p class="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">Attending</p>
-        </div>
-        <div class="bg-white/3 rounded-2xl p-4 text-center border border-white/5">
-          <p class="text-2xl font-serif text-rose-300" id="stat-declined">0</p>
-          <p class="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">Declined</p>
-        </div>
-        <div class="bg-white/3 rounded-2xl p-4 text-center border border-white/5">
-          <p class="text-2xl font-serif text-gold-300" id="stat-guests">0</p>
-          <p class="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">Total Guests</p>
-        </div>
+        <div class="bg-white/3 rounded-2xl p-4 text-center border border-white/5"><p class="text-2xl font-serif text-gold-200" id="s-t">0</p><p class="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">Total</p></div>
+        <div class="bg-white/3 rounded-2xl p-4 text-center border border-white/5"><p class="text-2xl font-serif text-sage-300" id="s-a">0</p><p class="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">Attending</p></div>
+        <div class="bg-white/3 rounded-2xl p-4 text-center border border-white/5"><p class="text-2xl font-serif text-rose-300" id="s-d">0</p><p class="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">Declined</p></div>
+        <div class="bg-white/3 rounded-2xl p-4 text-center border border-white/5"><p class="text-2xl font-serif text-gold-300" id="s-g">0</p><p class="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">Total Guests</p></div>
       </div>
       <div class="overflow-x-auto rounded-xl border border-white/5">
-        <table class="admin-table w-full text-sm">
-          <thead>
-            <tr>
-              <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium">ID</th>
-              <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium">Name</th>
-              <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium hidden sm:table-cell">Email</th>
-              <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium">Status</th>
-              <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium hidden md:table-cell">Guests</th>
-              <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium hidden lg:table-cell">Date</th>
-            </tr>
-          </thead>
-          <tbody id="admin-table-body">
-            <tr><td colspan="6" class="text-center py-12 text-neutral-600">Loading from database...</td></tr>
-          </tbody>
+        <table class="at w-full text-sm">
+          <thead><tr>
+            <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium">ID</th>
+            <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium">Name</th>
+            <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium hidden sm:table-cell">Email</th>
+            <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium">Status</th>
+            <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium hidden md:table-cell">Guests</th>
+            <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium hidden lg:table-cell">Date</th>
+          </tr></thead>
+          <tbody id="admin-tb"><tr><td colspan="6" class="text-center py-12 text-neutral-600">Connecting to database...</td></tr></tbody>
         </table>
       </div>
     </div>
     <div class="p-4 border-t border-white/5 flex items-center justify-between">
-      <button onclick="clearAllRSVPs()" class="text-xs text-rose-300 hover:text-rose-200 transition-colors">Clear All Data</button>
-      <button onclick="exportCSV()" class="btn-outline px-4 py-2 rounded-lg text-xs flex items-center gap-2">
-        <i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV
-      </button>
+      <button onclick="clearAll()" class="text-xs text-rose-300 hover:text-rose-200 transition-colors">Clear All Data</button>
+      <button onclick="exportCSV()" class="btn-o px-4 py-2 rounded-lg text-xs">⬇ Export CSV</button>
     </div>
   </div>
 </div>
 
 <!-- Confirmation Modal -->
-<div id="confirm-modal" class="modal-overlay" onclick="if(event.target===this)this.classList.remove('active')">
+<div id="conf-m" class="modal" onclick="if(event.target===this)this.classList.remove('on')">
   <div class="max-w-lg w-full" onclick="event.stopPropagation()">
-    <div class="confirmation-card p-8 sm:p-10 text-center">
-      <div class="w-20 h-20 rounded-full bg-sage-300/15 flex items-center justify-center mx-auto mb-6 pulse-ring">
-        <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-          <path d="M10 18L16 24L26 12" stroke="#a3b89c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="stroke-dasharray:50;animation:checkmark 0.6s ease 0.3s forwards;stroke-dashoffset:50"/>
-        </svg>
+    <div class="conf-card p-8 sm:p-10 text-center">
+      <div class="w-20 h-20 rounded-full bg-sage-300/15 flex items-center justify-center mx-auto mb-6 pulse-r">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M10 18L16 24L26 12" stroke="#a3b89c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="stroke-dasharray:50;animation:check .6s ease .3s forwards;stroke-dashoffset:50"/></svg>
       </div>
-      <p class="text-xs font-medium tracking-[0.2em] uppercase text-gold-400 mb-2">Confirmation</p>
-      <h3 class="font-serif text-2xl sm:text-3xl mb-2">You're <span class="text-gradient-gold">Confirmed</span></h3>
-      <p class="text-sm text-neutral-400 mb-6">We've received your response. Here are your details:</p>
+      <p class="text-xs font-medium tracking-[.2em] uppercase text-gold-400 mb-2">Confirmation</p>
+      <h3 class="font-serif text-2xl sm:text-3xl mb-2 text-white">You're <span class="text-gold-grad">Confirmed</span></h3>
+      <p class="text-sm text-neutral-400 mb-6">We've received your response:</p>
       <div class="bg-dark-900/50 rounded-2xl p-5 text-left space-y-3 mb-6 border border-white/5">
-        <div class="flex justify-between text-sm">
-          <span class="text-neutral-500">Confirmation #</span>
-          <span class="text-gold-200 font-mono font-medium" id="confirm-id">—</span>
-        </div>
-        <div class="flex justify-between text-sm">
-          <span class="text-neutral-500">Name</span>
-          <span class="text-white" id="confirm-name">—</span>
-        </div>
-        <div class="flex justify-between text-sm">
-          <span class="text-neutral-500">Response</span>
-          <span id="confirm-status">—</span>
-        </div>
-        <div class="flex justify-between text-sm">
-          <span class="text-neutral-500">Guests</span>
-          <span class="text-white" id="confirm-guests">—</span>
-        </div>
-        <div class="flex justify-between text-sm">
-          <span class="text-neutral-500">Date Submitted</span>
-          <span class="text-white text-xs" id="confirm-date">—</span>
-        </div>
+        <div class="flex justify-between text-sm"><span class="text-neutral-500">Confirmation #</span><span class="text-gold-200 font-mono font-medium" id="c-id">—</span></div>
+        <div class="flex justify-between text-sm"><span class="text-neutral-500">Name</span><span class="text-white" id="c-name">—</span></div>
+        <div class="flex justify-between text-sm"><span class="text-neutral-500">Response</span><span id="c-status">—</span></div>
+        <div class="flex justify-between text-sm"><span class="text-neutral-500">Guests</span><span class="text-white" id="c-guests">—</span></div>
+        <div class="flex justify-between text-sm"><span class="text-neutral-500">Submitted</span><span class="text-white text-xs" id="c-date">—</span></div>
       </div>
       <div class="flex flex-col sm:flex-row gap-3">
-        <button onclick="printConfirmation()" class="btn-gold flex-1 py-3 rounded-xl text-sm flex items-center justify-center gap-2">
-          <i data-lucide="printer" class="w-4 h-4"></i> Print
-        </button>
-        <button onclick="closeConfirmation()" class="btn-outline flex-1 py-3 rounded-xl text-sm">Close</button>
+        <button onclick="window.print()" class="btn-g flex-1 py-3 rounded-xl text-sm">🖨 Print</button>
+        <button onclick="document.getElementById('conf-m').classList.remove('on')" class="btn-o flex-1 py-3 rounded-xl text-sm">Close</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="section-wrapper">
+<!-- ═════════════ PAGE CONTENT ═════════════ -->
+<div class="z1">
 
-  <!-- Navigation -->
-  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500" style="background:transparent;">
-    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-      <a href="#hero" class="font-serif text-2xl tracking-wide">
-        <span class="text-gold-200">J</span><span class="text-white/20 mx-1">&</span><span class="text-rose-200">O</span>
-      </a>
-      <div class="hidden lg:flex items-center gap-8">
-        <a href="#story" class="nav-link text-[13px] text-neutral-400 hover:text-gold-200 transition-colors">Our Story</a>
-        <a href="#decor" class="nav-link text-[13px] text-neutral-400 hover:text-gold-200 transition-colors">Decor</a>
-        <a href="#details" class="nav-link text-[13px] text-neutral-400 hover:text-gold-200 transition-colors">Details</a>
-        <a href="#gallery" class="nav-link text-[13px] text-neutral-400 hover:text-gold-200 transition-colors">Gallery</a>
-        <a href="#faq" class="nav-link text-[13px] text-neutral-400 hover:text-gold-200 transition-colors">FAQ</a>
-        <a href="#rsvp" class="nav-link text-[13px] text-neutral-400 hover:text-gold-200 transition-colors">RSVP</a>
-      </div>
-      <div class="flex items-center gap-3">
-        <button onclick="openAdmin()" class="hidden sm:flex w-9 h-9 rounded-full border border-white/10 items-center justify-center text-neutral-500 hover:text-gold-200 hover:border-gold-400/30 transition-all" title="Admin Dashboard">
-          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-        </button>
-        <a href="#rsvp" class="btn-gold px-5 py-2.5 rounded-full text-xs hidden md:inline-block">RSVP NOW</a>
-        <button id="mobile-menu-btn" class="lg:hidden text-white/60 hover:text-white transition-colors">
-          <i data-lucide="menu" class="w-6 h-6"></i>
-        </button>
+<!-- Nav -->
+<nav id="nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+  <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+    <a href="#hero" class="font-serif text-2xl tracking-wide"><span class="text-gold-200">J</span><span class="text-white/20 mx-1">&</span><span class="text-rose-200">O</span></a>
+    <div class="hidden lg:flex items-center gap-8">
+      <a href="#story" class="nav-l text-[13px]">Our Story</a>
+      <a href="#decor" class="nav-l text-[13px]">Decor</a>
+      <a href="#details" class="nav-l text-[13px]">Details</a>
+      <a href="#gallery" class="nav-l text-[13px]">Gallery</a>
+      <a href="#faq" class="nav-l text-[13px]">FAQ</a>
+      <a href="#rsvp" class="nav-l text-[13px]">RSVP</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <button onclick="openAdmin()" class="icon-btn hidden sm:flex" title="Dashboard">📊</button>
+      <a href="#rsvp" class="btn-g px-5 py-2.5 rounded-full text-xs hidden md:inline-flex">RSVP NOW</a>
+      <button id="mob-btn" class="icon-btn lg:hidden" style="width:40px;height:40px;font-size:20px">☰</button>
+    </div>
+  </div>
+  <div id="mob-menu" class="lg:hidden hidden bg-dark-800/95 backdrop-blur-xl border-t border-white/5 px-6 py-2">
+    <a href="#story" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5 transition-colors">Our Story</a>
+    <a href="#decor" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5 transition-colors">Decor</a>
+    <a href="#details" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5 transition-colors">Details</a>
+    <a href="#gallery" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5 transition-colors">Gallery</a>
+    <a href="#faq" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5 transition-colors">FAQ</a>
+    <a href="#rsvp" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 transition-colors">RSVP</a>
+    <div class="py-3 border-t border-white/5 mt-1"><button onclick="openAdmin()" class="text-sm text-neutral-500 hover:text-gold-200 flex items-center gap-2 transition-colors">📊 Dashboard</button></div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section id="hero" class="relative min-h-screen flex flex-col items-center justify-center px-6">
+  <div class="hero-bg absolute inset-0 z-10"></div>
+  <div class="relative z-20 text-center max-w-4xl mx-auto">
+    <div class="fade-up mb-8">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold-400/15 bg-gold-400/5 mb-6">
+        <span class="w-2 h-2 rounded-full bg-sage-300 animate-pulse"></span>
+        <span class="text-[11px] font-medium tracking-widest uppercase text-gold-300">Save the Date</span>
       </div>
     </div>
-    <div id="mobile-menu" class="lg:hidden hidden bg-dark-800/95 backdrop-blur-xl border-t border-white/5 px-6 py-2">
-      <a href="#story" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 transition-colors border-b border-white/5">Our Story</a>
-      <a href="#decor" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 transition-colors border-b border-white/5">Decor</a>
-      <a href="#details" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 transition-colors border-b border-white/5">Details</a>
-      <a href="#gallery" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 transition-colors border-b border-white/5">Gallery</a>
-      <a href="#faq" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 transition-colors border-b border-white/5">FAQ</a>
-      <a href="#rsvp" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 transition-colors">RSVP</a>
-      <div class="py-3 border-t border-white/5 mt-1">
-        <button onclick="openAdmin()" class="text-sm text-neutral-500 hover:text-gold-200 transition-colors flex items-center gap-2">
-          <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Admin Dashboard
-        </button>
+    <h1 class="fade-up font-serif text-6xl sm:text-8xl lg:text-9xl font-normal tracking-tight leading-[.95] mb-6" style="transition-delay:.15s">James<br><span class="text-gold-grad text-5xl sm:text-6xl lg:text-7xl italic">&</span><br>Olivia</h1>
+    <div class="fade-up flex items-center justify-center gap-4 mt-4 mb-8" style="transition-delay:.3s"><div class="w-12 h-px bg-gradient-to-r from-transparent to-gold-400/40"></div><div class="w-2 h-2 rotate-45 border border-gold-400/40"></div><div class="w-12 h-px bg-gradient-to-l from-transparent to-gold-400/40"></div></div>
+    <p class="fade-up font-serif text-xl sm:text-2xl text-neutral-300 italic mb-1" style="transition-delay:.4s">June Fourteenth</p>
+    <p class="fade-up text-sm text-neutral-500 mb-12" style="transition-delay:.45s">Two Thousand Twenty-Five · Tuscany, Italy</p>
+    <div class="fade-up flex items-center justify-center gap-2 sm:gap-4" style="transition-delay:.55s">
+      <div class="cd-box rounded-2xl px-5 py-5 text-center min-w-[80px]"><span id="cd-d" class="block text-3xl sm:text-4xl font-serif text-gold-200">--</span><span class="text-[9px] uppercase tracking-[.2em] text-neutral-600 mt-1.5 block">Days</span></div>
+      <span class="text-gold-400/20 text-xl">:</span>
+      <div class="cd-box rounded-2xl px-5 py-5 text-center min-w-[80px]"><span id="cd-h" class="block text-3xl sm:text-4xl font-serif text-gold-200">--</span><span class="text-[9px] uppercase tracking-[.2em] text-neutral-600 mt-1.5 block">Hours</span></div>
+      <span class="text-gold-400/20 text-xl">:</span>
+      <div class="cd-box rounded-2xl px-5 py-5 text-center min-w-[80px]"><span id="cd-m" class="block text-3xl sm:text-4xl font-serif text-gold-200">--</span><span class="text-[9px] uppercase tracking-[.2em] text-neutral-600 mt-1.5 block">Mins</span></div>
+      <span class="text-gold-400/20 text-xl">:</span>
+      <div class="cd-box rounded-2xl px-5 py-5 text-center min-w-[80px]"><span id="cd-s" class="block text-3xl sm:text-4xl font-serif text-gold-200">--</span><span class="text-[9px] uppercase tracking-[.2em] text-neutral-600 mt-1.5 block">Secs</span></div>
+    </div>
+    <div class="fade-up mt-12 flex flex-col sm:flex-row items-center justify-center gap-4" style="transition-delay:.7s">
+      <a href="#rsvp" class="btn-g px-8 py-4 rounded-full text-sm">Confirm Your Attendance</a>
+      <a href="#story" class="btn-o px-8 py-4 rounded-full text-sm">Our Story</a>
+    </div>
+  </div>
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 float">
+    <span class="text-[9px] uppercase tracking-[.25em] text-neutral-700">Scroll</span>
+    <div class="w-5 h-8 rounded-full border border-neutral-700 flex items-start justify-center p-1"><div class="w-1 h-2 rounded-full bg-gold-400/50 animate-bounce"></div></div>
+  </div>
+</section>
+
+<!-- Story -->
+<section id="story" class="py-28 sm:py-36 px-6">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-24">
+      <p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">How It All Began</p>
+      <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">Our <span class="text-gold-grad">Love</span> Story</h2>
+      <div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-w"></div></div>
+    </div>
+    <div class="relative">
+      <div class="tl-line hidden md:block"></div>
+      <div class="fade-l relative flex flex-col md:flex-row items-center gap-8 mb-24">
+        <div class="md:w-1/2 md:text-right md:pr-20"><span class="text-[11px] font-semibold tracking-[.2em] uppercase text-gold-400">August 2019</span><h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3 text-white">First Meeting</h3><p class="text-neutral-400 text-sm leading-relaxed">A chance encounter at a friend's dinner party in Florence. James spilled wine on Olivia's dress — and spent the rest of the evening making her laugh about it.</p></div>
+        <div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="tl-dot pulse-r"></div></div>
+        <div class="md:w-1/2 md:pl-20"><div class="rounded-2xl overflow-hidden border border-white/5 gal-item" onclick="openLB('https://picsum.photos/seed/wed-meet/800/600.jpg')"><img src="https://picsum.photos/seed/wed-meet/800/600.jpg" alt="" class="w-full h-56 object-cover"></div></div>
+      </div>
+      <div class="fade-r relative flex flex-col md:flex-row-reverse items-center gap-8 mb-24">
+        <div class="md:w-1/2 md:text-left md:pl-20"><span class="text-[11px] font-semibold tracking-[.2em] uppercase text-gold-400">December 2020</span><h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3 text-white">First Date</h3><p class="text-neutral-400 text-sm leading-relaxed">A snowy evening walk along the Arno river turned into hours of conversation over espresso. They closed down the café and kept talking on a bench until dawn.</p></div>
+        <div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="tl-dot pulse-r"></div></div>
+        <div class="md:w-1/2 md:pr-20"><div class="rounded-2xl overflow-hidden border border-white/5 gal-item" onclick="openLB('https://picsum.photos/seed/wed-date/800/600.jpg')"><img src="https://picsum.photos/seed/wed-date/800/600.jpg" alt="" class="w-full h-56 object-cover"></div></div>
+      </div>
+      <div class="fade-l relative flex flex-col md:flex-row items-center gap-8 mb-24">
+        <div class="md:w-1/2 md:text-right md:pr-20"><span class="text-[11px] font-semibold tracking-[.2em] uppercase text-gold-400">June 2022</span><h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3 text-white">Moving In Together</h3><p class="text-neutral-400 text-sm leading-relaxed">A tiny apartment with a leaky faucet became their first home. They learned to cook together, argue about furniture, and fall deeper in love every single day.</p></div>
+        <div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="tl-dot pulse-r"></div></div>
+        <div class="md:w-1/2 md:pl-20"><div class="rounded-2xl overflow-hidden border border-white/5 gal-item" onclick="openLB('https://picsum.photos/seed/wed-home/800/600.jpg')"><img src="https://picsum.photos/seed/wed-home/800/600.jpg" alt="" class="w-full h-56 object-cover"></div></div>
+      </div>
+      <div class="fade-r relative flex flex-col md:flex-row-reverse items-center gap-8">
+        <div class="md:w-1/2 md:text-left md:pl-20"><span class="text-[11px] font-semibold tracking-[.2em] uppercase text-gold-400">September 2024</span><h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3 text-white">The Proposal</h3><p class="text-neutral-400 text-sm leading-relaxed">Under a canopy of stars in the Tuscan countryside, James got down on one knee. Olivia said yes before he even finished the question.</p></div>
+        <div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="tl-dot pulse-r"></div></div>
+        <div class="md:w-1/2 md:pr-20"><div class="rounded-2xl overflow-hidden border border-white/5 gal-item" onclick="openLB('https://picsum.photos/seed/wed-prop/800/600.jpg')"><img src="https://picsum.photos/seed/wed-prop/800/600.jpg" alt="" class="w-full h-56 object-cover"></div></div>
       </div>
     </div>
-  </nav>
+  </div>
+</section>
 
-  <!-- HERO -->
-  <section id="hero" class="relative min-h-screen flex flex-col items-center justify-center px-6">
-    <div class="hero-gradient absolute inset-0 z-10"></div>
-    <div class="relative z-20 text-center max-w-4xl mx-auto">
-      <div class="fade-up mb-8">
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold-400/15 bg-gold-400/5 mb-6">
-          <span class="w-2 h-2 rounded-full bg-sage-300 animate-pulse"></span>
-          <span class="text-[11px] font-medium tracking-widest uppercase text-gold-300">Save the Date</span>
-        </div>
-      </div>
-      <h1 class="fade-up font-serif text-6xl sm:text-8xl lg:text-9xl font-400 tracking-tight leading-[0.95] mb-6" style="transition-delay:0.15s">
-        James<br>
-        <span class="text-gradient-gold text-5xl sm:text-6xl lg:text-7xl italic font-400">&</span><br>
-        Olivia
-      </h1>
-      <div class="fade-up flex items-center justify-center gap-4 mt-4 mb-8" style="transition-delay:0.3s">
-        <div class="w-12 h-px bg-gradient-to-r from-transparent to-gold-400/40"></div>
-        <div class="w-2 h-2 rotate-45 border border-gold-400/40"></div>
-        <div class="w-12 h-px bg-gradient-to-l from-transparent to-gold-400/40"></div>
-      </div>
-      <p class="fade-up font-serif text-xl sm:text-2xl text-neutral-300 italic mb-1" style="transition-delay:0.4s">June Fourteenth</p>
-      <p class="fade-up text-sm text-neutral-500 mb-12" style="transition-delay:0.45s">Two Thousand Twenty-Five · Tuscany, Italy</p>
-
-      <div class="fade-up flex items-center justify-center gap-2 sm:gap-4" style="transition-delay:0.55s">
-        <div class="countdown-box rounded-2xl px-5 py-5 text-center min-w-[80px]">
-          <span id="cd-days" class="block text-3xl sm:text-4xl font-serif text-gold-200">--</span>
-          <span class="text-[9px] uppercase tracking-[0.2em] text-neutral-600 mt-1.5 block">Days</span>
-        </div>
-        <span class="text-gold-400/20 text-xl">:</span>
-        <div class="countdown-box rounded-2xl px-5 py-5 text-center min-w-[80px]">
-          <span id="cd-hours" class="block text-3xl sm:text-4xl font-serif text-gold-200">--</span>
-          <span class="text-[9px] uppercase tracking-[0.2em] text-neutral-600 mt-1.5 block">Hours</span>
-        </div>
-        <span class="text-gold-400/20 text-xl">:</span>
-        <div class="countdown-box rounded-2xl px-5 py-5 text-center min-w-[80px]">
-          <span id="cd-mins" class="block text-3xl sm:text-4xl font-serif text-gold-200">--</span>
-          <span class="text-[9px] uppercase tracking-[0.2em] text-neutral-600 mt-1.5 block">Mins</span>
-        </div>
-        <span class="text-gold-400/20 text-xl">:</span>
-        <div class="countdown-box rounded-2xl px-5 py-5 text-center min-w-[80px]">
-          <span id="cd-secs" class="block text-3xl sm:text-4xl font-serif text-gold-200">--</span>
-          <span class="text-[9px] uppercase tracking-[0.2em] text-neutral-600 mt-1.5 block">Secs</span>
-        </div>
-      </div>
-
-      <div class="fade-up mt-12 flex flex-col sm:flex-row items-center justify-center gap-4" style="transition-delay:0.7s">
-        <a href="#rsvp" class="btn-gold px-8 py-4 rounded-full text-sm">Confirm Your Attendance</a>
-        <a href="#story" class="btn-outline px-8 py-4 rounded-full text-sm">Our Story</a>
+<!-- Decor -->
+<section id="decor" class="py-28 sm:py-36 px-6 relative">
+  <div class="absolute inset-0 bg-gradient-to-b from-transparent via-gold-400/[.02] to-transparent pointer-events-none"></div>
+  <div class="max-w-6xl mx-auto relative">
+    <div class="text-center mb-20">
+      <p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">Design & Aesthetics</p>
+      <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">Wedding <span class="text-gold-grad">Decor</span></h2>
+      <div class="fade-up flex items-center justify-center gap-3 mt-5 mb-4"><div class="divider-w"></div></div>
+      <p class="fade-up text-neutral-400 text-sm max-w-xl mx-auto">A romantic celebration inspired by Tuscan sunsets and the timeless elegance of Italian countryside weddings.</p>
+    </div>
+    <div class="fade-up mb-16">
+      <h3 class="font-serif text-xl text-center mb-8 text-white">Color <span class="text-gold-grad">Palette</span></h3>
+      <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+        <div class="text-center"><div class="swatch mx-auto" style="background:#d4a574"></div><p class="text-[10px] text-neutral-500 mt-2">Gold</p></div>
+        <div class="text-center"><div class="swatch mx-auto" style="background:#e8b4b8"></div><p class="text-[10px] text-neutral-500 mt-2">Rose</p></div>
+        <div class="text-center"><div class="swatch mx-auto" style="background:#a3b89c"></div><p class="text-[10px] text-neutral-500 mt-2">Sage</p></div>
+        <div class="text-center"><div class="swatch mx-auto" style="background:#faf6f0"></div><p class="text-[10px] text-neutral-500 mt-2">Ivory</p></div>
+        <div class="text-center"><div class="swatch mx-auto" style="background:#f5ede0"></div><p class="text-[10px] text-neutral-500 mt-2">Champagne</p></div>
+        <div class="text-center"><div class="swatch mx-auto" style="background:#2a2a38"></div><p class="text-[10px] text-neutral-500 mt-2">Charcoal</p></div>
       </div>
     </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="scale-in dec-card"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-floral/600/400.jpg" class="w-full h-52 object-cover"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-gold-400 mb-2">🌸 Florals</p><h4 class="font-serif text-lg mb-2 text-white">Floral Arrangements</h4><p class="text-xs text-neutral-400 leading-relaxed">Lush garden-style bouquets with white roses, peonies, trailing ivy, and dried lavender.</p></div></div>
+      <div class="scale-in dec-card" style="transition-delay:.1s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-table/600/400.jpg" class="w-full h-52 object-cover"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-rose-300 mb-2">🍽 Tables</p><h4 class="font-serif text-lg mb-2 text-white">Table Settings</h4><p class="text-xs text-neutral-400 leading-relaxed">Long farmhouse tables with gold-rimmed china, linen runners, and candlelit centerpieces.</p></div></div>
+      <div class="scale-in dec-card" style="transition-delay:.2s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-lighting/600/400.jpg" class="w-full h-52 object-cover"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-gold-300 mb-2">💡 Lighting</p><h4 class="font-serif text-lg mb-2 text-white">Ambient Lighting</h4><p class="text-xs text-neutral-400 leading-relaxed">Fairy lights through olive trees, warm uplighting, and floating candles in the pool.</p></div></div>
+      <div class="scale-in dec-card" style="transition-delay:.15s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-ceremony2/600/400.jpg" class="w-full h-52 object-cover"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-sage-300 mb-2">⛪ Ceremony</p><h4 class="font-serif text-lg mb-2 text-white">Garden Arch</h4><p class="text-xs text-neutral-400 leading-relaxed">Hand-crafted wooden arch with cascading white florals, silk ribbons, and greenery.</p></div></div>
+      <div class="scale-in dec-card" style="transition-delay:.25s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-cake2/600/400.jpg" class="w-full h-52 object-cover"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-rose-200 mb-2">🎂 Cake</p><h4 class="font-serif text-lg mb-2 text-white">The Wedding Cake</h4><p class="text-xs text-neutral-400 leading-relaxed">Four-tiered buttercream with hand-painted gold detailing and fresh roses.</p></div></div>
+      <div class="scale-in dec-card" style="transition-delay:.3s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-favors/600/400.jpg" class="w-full h-52 object-cover"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-gold-400 mb-2">🎁 Favors</p><h4 class="font-serif text-lg mb-2 text-white">Guest Favors</h4><p class="text-xs text-neutral-400 leading-relaxed">Mini bottles of Tuscan olive oil, custom-labeled in gold foil.</p></div></div>
+    </div>
+  </div>
+</section>
 
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 float-anim">
-      <span class="text-[9px] uppercase tracking-[0.25em] text-neutral-700">Scroll to explore</span>
-      <div class="w-5 h-8 rounded-full border border-neutral-700 flex items-start justify-center p-1">
-        <div class="w-1 h-2 rounded-full bg-gold-400/50 animate-bounce"></div>
+<!-- Quote -->
+<section class="py-20 px-6 relative">
+  <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at center,rgba(212,165,116,.03) 0%,transparent 70%)"></div>
+  <div class="max-w-3xl mx-auto text-center fade-up relative">
+    <div class="w-16 h-16 rounded-full border border-gold-400/10 flex items-center justify-center mx-auto mb-8 spin-s"><span style="color:rgba(212,165,116,.4);font-size:24px">♥</span></div>
+    <p class="font-serif text-2xl sm:text-3xl lg:text-4xl italic text-neutral-200 leading-relaxed mb-6">"Whatever our souls are made of, his and mine are the same."</p>
+    <div class="flex items-center justify-center gap-3"><div class="w-8 h-px bg-gold-400/30"></div><span class="text-sm text-gold-400">Emily Brontë</span><div class="w-8 h-px bg-gold-400/30"></div></div>
+  </div>
+</section>
+
+<!-- Details -->
+<section id="details" class="py-28 sm:py-36 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-20">
+      <p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">Join Us</p>
+      <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">Wedding <span class="text-gold-grad">Details</span></h2>
+      <div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-w"></div></div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-5">
+      <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400/15 to-gold-400/5 flex items-center justify-center mb-6"><span style="font-size:24px">⛪</span></div>
+        <span class="text-[10px] font-semibold tracking-[.2em] uppercase text-gold-400 mb-2 block">The Ceremony</span>
+        <h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Exchange of Vows</h3>
+        <div class="space-y-4 text-sm text-neutral-400">
+          <div class="flex items-start gap-3"><span class="text-gold-400 mt-.5 shrink-0">📅</span><span>Saturday, June 14, 2025</span></div>
+          <div class="flex items-start gap-3"><span class="text-gold-400 mt-.5 shrink-0">🕐</span><span>4:00 PM — Doors open at 3:30 PM</span></div>
+          <div class="flex items-start gap-3"><span class="text-gold-400 mt-.5 shrink-0">📍</span><span>The Rosewood Estate Chapel<br>Via della Rosa, 42 — Tuscany, Italy</span></div>
+        </div>
+        <div class="mt-6 pt-6 border-t border-white/5"><p class="text-xs text-neutral-500">Garden ceremony with seating for 150. Rain backup: Grand Hall.</p></div>
+      </div>
+      <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:.1s">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-200/15 to-rose-200/5 flex items-center justify-center mb-6"><span style="font-size:24px">🍷</span></div>
+        <span class="text-[10px] font-semibold tracking-[.2em] uppercase text-rose-200 mb-2 block">The Reception</span>
+        <h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Dinner & Dancing</h3>
+        <div class="space-y-4 text-sm text-neutral-400">
+          <div class="flex items-start gap-3"><span class="text-rose-200 mt-.5 shrink-0">📅</span><span>Saturday, June 14, 2025</span></div>
+          <div class="flex items-start gap-3"><span class="text-rose-200 mt-.5 shrink-0">🕐</span><span>6:00 PM — Until Midnight</span></div>
+          <div class="flex items-start gap-3"><span class="text-rose-200 mt-.5 shrink-0">📍</span><span>The Rosewood Terrace<br>Adjacent to the Chapel</span></div>
+        </div>
+        <div class="mt-6 pt-6 border-t border-white/5"><p class="text-xs text-neutral-500">Four-course dinner, live band, open bar. Black tie optional.</p></div>
+      </div>
+      <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:.15s">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sage-300/15 to-sage-300/5 flex items-center justify-center mb-6"><span style="font-size:24px">🛏</span></div>
+        <span class="text-[10px] font-semibold tracking-[.2em] uppercase text-sage-300 mb-2 block">Accommodation</span>
+        <h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Where to Stay</h3>
+        <p class="text-sm text-neutral-400 leading-relaxed mb-4">We've reserved rooms at Villa Toscana Inn, 5 minutes from the venue. Code: <span class="text-gold-200 font-semibold bg-gold-400/10 px-2 py-.5 rounded-md">JANDO2025</span></p>
+        <a href="#" class="inline-flex items-center gap-2 text-sm text-sage-300 hover:text-sage-200 font-medium transition-colors">Book your room →</a>
+      </div>
+      <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:.2s">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-200/15 to-rose-200/5 flex items-center justify-center mb-6"><span style="font-size:24px">🎁</span></div>
+        <span class="text-[10px] font-semibold tracking-[.2em] uppercase text-rose-200 mb-2 block">Registry</span>
+        <h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Your Presence Is Enough</h3>
+        <p class="text-sm text-neutral-400 leading-relaxed mb-4">Your love is the greatest gift. We also have a small registry and honeymoon fund if you wish.</p>
+        <a href="#" class="inline-flex items-center gap-2 text-sm text-rose-200 hover:text-rose-300 font-medium transition-colors">View registry →</a>
       </div>
     </div>
-  </section>
-
-  <!-- OUR STORY -->
-  <section id="story" class="py-28 sm:py-36 px-6">
-    <div class="max-w-5xl mx-auto">
-      <div class="text-center mb-24">
-        <p class="fade-up text-xs font-medium tracking-[0.3em] uppercase text-gold-400 mb-4">How It All Began</p>
-        <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4">Our <span class="text-gradient-gold">Love</span> Story</h2>
-        <div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-wide"></div></div>
-      </div>
-      <div class="relative">
-        <div class="timeline-line hidden md:block"></div>
-        <div class="fade-left relative flex flex-col md:flex-row items-center gap-8 mb-24">
-          <div class="md:w-1/2 md:text-right md:pr-20">
-            <span class="text-[11px] font-semibold tracking-[0.2em] uppercase text-gold-400">August 2019</span>
-            <h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3">First Meeting</h3>
-            <p class="text-neutral-400 text-sm leading-relaxed">A chance encounter at a friend's dinner party in Florence. James spilled wine on Olivia's dress — and spent the rest of the evening making her laugh about it.</p>
-          </div>
-          <div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="timeline-dot pulse-ring"></div></div>
-          <div class="md:w-1/2 md:pl-20">
-            <div class="rounded-2xl overflow-hidden border border-white/5 gallery-item" onclick="openLightbox('https://picsum.photos/seed/wed-meet/800/600.jpg')">
-              <img src="https://picsum.photos/seed/wed-meet/800/600.jpg" alt="First meeting" class="w-full h-56 object-cover">
-            </div>
-          </div>
-        </div>
-        <div class="fade-right relative flex flex-col md:flex-row-reverse items-center gap-8 mb-24">
-          <div class="md:w-1/2 md:text-left md:pl-20">
-            <span class="text-[11px] font-semibold tracking-[0.2em] uppercase text-gold-400">December 2020</span>
-            <h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3">First Date</h3>
-            <p class="text-neutral-400 text-sm leading-relaxed">A snowy evening walk along the Arno river turned into hours of conversation over espresso. They closed down the café and kept talking on a bench until dawn.</p>
-          </div>
-          <div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="timeline-dot pulse-ring"></div></div>
-          <div class="md:w-1/2 md:pr-20">
-            <div class="rounded-2xl overflow-hidden border border-white/5 gallery-item" onclick="openLightbox('https://picsum.photos/seed/wed-date/800/600.jpg')">
-              <img src="https://picsum.photos/seed/wed-date/800/600.jpg" alt="First date" class="w-full h-56 object-cover">
-            </div>
-          </div>
-        </div>
-        <div class="fade-left relative flex flex-col md:flex-row items-center gap-8 mb-24">
-          <div class="md:w-1/2 md:text-right md:pr-20">
-            <span class="text-[11px] font-semibold tracking-[0.2em] uppercase text-gold-400">June 2022</span>
-            <h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3">Moving In Together</h3>
-            <p class="text-neutral-400 text-sm leading-relaxed">A tiny apartment with a leaky faucet became their first home. They learned to cook together, argue about furniture, and fall deeper in love every single day.</p>
-          </div>
-          <div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="timeline-dot pulse-ring"></div></div>
-          <div class="md:w-1/2 md:pl-20">
-            <div class="rounded-2xl overflow-hidden border border-white/5 gallery-item" onclick="openLightbox('https://picsum.photos/seed/wed-home/800/600.jpg')">
-              <img src="https://picsum.photos/seed/wed-home/800/600.jpg" alt="Moving in" class="w-full h-56 object-cover">
-            </div>
-          </div>
-        </div>
-        <div class="fade-right relative flex flex-col md:flex-row-reverse items-center gap-8">
-          <div class="md:w-1/2 md:text-left md:pl-20">
-            <span class="text-[11px] font-semibold tracking-[0.2em] uppercase text-gold-400">September 2024</span>
-            <h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3">The Proposal</h3>
-            <p class="text-neutral-400 text-sm leading-relaxed">Under a canopy of stars in the Tuscan countryside, James got down on one knee. Olivia said yes before he even finished the question. Tears, laughter, and champagne followed.</p>
-          </div>
-          <div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="timeline-dot pulse-ring"></div></div>
-          <div class="md:w-1/2 md:pr-20">
-            <div class="rounded-2xl overflow-hidden border border-white/5 gallery-item" onclick="openLightbox('https://picsum.photos/seed/wed-prop/800/600.jpg')">
-              <img src="https://picsum.photos/seed/wed-prop/800/600.jpg" alt="Proposal" class="w-full h-56 object-cover">
-            </div>
-          </div>
-        </div>
+    <div class="fade-up mt-8 glass gold-border rounded-3xl p-8 sm:p-10">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400/15 to-rose-200/10 flex items-center justify-center shrink-0"><span style="font-size:24px">👔</span></div>
+        <div class="flex-1"><span class="text-[10px] font-semibold tracking-[.2em] uppercase text-gold-400 mb-1 block">Dress Code</span><h3 class="font-serif text-xl mb-2 text-white">Black Tie Optional</h3><p class="text-sm text-neutral-400 leading-relaxed">Formal or semi-formal attire. Tuxedos, dark suits, evening gowns, or cocktail dresses. Please avoid white or ivory.</p></div>
+        <div class="flex gap-2 shrink-0"><div class="w-8 h-8 rounded-lg" style="background:#1a1a2e;border:1px solid rgba(255,255,255,.1)"></div><div class="w-8 h-8 rounded-lg" style="background:#2a1a1a;border:1px solid rgba(255,255,255,.1)"></div><div class="w-8 h-8 rounded-lg" style="background:#1a2a1a;border:1px solid rgba(255,255,255,.1)"></div><div class="w-8 h-8 rounded-lg" style="background:#d4a574;border:1px solid rgba(255,255,255,.1)"></div></div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- WEDDING DECOR -->
-  <section id="decor" class="py-28 sm:py-36 px-6 relative">
-    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-gold-400/[0.02] to-transparent pointer-events-none"></div>
-    <div class="max-w-6xl mx-auto relative">
-      <div class="text-center mb-20">
-        <p class="fade-up text-xs font-medium tracking-[0.3em] uppercase text-gold-400 mb-4">Design & Aesthetics</p>
-        <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4">Wedding <span class="text-gradient-gold">Decor</span></h2>
-        <div class="fade-up flex items-center justify-center gap-3 mt-5 mb-4"><div class="divider-wide"></div></div>
-        <p class="fade-up text-neutral-400 text-sm max-w-xl mx-auto">A romantic celebration inspired by Tuscan sunsets, golden hour light, and the timeless elegance of Italian countryside weddings.</p>
-      </div>
-      <div class="fade-up mb-16">
-        <h3 class="font-serif text-xl text-center mb-8">Color <span class="text-gradient-gold">Palette</span></h3>
-        <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-          <div class="text-center"><div class="color-swatch mx-auto" style="background:#d4a574"></div><p class="text-[10px] text-neutral-500 mt-2 tracking-wide">Gold</p></div>
-          <div class="text-center"><div class="color-swatch mx-auto" style="background:#e8b4b8"></div><p class="text-[10px] text-neutral-500 mt-2 tracking-wide">Rose</p></div>
-          <div class="text-center"><div class="color-swatch mx-auto" style="background:#a3b89c"></div><p class="text-[10px] text-neutral-500 mt-2 tracking-wide">Sage</p></div>
-          <div class="text-center"><div class="color-swatch mx-auto" style="background:#faf6f0"></div><p class="text-[10px] text-neutral-500 mt-2 tracking-wide">Ivory</p></div>
-          <div class="text-center"><div class="color-swatch mx-auto" style="background:#f5ede0"></div><p class="text-[10px] text-neutral-500 mt-2 tracking-wide">Champagne</p></div>
-          <div class="text-center"><div class="color-swatch mx-auto" style="background:#2a2a38"></div><p class="text-[10px] text-neutral-500 mt-2 tracking-wide">Charcoal</p></div>
-        </div>
-      </div>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        <div class="scale-in decor-card" style="transition-delay:0s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-floral/600/400.jpg" alt="Floral" class="w-full h-52 object-cover"></div><div class="p-6"><div class="flex items-center gap-2 mb-2"><i data-lucide="flower-2" class="w-4 h-4 text-gold-400"></i><span class="text-[10px] font-semibold tracking-widest uppercase text-gold-400">Florals</span></div><h4 class="font-serif text-lg mb-2">Floral Arrangements</h4><p class="text-xs text-neutral-400 leading-relaxed">Lush garden-style bouquets with white roses, peonies, trailing ivy, and dried lavender from local Tuscan fields.</p></div></div>
-        <div class="scale-in decor-card" style="transition-delay:0.1s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-table/600/400.jpg" alt="Table" class="w-full h-52 object-cover"></div><div class="p-6"><div class="flex items-center gap-2 mb-2"><i data-lucide="utensils" class="w-4 h-4 text-rose-300"></i><span class="text-[10px] font-semibold tracking-widest uppercase text-rose-300">Tables</span></div><h4 class="font-serif text-lg mb-2">Table Settings</h4><p class="text-xs text-neutral-400 leading-relaxed">Long farmhouse tables with gold-rimmed china, linen runners, crystal glassware, and candlelit centerpieces.</p></div></div>
-        <div class="scale-in decor-card" style="transition-delay:0.2s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-lighting/600/400.jpg" alt="Lighting" class="w-full h-52 object-cover"></div><div class="p-6"><div class="flex items-center gap-2 mb-2"><i data-lucide="lamp" class="w-4 h-4 text-gold-300"></i><span class="text-[10px] font-semibold tracking-widest uppercase text-gold-300">Lighting</span></div><h4 class="font-serif text-lg mb-2">Ambient Lighting</h4><p class="text-xs text-neutral-400 leading-relaxed">Hundreds of fairy lights strung through olive trees, warm-toned uplighting, and floating candles in the pool.</p></div></div>
-        <div class="scale-in decor-card" style="transition-delay:0.15s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-ceremony2/600/400.jpg" alt="Arch" class="w-full h-52 object-cover"></div><div class="p-6"><div class="flex items-center gap-2 mb-2"><i data-lucide="arch" class="w-4 h-4 text-sage-300"></i><span class="text-[10px] font-semibold tracking-widest uppercase text-sage-300">Ceremony</span></div><h4 class="font-serif text-lg mb-2">Garden Arch</h4><p class="text-xs text-neutral-400 leading-relaxed">A hand-crafted wooden arch adorned with cascading white florals, silk ribbons, and delicate greenery.</p></div></div>
-        <div class="scale-in decor-card" style="transition-delay:0.25s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-cake2/600/400.jpg" alt="Cake" class="w-full h-52 object-cover"></div><div class="p-6"><div class="flex items-center gap-2 mb-2"><i data-lucide="cake-slice" class="w-4 h-4 text-rose-200"></i><span class="text-[10px] font-semibold tracking-widest uppercase text-rose-200">Cake</span></div><h4 class="font-serif text-lg mb-2">The Wedding Cake</h4><p class="text-xs text-neutral-400 leading-relaxed">Four-tiered buttercream cake with hand-painted gold detailing, fresh roses, and a porcelain topper.</p></div></div>
-        <div class="scale-in decor-card" style="transition-delay:0.3s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-favors/600/400.jpg" alt="Favors" class="w-full h-52 object-cover"></div><div class="p-6"><div class="flex items-center gap-2 mb-2"><i data-lucide="package" class="w-4 h-4 text-gold-400"></i><span class="text-[10px] font-semibold tracking-widest uppercase text-gold-400">Favors</span></div><h4 class="font-serif text-lg mb-2">Guest Favors</h4><p class="text-xs text-neutral-400 leading-relaxed">Mini bottles of Tuscan olive oil, custom-labeled with our names and wedding date in gold foil.</p></div></div>
-      </div>
+<!-- Gallery -->
+<section id="gallery" class="py-28 sm:py-36 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16">
+      <p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">Moments</p>
+      <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">Our <span class="text-gold-grad">Gallery</span></h2>
+      <div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-w"></div></div>
     </div>
-  </section>
-
-  <!-- QUOTE -->
-  <section class="py-20 px-6 relative">
-    <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at center,rgba(212,165,116,0.03) 0%,transparent 70%)"></div>
-    <div class="max-w-3xl mx-auto text-center fade-up relative">
-      <div class="w-16 h-16 rounded-full border border-gold-400/10 flex items-center justify-center mx-auto mb-8 rotate-slow">
-        <i data-lucide="heart" class="w-6 h-6 text-gold-400/40"></i>
-      </div>
-      <p class="font-serif text-2xl sm:text-3xl lg:text-4xl italic text-neutral-200 leading-relaxed mb-6">"Whatever our souls are made of, his and mine are the same."</p>
-      <div class="flex items-center justify-center gap-3 mb-3">
-        <div class="w-8 h-px bg-gold-400/30"></div>
-        <span class="text-sm text-gold-400">Emily Brontë</span>
-        <div class="w-8 h-px bg-gold-400/30"></div>
-      </div>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+      <div class="scale-in gal-item col-span-2 md:col-span-2 row-span-2" onclick="openLB('https://picsum.photos/seed/gal-hero/1000/1000.jpg')"><img src="https://picsum.photos/seed/gal-hero/1000/1000.jpg" class="w-full h-full object-cover" style="min-height:300px"></div>
+      <div class="scale-in gal-item" style="transition-delay:.08s" onclick="openLB('https://picsum.photos/seed/gal-2/600/600.jpg')"><img src="https://picsum.photos/seed/gal-2/600/600.jpg" class="w-full h-44 sm:h-full object-cover"></div>
+      <div class="scale-in gal-item" style="transition-delay:.16s" onclick="openLB('https://picsum.photos/seed/gal-3/600/600.jpg')"><img src="https://picsum.photos/seed/gal-3/600/600.jpg" class="w-full h-44 sm:h-full object-cover"></div>
+      <div class="scale-in gal-item" style="transition-delay:.12s" onclick="openLB('https://picsum.photos/seed/gal-4/600/600.jpg')"><img src="https://picsum.photos/seed/gal-4/600/600.jpg" class="w-full h-44 sm:h-full object-cover"></div>
+      <div class="scale-in gal-item" style="transition-delay:.2s" onclick="openLB('https://picsum.photos/seed/gal-5/600/600.jpg')"><img src="https://picsum.photos/seed/gal-5/600/600.jpg" class="w-full h-44 sm:h-full object-cover"></div>
+      <div class="scale-in gal-item" style="transition-delay:.24s" onclick="openLB('https://picsum.photos/seed/gal-6/600/600.jpg')"><img src="https://picsum.photos/seed/gal-6/600/600.jpg" class="w-full h-44 sm:h-full object-cover"></div>
+      <div class="scale-in gal-item" style="transition-delay:.28s" onclick="openLB('https://picsum.photos/seed/gal-7/600/600.jpg')"><img src="https://picsum.photos/seed/gal-7/600/600.jpg" class="w-full h-44 sm:h-full object-cover"></div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- EVENT DETAILS -->
-  <section id="details" class="py-28 sm:py-36 px-6">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-20">
-        <p class="fade-up text-xs font-medium tracking-[0.3em] uppercase text-gold-400 mb-4">Join Us</p>
-        <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4">Wedding <span class="text-gradient-gold">Details</span></h2>
-        <div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-wide"></div></div>
-      </div>
-      <div class="grid md:grid-cols-2 gap-5">
-        <div class="fade-up card-glass card-gold-border rounded-3xl p-8 sm:p-10">
-          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400/15 to-gold-400/5 flex items-center justify-center mb-6"><i data-lucide="church" class="w-6 h-6 text-gold-300"></i></div>
-          <span class="text-[10px] font-semibold tracking-[0.2em] uppercase text-gold-400 mb-2 block">The Ceremony</span>
-          <h3 class="font-serif text-2xl sm:text-3xl mb-5">Exchange of Vows</h3>
-          <div class="space-y-4 text-sm text-neutral-400">
-            <div class="flex items-start gap-3"><i data-lucide="calendar" class="w-4 h-4 text-gold-400 mt-0.5 shrink-0"></i><span>Saturday, June 14, 2025</span></div>
-            <div class="flex items-start gap-3"><i data-lucide="clock" class="w-4 h-4 text-gold-400 mt-0.5 shrink-0"></i><span>4:00 PM — Doors open at 3:30 PM</span></div>
-            <div class="flex items-start gap-3"><i data-lucide="map-pin" class="w-4 h-4 text-gold-400 mt-0.5 shrink-0"></i><span>The Rosewood Estate Chapel<br>Via della Rosa, 42 — Tuscany, Italy</span></div>
-          </div>
-          <div class="mt-6 pt-6 border-t border-white/5"><p class="text-xs text-neutral-500 leading-relaxed">Garden ceremony with seating for 150 guests. In case of rain, the ceremony will move to the Grand Hall.</p></div>
-        </div>
-        <div class="fade-up card-glass card-gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:0.1s">
-          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-200/15 to-rose-200/5 flex items-center justify-center mb-6"><i data-lucide="wine" class="w-6 h-6 text-rose-200"></i></div>
-          <span class="text-[10px] font-semibold tracking-[0.2em] uppercase text-rose-200 mb-2 block">The Reception</span>
-          <h3 class="font-serif text-2xl sm:text-3xl mb-5">Dinner & Dancing</h3>
-          <div class="space-y-4 text-sm text-neutral-400">
-            <div class="flex items-start gap-3"><i data-lucide="calendar" class="w-4 h-4 text-rose-200 mt-0.5 shrink-0"></i><span>Saturday, June 14, 2025</span></div>
-            <div class="flex items-start gap-3"><i data-lucide="clock" class="w-4 h-4 text-rose-200 mt-0.5 shrink-0"></i><span>6:00 PM — Until Midnight</span></div>
-            <div class="flex items-start gap-3"><i data-lucide="map-pin" class="w-4 h-4 text-rose-200 mt-0.5 shrink-0"></i><span>The Rosewood Terrace<br>Adjacent to the Chapel</span></div>
-          </div>
-          <div class="mt-6 pt-6 border-t border-white/5"><p class="text-xs text-neutral-500 leading-relaxed">Four-course dinner, live band, open bar. Dress code: Black tie optional. Comfortable dancing shoes recommended.</p></div>
-        </div>
-        <div class="fade-up card-glass card-gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:0.15s">
-          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sage-300/15 to-sage-300/5 flex items-center justify-center mb-6"><i data-lucide="bed-double" class="w-6 h-6 text-sage-300"></i></div>
-          <span class="text-[10px] font-semibold tracking-[0.2em] uppercase text-sage-300 mb-2 block">Accommodation</span>
-          <h3 class="font-serif text-2xl sm:text-3xl mb-5">Where to Stay</h3>
-          <p class="text-sm text-neutral-400 leading-relaxed mb-4">We've reserved a block of rooms at the Villa Toscana Inn, a 5-minute walk from the venue. Use code <span class="text-gold-200 font-semibold bg-gold-400/10 px-2 py-0.5 rounded-md">JANDO2025</span> for the discounted rate.</p>
-          <a href="#" class="inline-flex items-center gap-2 text-sm text-sage-300 hover:text-sage-200 transition-colors font-medium">Book your room <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></a>
-        </div>
-        <div class="fade-up card-glass card-gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:0.2s">
-          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-200/15 to-rose-200/5 flex items-center justify-center mb-6"><i data-lucide="gift" class="w-6 h-6 text-rose-200"></i></div>
-          <span class="text-[10px] font-semibold tracking-[0.2em] uppercase text-rose-200 mb-2 block">Registry</span>
-          <h3 class="font-serif text-2xl sm:text-3xl mb-5">Your Presence Is Enough</h3>
-          <p class="text-sm text-neutral-400 leading-relaxed mb-4">Your love and presence at our wedding is the greatest gift. If you wish to honor us, we have a small registry and a honeymoon fund.</p>
-          <a href="#" class="inline-flex items-center gap-2 text-sm text-rose-200 hover:text-rose-300 transition-colors font-medium">View registry <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></a>
-        </div>
-      </div>
-      <div class="fade-up mt-8 card-glass card-gold-border rounded-3xl p-8 sm:p-10">
-        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6">
-          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400/15 to-rose-200/10 flex items-center justify-center shrink-0"><i data-lucide="shirt" class="w-6 h-6 text-gold-300"></i></div>
-          <div class="flex-1">
-            <span class="text-[10px] font-semibold tracking-[0.2em] uppercase text-gold-400 mb-1 block">Dress Code</span>
-            <h3 class="font-serif text-xl mb-2">Black Tie Optional</h3>
-            <p class="text-sm text-neutral-400 leading-relaxed">We kindly ask guests to dress in formal or semi-formal attire. Think elegant evening wear — tuxedos, dark suits, evening gowns, or cocktail dresses. Please avoid white or ivory.</p>
-          </div>
-          <div class="flex gap-2 shrink-0">
-            <div class="w-8 h-8 rounded-lg" style="background:#1a1a2e;border:1px solid rgba(255,255,255,0.1)"></div>
-            <div class="w-8 h-8 rounded-lg" style="background:#2a1a1a;border:1px solid rgba(255,255,255,0.1)"></div>
-            <div class="w-8 h-8 rounded-lg" style="background:#1a2a1a;border:1px solid rgba(255,255,255,0.1)"></div>
-            <div class="w-8 h-8 rounded-lg" style="background:#d4a574;border:1px solid rgba(255,255,255,0.1)"></div>
-          </div>
-        </div>
-      </div>
+<!-- FAQ -->
+<section id="faq" class="py-28 sm:py-36 px-6">
+  <div class="max-w-3xl mx-auto">
+    <div class="text-center mb-16">
+      <p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">Questions</p>
+      <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">Frequently <span class="text-gold-grad">Asked</span></h2>
+      <div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-w"></div></div>
     </div>
-  </section>
-
-  <!-- GALLERY -->
-  <section id="gallery" class="py-28 sm:py-36 px-6">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-16">
-        <p class="fade-up text-xs font-medium tracking-[0.3em] uppercase text-gold-400 mb-4">Moments</p>
-        <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4">Our <span class="text-gradient-gold">Gallery</span></h2>
-        <div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-wide"></div></div>
-      </div>
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
-        <div class="scale-in gallery-item col-span-2 md:col-span-2 row-span-2" style="transition-delay:0s" onclick="openLightbox('https://picsum.photos/seed/gal-hero/1000/1000.jpg')"><img src="https://picsum.photos/seed/gal-hero/1000/1000.jpg" alt="Gallery" class="w-full h-full object-cover" style="min-height:300px"></div>
-        <div class="scale-in gallery-item" style="transition-delay:0.08s" onclick="openLightbox('https://picsum.photos/seed/gal-2/600/600.jpg')"><img src="https://picsum.photos/seed/gal-2/600/600.jpg" alt="Gallery" class="w-full h-44 sm:h-full object-cover"></div>
-        <div class="scale-in gallery-item" style="transition-delay:0.16s" onclick="openLightbox('https://picsum.photos/seed/gal-3/600/600.jpg')"><img src="https://picsum.photos/seed/gal-3/600/600.jpg" alt="Gallery" class="w-full h-44 sm:h-full object-cover"></div>
-        <div class="scale-in gallery-item" style="transition-delay:0.12s" onclick="openLightbox('https://picsum.photos/seed/gal-4/600/600.jpg')"><img src="https://picsum.photos/seed/gal-4/600/600.jpg" alt="Gallery" class="w-full h-44 sm:h-full object-cover"></div>
-        <div class="scale-in gallery-item" style="transition-delay:0.2s" onclick="openLightbox('https://picsum.photos/seed/gal-5/600/600.jpg')"><img src="https://picsum.photos/seed/gal-5/600/600.jpg" alt="Gallery" class="w-full h-44 sm:h-full object-cover"></div>
-        <div class="scale-in gallery-item" style="transition-delay:0.24s" onclick="openLightbox('https://picsum.photos/seed/gal-6/600/600.jpg')"><img src="https://picsum.photos/seed/gal-6/600/600.jpg" alt="Gallery" class="w-full h-44 sm:h-full object-cover"></div>
-        <div class="scale-in gallery-item" style="transition-delay:0.28s" onclick="openLightbox('https://picsum.photos/seed/gal-7/600/600.jpg')"><img src="https://picsum.photos/seed/gal-7/600/600.jpg" alt="Gallery" class="w-full h-44 sm:h-full object-cover"></div>
-      </div>
+    <div class="space-y-3">
+      <div class="fade-up faq-i"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span class="flex-1 text-sm font-medium text-white">Is there parking available?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Yes, complimentary valet parking for all guests. Self-parking is also available in the main lot.</div></div>
+      <div class="fade-up faq-i" style="transition-delay:.05s"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span class="flex-1 text-sm font-medium text-white">Can I bring a plus-one?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Your invitation will indicate if a plus-one is included. If unsure, please reach out directly.</div></div>
+      <div class="fade-up faq-i" style="transition-delay:.1s"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span class="flex-1 text-sm font-medium text-white">Are children welcome?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Children are welcome! A supervised kids' area with activities and a special menu will be available during the reception.</div></div>
+      <div class="fade-up faq-i" style="transition-delay:.15s"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span class="flex-1 text-sm font-medium text-white">Dietary restrictions?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Please note any requirements in your RSVP. Our chef accommodates vegetarian, vegan, gluten-free, and other needs.</div></div>
+      <div class="fade-up faq-i" style="transition-delay:.2s"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span class="flex-1 text-sm font-medium text-white">What if it rains?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">The Rosewood Grand Hall is our beautiful indoor alternative with the same romantic atmosphere.</div></div>
+      <div class="fade-up faq-i" style="transition-delay:.25s"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span class="flex-1 text-sm font-medium text-white">RSVP deadline?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Please respond by May 15, 2025. This helps us finalize catering, seating, and accommodations.</div></div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- FAQ -->
-  <section id="faq" class="py-28 sm:py-36 px-6">
-    <div class="max-w-3xl mx-auto">
-      <div class="text-center mb-16">
-        <p class="fade-up text-xs font-medium tracking-[0.3em] uppercase text-gold-400 mb-4">Questions</p>
-        <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4">Frequently <span class="text-gradient-gold">Asked</span></h2>
-        <div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-wide"></div></div>
-      </div>
-      <div class="space-y-3">
-        <div class="fade-up faq-item" style="transition-delay:0s">
-          <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
-            <span class="flex-1 text-sm font-medium">Is there parking available at the venue?</span>
-            <i data-lucide="chevron-down" class="w-4 h-4 text-neutral-500 faq-chevron"></i>
-          </div>
-          <div class="faq-answer text-sm text-neutral-400 leading-relaxed">Yes, complimentary valet parking will be available for all guests. Self-parking is also available in the estate's main lot, a short 2-minute walk to the chapel.</div>
-        </div>
-        <div class="fade-up faq-item" style="transition-delay:0.05s">
-          <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
-            <span class="flex-1 text-sm font-medium">Can I bring a plus-one?</span>
-            <i data-lucide="chevron-down" class="w-4 h-4 text-neutral-500 faq-chevron"></i>
-          </div>
-          <div class="faq-answer text-sm text-neutral-400 leading-relaxed">Your invitation will indicate whether a plus-one is included. If you're unsure, please reach out to us directly and we'll do our best to accommodate.</div>
-        </div>
-        <div class="fade-up faq-item" style="transition-delay:0.1s">
-          <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
-            <span class="flex-1 text-sm font-medium">Are children welcome?</span>
-            <i data-lucide="chevron-down" class="w-4 h-4 text-neutral-500 faq-chevron"></i>
-          </div>
-          <div class="faq-answer text-sm text-neutral-400 leading-relaxed">We love your little ones! Children are welcome at the ceremony. A supervised kids' area with activities and a special menu will be available during the reception.</div>
-        </div>
-        <div class="fade-up faq-item" style="transition-delay:0.15s">
-          <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
-            <span class="flex-1 text-sm font-medium">What if I have dietary restrictions?</span>
-            <i data-lucide="chevron-down" class="w-4 h-4 text-neutral-500 faq-chevron"></i>
-          </div>
-          <div class="faq-answer text-sm text-neutral-400 leading-relaxed">Please let us know about any dietary requirements or allergies when you submit your RSVP. Our chef is happy to accommodate vegetarian, vegan, gluten-free, and other dietary needs.</div>
-        </div>
-        <div class="fade-up faq-item" style="transition-delay:0.2s">
-          <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
-            <span class="flex-1 text-sm font-medium">What happens if it rains?</span>
-            <i data-lucide="chevron-down" class="w-4 h-4 text-neutral-500 faq-chevron"></i>
-          </div>
-          <div class="faq-answer text-sm text-neutral-400 leading-relaxed">Don't worry — we have a beautiful backup plan! The Rosewood Grand Hall will serve as our indoor alternative, with the same romantic atmosphere and décor.</div>
-        </div>
-        <div class="fade-up faq-item" style="transition-delay:0.25s">
-          <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
-            <span class="flex-1 text-sm font-medium">When is the RSVP deadline?</span>
-            <i data-lucide="chevron-down" class="w-4 h-4 text-neutral-500 faq-chevron"></i>
-          </div>
-          <div class="faq-answer text-sm text-neutral-400 leading-relaxed">Please submit your RSVP by May 15, 2025. This helps us finalize catering, seating, and accommodation arrangements. Early responses are greatly appreciated!</div>
-        </div>
-      </div>
+<!-- RSVP -->
+<section id="rsvp" class="py-28 sm:py-36 px-6 relative">
+  <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at center bottom,rgba(212,165,116,.04) 0%,transparent 60%)"></div>
+  <div class="max-w-2xl mx-auto relative">
+    <div class="text-center mb-12">
+      <p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">Respond</p>
+      <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">RSVP</h2>
+      <div class="fade-up flex items-center justify-center gap-3 mt-5 mb-4"><div class="divider-w"></div></div>
+      <p class="fade-up text-neutral-400 text-sm">Kindly respond by May 15, 2025</p>
     </div>
-  </section>
-
-  <!-- RSVP -->
-  <section id="rsvp" class="py-28 sm:py-36 px-6 relative">
-    <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at center bottom,rgba(212,165,116,0.04) 0%,transparent 60%)"></div>
-    <div class="max-w-2xl mx-auto relative">
-      <div class="text-center mb-12">
-        <p class="fade-up text-xs font-medium tracking-[0.3em] uppercase text-gold-400 mb-4">Respond</p>
-        <h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4">RSVP</h2>
-        <div class="fade-up flex items-center justify-center gap-3 mt-5 mb-4"><div class="divider-wide"></div></div>
-        <p class="fade-up text-neutral-400 text-sm">Kindly respond by May 15, 2025</p>
+    <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10">
+      <div class="flex items-center justify-center gap-0 mb-10 px-4">
+        <div id="si1" class="si si-a">1</div><div class="sl"><div id="sl1" class="slf"></div></div>
+        <div id="si2" class="si si-p">2</div><div class="sl"><div id="sl2" class="slf"></div></div>
+        <div id="si3" class="si si-p">3</div>
       </div>
-
-      <div class="fade-up card-glass card-gold-border rounded-3xl p-8 sm:p-10">
-        <!-- Step Indicators -->
-        <div class="flex items-center justify-center gap-0 mb-10 px-4">
-          <div id="step-ind-1" class="step-indicator step-active">1</div>
-          <div class="step-line"><div id="step-line-1" class="step-line-fill"></div></div>
-          <div id="step-ind-2" class="step-indicator step-pending">2</div>
-          <div class="step-line"><div id="step-line-2" class="step-line-fill"></div></div>
-          <div id="step-ind-3" class="step-indicator step-pending">3</div>
+      <form id="rsvp-form" onsubmit="return false">
+        <div id="fs1" class="space-y-5">
+          <div><label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">Full Name *</label><input type="text" id="f-name" placeholder="Your full name" required class="w-full px-4 py-3.5 rounded-xl text-sm"></div>
+          <div><label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">Email Address *</label><input type="email" id="f-email" placeholder="your@email.com" required class="w-full px-4 py-3.5 rounded-xl text-sm"></div>
+          <div><label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">Phone Number</label><input type="tel" id="f-phone" placeholder="+1 (555) 000-0000" class="w-full px-4 py-3.5 rounded-xl text-sm"></div>
+          <div class="flex justify-end pt-2"><button type="button" onclick="goStep(2)" class="btn-g px-8 py-3 rounded-xl text-sm">Continue →</button></div>
         </div>
-
-        <form id="rsvp-form" onsubmit="return false;">
-          <!-- Step 1: Personal Info -->
-          <div id="form-step-1" class="space-y-5">
-            <div>
-              <label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">Full Name *</label>
-              <input type="text" id="rsvp-name" placeholder="Your full name" required class="w-full px-4 py-3.5 rounded-xl text-sm">
-            </div>
-            <div>
-              <label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">Email Address *</label>
-              <input type="email" id="rsvp-email" placeholder="your@email.com" required class="w-full px-4 py-3.5 rounded-xl text-sm">
-            </div>
-            <div>
-              <label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">Phone Number</label>
-              <input type="tel" id="rsvp-phone" placeholder="+1 (555) 000-0000" class="w-full px-4 py-3.5 rounded-xl text-sm">
-            </div>
-            <div class="flex justify-end pt-2">
-              <button type="button" onclick="nextStep(2)" class="btn-gold px-8 py-3 rounded-xl text-sm flex items-center gap-2">Continue <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+        <div id="fs2" class="space-y-5 hidden">
+          <div>
+            <label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-3">Will you attend? *</label>
+            <div class="grid grid-cols-2 gap-3">
+              <label class="cursor-pointer"><input type="radio" name="att" value="yes" class="hidden peer" required><div class="peer-checked:border-sage-300 peer-checked:bg-sage-300/10 border border-white/8 rounded-xl p-4 text-center transition-all hover:border-white/20"><p class="text-sm font-medium text-white">Joyfully Accept</p><p class="text-[10px] text-neutral-500 mt-1">I'll be there!</p></div></label>
+              <label class="cursor-pointer"><input type="radio" name="att" value="no" class="hidden peer"><div class="peer-checked:border-rose-300 peer-checked:bg-rose-300/10 border border-white/8 rounded-xl p-4 text-center transition-all hover:border-white/20"><p class="text-sm font-medium text-white">Regretfully Decline</p><p class="text-[10px] text-neutral-500 mt-1">Can't make it</p></div></label>
             </div>
           </div>
-
-          <!-- Step 2: Attendance -->
-          <div id="form-step-2" class="space-y-5 hidden">
-            <div>
-              <label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-3">Will you attend? *</label>
-              <div class="grid grid-cols-2 gap-3">
-                <label class="cursor-pointer">
-                  <input type="radio" name="attendance" value="yes" class="hidden peer" required>
-                  <div class="peer-checked:border-sage-300 peer-checked:bg-sage-300/10 border border-white/8 rounded-xl p-4 text-center transition-all hover:border-white/20">
-                    <i data-lucide="check-circle" class="w-6 h-6 mx-auto mb-2 text-sage-300 opacity-0 peer-checked:opacity-100"></i>
-                    <p class="text-sm font-medium">Joyfully Accept</p>
-                    <p class="text-[10px] text-neutral-500 mt-1">I'll be there!</p>
-                  </div>
-                </label>
-                <label class="cursor-pointer">
-                  <input type="radio" name="attendance" value="no" class="hidden peer">
-                  <div class="peer-checked:border-rose-300 peer-checked:bg-rose-300/10 border border-white/8 rounded-xl p-4 text-center transition-all hover:border-white/20">
-                    <p class="text-sm font-medium">Regretfully Decline</p>
-                    <p class="text-[10px] text-neutral-500 mt-1">Can't make it</p>
-                  </div>
-                </label>
-              </div>
-            </div>
-            <div id="guests-section">
-              <label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">Number of Guests (including you)</label>
-              <select id="rsvp-guests" class="w-full px-4 py-3.5 rounded-xl text-sm">
-                <option value="1">1 Guest</option>
-                <option value="2" selected>2 Guests</option>
-                <option value="3">3 Guests</option>
-                <option value="4">4 Guests</option>
-                <option value="5">5 Guests</option>
-              </select>
-            </div>
-            <div class="flex justify-between pt-2">
-              <button type="button" onclick="prevStep(1)" class="btn-outline px-6 py-3 rounded-xl text-sm flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Back</button>
-              <button type="button" onclick="nextStep(3)" class="btn-gold px-8 py-3 rounded-xl text-sm flex items-center gap-2">Continue <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
-            </div>
+          <div id="gs"><label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">Number of Guests (including you)</label><select id="f-guests" class="w-full px-4 py-3.5 rounded-xl text-sm"><option value="1">1 Guest</option><option value="2" selected>2 Guests</option><option value="3">3 Guests</option><option value="4">4 Guests</option><option value="5">5 Guests</option></select></div>
+          <div class="flex justify-between pt-2">
+            <button type="button" onclick="goStep(1)" class="btn-o px-6 py-3 rounded-xl text-sm">← Back</button>
+            <button type="button" onclick="goStep(3)" class="btn-g px-8 py-3 rounded-xl text-sm">Continue →</button>
           </div>
-
-          <!-- Step 3: Additional -->
-          <div id="form-step-3" class="space-y-5 hidden">
-            <div>
-              <label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">Dietary Requirements</label>
-              <select id="rsvp-dietary" class="w-full px-4 py-3.5 rounded-xl text-sm">
-                <option value="None">No restrictions</option>
-                <option value="Vegetarian">Vegetarian</option>
-                <option value="Vegan">Vegan</option>
-                <option value="Gluten-Free">Gluten-Free</option>
-                <option value="Halal">Halal</option>
-                <option value="Kosher">Kosher</option>
-                <option value="Other">Other (specify in message)</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">Message for the Couple</label>
-              <textarea id="rsvp-message" rows="3" placeholder="Share your love, song requests, or anything else..." class="w-full px-4 py-3.5 rounded-xl text-sm resize-none"></textarea>
-            </div>
-            <div class="flex justify-between pt-2">
-              <button type="button" onclick="prevStep(2)" class="btn-outline px-6 py-3 rounded-xl text-sm flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Back</button>
-              <button type="button" id="submit-btn" onclick="submitRSVP()" class="btn-gold px-8 py-3 rounded-xl text-sm flex items-center gap-2">
-                <span id="submit-text">Submit RSVP</span>
-                <span id="submit-spinner" class="hidden w-4 h-4 border-2 border-dark-900/30 border-t-dark-900 rounded-full animate-spin"></span>
-              </button>
-            </div>
+        </div>
+        <div id="fs3" class="space-y-5 hidden">
+          <div><label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">Dietary Requirements</label><select id="f-diet" class="w-full px-4 py-3.5 rounded-xl text-sm"><option value="None">No restrictions</option><option value="Vegetarian">Vegetarian</option><option value="Vegan">Vegan</option><option value="Gluten-Free">Gluten-Free</option><option value="Halal">Halal</option><option value="Kosher">Kosher</option><option value="Other">Other</option></select></div>
+          <div><label class="block text-[11px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">Message for the Couple</label><textarea id="f-msg" rows="3" placeholder="Share your love, song requests..." class="w-full px-4 py-3.5 rounded-xl text-sm resize-none"></textarea></div>
+          <div class="flex justify-between pt-2">
+            <button type="button" onclick="goStep(2)" class="btn-o px-6 py-3 rounded-xl text-sm">← Back</button>
+            <button type="button" id="sub-btn" onclick="submitRSVP()" class="btn-g px-8 py-3 rounded-xl text-sm"><span id="sub-txt">Submit RSVP</span><span id="sub-spin" class="hidden inline-block w-4 h-4 border-2 border-dark-900/30 border-t-dark-900 rounded-full animate-spin"></span></button>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- FOOTER -->
-  <footer class="py-16 px-6 border-t border-white/5">
-    <div class="max-w-4xl mx-auto text-center">
-      <p class="font-serif text-3xl mb-4"><span class="text-gold-200">J</span><span class="text-white/20 mx-1">&</span><span class="text-rose-200">O</span></p>
-      <p class="text-xs text-neutral-600 tracking-widest uppercase mb-6">June 14, 2025 · Tuscany, Italy</p>
-      <div class="flex items-center justify-center gap-3 mb-8"><div class="divider-wide"></div></div>
-      <p class="text-xs text-neutral-600">Made with love</p>
-    </div>
-  </footer>
+<!-- Footer -->
+<footer class="py-16 px-6 border-t border-white/5">
+  <div class="max-w-4xl mx-auto text-center">
+    <p class="font-serif text-3xl mb-4"><span class="text-gold-200">J</span><span class="text-white/20 mx-1">&</span><span class="text-rose-200">O</span></p>
+    <p class="text-xs text-neutral-600 tracking-widest uppercase mb-6">June 14, 2025 · Tuscany, Italy</p>
+    <div class="flex items-center justify-center gap-3 mb-8"><div class="divider-w"></div></div>
+    <p class="text-xs text-neutral-600">Made with ♥</p>
+  </div>
+</footer>
 
-</div><!-- end section-wrapper -->
+</div>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     ⬇️⬇️⬇️ ALL JAVASCRIPT — FIREBASE INTEGRATED ⬇️⬇️⬇️
-     ═══════════════════════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════════════════
+     DATABASE + LOGIC — wrapped in try/catch so nothing breaks
+     ══════════════════════════════════════════════════ -->
 <script>
-// ──────────────────────────────────────────────
-// 🔥 FIREBASE CONFIGURATION
-// ──────────────────────────────────────────────
-// ⚠️ REPLACE THESE 6 VALUES with your own from Firebase Console → Project Settings → Your apps
-const firebaseConfig = {
-  apiKey: "⬇️ PASTE YOUR apiKey HERE",
-  authDomain: "⬇️ PASTE YOUR authDomain HERE",    // e.g. "my-project.firebaseapp.com"
-  databaseURL: "⬇️ PASTE YOUR databaseURL HERE",  // e.g. "https://my-project-default-rtdb.firebaseio.com"
-  projectId: "⬇️ PASTE YOUR projectId HERE",       // e.g. "my-project"
-  storageBucket: "⬇️ PASTE YOUR storageBucket HERE", // e.g. "my-project.appspot.com"
-  messagingSenderId: "⬇️ PASTE YOUR messagingSenderId HERE",
-  appId: "⬇️ PASTE YOUR appId HERE"
-};
+(function() {
+  'use strict';
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-let allRSVPs = []; // Cache of all RSVP data from Firebase
+  // ─────────────────────────────────────
+  // ⬇️ PASTE YOUR 2 VALUES HERE ⬇️
+  // ─────────────────────────────────────
+  var SUPABASE_URL = 'PASTE_YOUR_URL_HERE';
+  var SUPABASE_KEY = 'PASTE_YOUR_KEY_HERE';
+  // ─────────────────────────────────────
 
-// ──────────────────────────────────────────────
-// 🔥 CONNECTION STATUS
-// ──────────────────────────────────────────────
-db.ref('.info/connected').on('value', (snap) => {
-  const statusEl = document.getElementById('firebase-status');
-  const textEl = document.getElementById('firebase-status-text');
-  if (snap.val() === true) {
-    statusEl.className = 'firebase-status firebase-connected';
-    textEl.textContent = 'Live';
-  } else {
-    statusEl.className = 'firebase-status firebase-disconnected';
-    textEl.textContent = 'Offline';
+  var db = null;
+  var allData = [];
+  var lastCount = 0;
+
+  // Try to connect to Supabase — never crash the page
+  try {
+    if (typeof supabase !== 'undefined' && supabase.createClient) {
+      db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+      // Connection test
+      db.from('rsvps').select('id').limit(1).then(function(res) {
+        var stat = document.getElementById('db-stat');
+        var txt = document.getElementById('db-txt');
+        if (!res.error) {
+          stat.className = 'text-[10px] px-2.5 py-1 rounded-full db-on flex items-center gap-1.5';
+          txt.textContent = 'Live';
+        } else {
+          stat.className = 'text-[10px] px-2.5 py-1 rounded-full db-off flex items-center gap-1.5';
+          txt.textContent = 'Error';
+          console.warn('DB error:', res.error.message);
+        }
+      }).catch(function(e) {
+        console.warn('DB test failed:', e);
+      });
+
+      // Fetch all
+      function fetchAll() {
+        db.from('rsvps').select('*').order('created_at', { ascending: false }).then(function(res) {
+          if (!res.error && res.data) {
+            allData = res.data;
+            if (document.getElementById('admin-m').classList.contains('on')) {
+              renderTable(allData);
+            }
+          }
+        }).catch(function() {});
+      }
+
+      // Real-time
+      db.channel('rsvp-live')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'rsvps' }, fetchAll)
+        .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'rsvps' }, fetchAll)
+        .subscribe();
+
+      fetchAll();
+    } else {
+      console.warn('Supabase library not loaded — form will not save to database');
+      var stat = document.getElementById('db-stat');
+      var txt = document.getElementById('db-txt');
+      stat.className = 'text-[10px] px-2.5 py-1 rounded-full db-off flex items-center gap-1.5';
+      txt.textContent = 'No DB';
+    }
+  } catch (e) {
+    console.warn('Supabase init error:', e);
   }
-});
 
-// ──────────────────────────────────────────────
-// 🔥 LISTEN FOR RSVPs IN REAL-TIME (from ALL devices)
-// ──────────────────────────────────────────────
-db.ref('rsvps').on('value', (snapshot) => {
-  allRSVPs = [];
-  snapshot.forEach((child) => {
-    allRSVPs.push({ key: child.key, ...child.val() });
-  });
-  // Sort by timestamp, newest first
-  allRSVPs.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-  // If admin panel is open, refresh it
-  if (document.getElementById('admin-modal').classList.contains('active')) {
-    renderAdminTable(allRSVPs);
+  // ─────────────────────────────────────
+  // EXPOSE FUNCTIONS TO GLOBAL SCOPE
+  // ─────────────────────────────────────
+  window.goStep = goStep;
+  window.submitRSVP = submitRSVP;
+  window.openAdmin = openAdmin;
+  window.clearAll = clearAll;
+  window.exportCSV = exportCSV;
+  window.openLB = openLB;
+
+  var curStep = 1;
+
+  function goStep(step) {
+    if (curStep === 1 && step === 2) {
+      if (!document.getElementById('f-name').value.trim() || !document.getElementById('f-email').value.trim()) { showErr(); return; }
+    }
+    if (curStep === 2 && step === 3) {
+      if (!document.querySelector('input[name="att"]:checked')) { showErr(); return; }
+    }
+    document.getElementById('fs' + curStep).classList.add('hidden');
+    document.getElementById('fs' + step).classList.remove('hidden');
+    for (var i = 1; i <= 3; i++) {
+      var el = document.getElementById('si' + i);
+      el.className = 'si ' + (i < step ? 'si-d' : i === step ? 'si-a' : 'si-p');
+      el.innerHTML = i < step ? '✓' : i;
+    }
+    for (var j = 1; j <= 2; j++) {
+      var ln = document.getElementById('sl' + j);
+      if (j < step) ln.classList.add('f'); else ln.classList.remove('f');
+    }
+    if (step === 2) {
+      document.querySelectorAll('input[name="att"]').forEach(function(r) {
+        r.addEventListener('change', function() {
+          document.getElementById('gs').style.display = r.value === 'no' ? 'none' : 'block';
+        });
+      });
+    }
+    curStep = step;
   }
-});
 
-// ──────────────────────────────────────────────
-// 🔥 SAVE RSVP TO FIREBASE (replaces localStorage)
-// ──────────────────────────────────────────────
-function saveToFirebase(data) {
-  const newRef = db.ref('rsvps').push();
-  const id = newRef.key.slice(-6).toUpperCase();
-  return newRef.set({
-    ...data,
-    id: id,
-    timestamp: Date.now()
-  }).then(() => {
-    return { success: true, id: id };
-  }).catch((error) => {
-    console.error('Firebase save error:', error);
-    return { success: false, error: error.message };
-  });
-}
+  function submitRSVP() {
+    var btn = document.getElementById('sub-btn');
+    var txt = document.getElementById('sub-txt');
+    var spin = document.getElementById('sub-spin');
+    var att = document.querySelector('input[name="att"]:checked');
 
-// ──────────────────────────────────────────────
-// RSVP FORM LOGIC
-// ──────────────────────────────────────────────
-let currentStep = 1;
+    if (!att) { showErr(); return; }
 
-function nextStep(step) {
-  // Validate current step
-  if (currentStep === 1) {
-    const name = document.getElementById('rsvp-name').value.trim();
-    const email = document.getElementById('rsvp-email').value.trim();
-    if (!name || !email) {
-      showToastError();
+    var payload = {
+      name: document.getElementById('f-name').value.trim(),
+      email: document.getElementById('f-email').value.trim(),
+      phone: document.getElementById('f-phone').value.trim(),
+      status: att.value === 'yes' ? 'Attending' : 'Declined',
+      guests: att.value === 'no' ? 0 : parseInt(document.getElementById('f-guests').value),
+      dietary: document.getElementById('f-diet').value,
+      message: document.getElementById('f-msg').value.trim(),
+      ref: new URLSearchParams(window.location.search).get('ref') || ''
+    };
+
+    if (!db) {
+      alert('Database not connected. Please check your Supabase URL and Key in the code.');
       return;
     }
+
+    btn.disabled = true;
+    txt.textContent = 'Submitting...';
+    spin.classList.remove('hidden');
+
+    db.from('rsvps').insert([payload]).select().then(function(res) {
+      btn.disabled = false;
+      txt.textContent = 'Submit RSVP';
+      spin.classList.add('hidden');
+
+      if (res.error) {
+        showErr();
+        alert('Submission failed: ' + res.error.message);
+        return;
+      }
+
+      showOk();
+      launchConfetti();
+
+      var row = res.data[0];
+      var shortId = row.id.slice(0, 6).toUpperCase();
+      document.getElementById('c-id').textContent = shortId;
+      document.getElementById('c-name').textContent = row.name;
+      document.getElementById('c-status').innerHTML = row.status === 'Attending' ? '<span class="badge-y">✓ Attending</span>' : '<span class="badge-n">✗ Declined</span>';
+      document.getElementById('c-guests').textContent = row.guests;
+      document.getElementById('c-date').textContent = new Date(row.created_at).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' });
+      document.getElementById('conf-m').classList.add('on');
+
+      document.getElementById('rsvp-form').reset();
+      goStep(1);
+    }).catch(function(e) {
+      btn.disabled = false;
+      txt.textContent = 'Submit RSVP';
+      spin.classList.add('hidden');
+      showErr();
+      alert('Network error: ' + e.message);
+    });
   }
-  if (currentStep === 2) {
-    const attendance = document.querySelector('input[name="attendance"]:checked');
-    if (!attendance) {
-      showToastError();
+
+  function openAdmin() {
+    document.getElementById('admin-m').classList.add('on');
+    lastCount = allData.length;
+    renderTable(allData);
+  }
+
+  function renderTable(data) {
+    var tb = document.getElementById('admin-tb');
+    if (!data || data.length === 0) {
+      tb.innerHTML = '<tr><td colspan="6" class="text-center py-12 text-neutral-600">No responses yet — share your link!</td></tr>';
+      updateStats([]);
       return;
     }
+    updateStats(data);
+    tb.innerHTML = data.map(function(r, i) {
+      var badge = r.status === 'Attending' ? '<span class="badge-y">Attending</span>' : '<span class="badge-n">Declined</span>';
+      var d = r.created_at ? new Date(r.created_at).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) : '—';
+      var isNew = i < (data.length - lastCount);
+      return '<tr class="' + (isNew ? 'row-new' : '') + '"><td class="px-4 py-3 font-mono text-xs text-gold-300">' + (r.id ? r.id.slice(0,6).toUpperCase() : '—') + '</td><td class="px-4 py-3 font-medium text-white">' + esc(r.name) + '</td><td class="px-4 py-3 text-neutral-400 text-xs hidden sm:table-cell">' + esc(r.email) + '</td><td class="px-4 py-3">' + badge + '</td><td class="px-4 py-3 text-neutral-400 hidden md:table-cell">' + (r.guests || 0) + '</td><td class="px-4 py-3 text-neutral-500 text-xs hidden lg:table-cell">' + d + '</td></tr>';
+    }).join('');
+    lastCount = data.length;
   }
-  goToStep(step);
-}
 
-function prevStep(step) {
-  goToStep(step);
-}
-
-function goToStep(step) {
-  document.getElementById('form-step-' + currentStep).classList.add('hidden');
-  document.getElementById('form-step-' + step).classList.remove('hidden');
-  // Update indicators
-  for (let i = 1; i <= 3; i++) {
-    const ind = document.getElementById('step-ind-' + i);
-    ind.className = 'step-indicator ' + (i < step ? 'step-done' : i === step ? 'step-active' : 'step-pending');
-    if (i < step) ind.innerHTML = '✓';
-    else ind.innerHTML = i;
+  function updateStats(d) {
+    document.getElementById('s-t').textContent = d.length;
+    document.getElementById('s-a').textContent = d.filter(function(r){ return r.status === 'Attending'; }).length;
+    document.getElementById('s-d').textContent = d.filter(function(r){ return r.status === 'Declined'; }).length;
+    document.getElementById('s-g').textContent = d.reduce(function(s,r){ return s + (r.guests || 0); }, 0);
   }
-  // Update lines
-  for (let i = 1; i <= 2; i++) {
-    const line = document.getElementById('step-line-' + i);
-    if (i < step) line.classList.add('filled');
-    else line.classList.remove('filled');
+
+  function clearAll() {
+    if (!confirm('Delete ALL RSVP data? This cannot be undone.')) return;
+    if (!db) return;
+    db.from('rsvps').delete().neq('id', '00000000-0000-0000-0000-000000000000').then(function() {
+      allData = [];
+      renderTable([]);
+    });
   }
-  // Show/hide guests section based on attendance
-  if (step === 2) {
-    const radios = document.querySelectorAll('input[name="attendance"]');
-    radios.forEach(r => r.addEventListener('change', () => {
-      document.getElementById('guests-section').style.display = r.value === 'no' ? 'none' : 'block';
-    }));
+
+  function exportCSV() {
+    if (!allData.length) { alert('No data.'); return; }
+    var h = ['ID','Name','Email','Phone','Status','Guests','Dietary','Message','Referral','Date'];
+    var rows = allData.map(function(r) {
+      return [r.id.slice(0,6), r.name, r.email, r.phone, r.status, r.guests, r.dietary, (r.message||'').replace(/,/g,';'), r.ref, new Date(r.created_at).toLocaleString()];
+    });
+    var csv = h.join(',') + '\n' + rows.map(function(r) { return r.map(function(c) { return '"'+c+'"'; }).join(','); }).join('\n');
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], { type:'text/csv' }));
+    a.download = 'rsvp-' + new Date().toISOString().slice(0,10) + '.csv';
+    a.click();
   }
-  currentStep = step;
-  lucide.createIcons();
-}
 
-async function submitRSVP() {
-  const btn = document.getElementById('submit-btn');
-  const text = document.getElementById('submit-text');
-  const spinner = document.getElementById('submit-spinner');
+  function esc(s) { var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+  function openLB(src) { document.getElementById('lb-img').src = src; document.getElementById('lb').classList.add('on'); }
 
-  const name = document.getElementById('rsvp-name').value.trim();
-  const email = document.getElementById('rsvp-email').value.trim();
-  const phone = document.getElementById('rsvp-phone').value.trim();
-  const attendanceEl = document.querySelector('input[name="attendance"]:checked');
-  const guests = document.getElementById('rsvp-guests').value;
-  const dietary = document.getElementById('rsvp-dietary').value;
-  const message = document.getElementById('rsvp-message').value.trim();
+  function showOk() { var t = document.getElementById('toast-ok'); t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 3500); }
+  function showErr() { var t = document.getElementById('toast-err'); t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 3500); }
 
-  if (!attendanceEl) { showToastError(); return; }
-
-  const status = attendanceEl.value === 'yes' ? 'Attending' : 'Declined';
-  const guestCount = attendanceEl.value === 'no' ? 0 : parseInt(guests);
-
-  // Show loading state
-  btn.disabled = true;
-  text.textContent = 'Submitting...';
-  spinner.classList.remove('hidden');
-
-  // Get referral code from URL if exists
-  const urlParams = new URLSearchParams(window.location.search);
-  const ref = urlParams.get('ref') || '';
-
-  const rsvpData = {
-    name: name,
-    email: email,
-    phone: phone,
-    status: status,
-    guests: guestCount,
-    dietary: dietary,
-    message: message,
-    ref: ref,
-    date: new Date().toISOString()
-  };
-
-  // 🔥 SAVE TO FIREBASE (not localStorage!)
-  const result = await saveToFirebase(rsvpData);
-
-  // Reset button
-  btn.disabled = false;
-  text.textContent = 'Submit RSVP';
-  spinner.classList.add('hidden');
-
-  if (result.success) {
-    showToastSuccess();
-    launchConfetti();
-
-    // Show confirmation modal
-    document.getElementById('confirm-id').textContent = result.id;
-    document.getElementById('confirm-name').textContent = name;
-    document.getElementById('confirm-status').innerHTML = status === 'Attending'
-      ? '<span class="badge-yes">✓ Attending</span>'
-      : '<span class="badge-no">✗ Declined</span>';
-    document.getElementById('confirm-guests').textContent = guestCount;
-    document.getElementById('confirm-date').textContent = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' });
-    document.getElementById('confirm-modal').classList.add('active');
-
-    // Reset form
-    document.getElementById('rsvp-form').reset();
-    goToStep(1);
-  } else {
-    showToastError();
-    alert('Failed to submit. Error: ' + result.error);
+  function launchConfetti() {
+    var cols = ['#d4a574','#e8b668','#f0c987','#e8b4b8','#d4868e','#a3b89c','#fff'];
+    for (var i = 0; i < 60; i++) {
+      var p = document.createElement('div');
+      p.className = 'confetti';
+      var size = Math.random()*8+5;
+      p.style.cssText = 'left:'+Math.random()*100+'vw;top:-10px;width:'+size+'px;height:'+size+'px;background:'+cols[Math.floor(Math.random()*cols.length)]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';opacity:'+(Math.random()*.7+.3);
+      document.body.appendChild(p);
+      var dur = Math.random()*2000+1500;
+      var xd = (Math.random()-.5)*200;
+      p.animate([
+        { transform:'translateY(0) translateX(0) rotate(0)', opacity:1 },
+        { transform:'translateY(100vh) translateX('+xd+'px) rotate('+(Math.random()*720)+'deg)', opacity:0 }
+      ],{ duration:dur, easing:'cubic-bezier(.25,.46,.45,.94)' }).onfinish = (function(el){ return function(){ el.remove(); }; })(p);
+    }
   }
-}
 
-// ──────────────────────────────────────────────
-// ADMIN DASHBOARD (reads from Firebase, not localStorage)
-// ──────────────────────────────────────────────
-function openAdmin() {
-  document.getElementById('admin-modal').classList.add('active');
-  renderAdminTable(allRSVPs);
-  lucide.createIcons();
-}
-
-function renderAdminTable(data) {
-  const tbody = document.getElementById('admin-table-body');
-  if (!data || data.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" class="text-center py-12 text-neutral-600">No responses yet — share your link!</td></tr>';
-    updateStats([]);
-    return;
-  }
-  updateStats(data);
-  tbody.innerHTML = data.map((r, i) => {
-    const statusBadge = r.status === 'Attending'
-      ? '<span class="badge-yes">Attending</span>'
-      : '<span class="badge-no">Declined</span>';
-    const dateStr = r.timestamp ? new Date(r.timestamp).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) : '—';
-    return `<tr>
-      <td class="px-4 py-3 font-mono text-xs text-gold-300">${r.id || '—'}</td>
-      <td class="px-4 py-3 font-medium">${escapeHtml(r.name || '—')}</td>
-      <td class="px-4 py-3 text-neutral-400 text-xs hidden sm:table-cell">${escapeHtml(r.email || '—')}</td>
-      <td class="px-4 py-3">${statusBadge}</td>
-      <td class="px-4 py-3 text-neutral-400 hidden md:table-cell">${r.guests || 0}</td>
-      <td class="px-4 py-3 text-neutral-500 text-xs hidden lg:table-cell">${dateStr}</td>
-    </tr>`;
-  }).join('');
-}
-
-function updateStats(data) {
-  const total = data.length;
-  const attending = data.filter(r => r.status === 'Attending').length;
-  const declined = data.filter(r => r.status === 'Declined').length;
-  const totalGuests = data.reduce((sum, r) => sum + (r.guests || 0), 0);
-  document.getElementById('stat-total').textContent = total;
-  document.getElementById('stat-attending').textContent = attending;
-  document.getElementById('stat-declined').textContent = declined;
-  document.getElementById('stat-guests').textContent = totalGuests;
-}
-
-function clearAllRSVPs() {
-  if (!confirm('Are you sure you want to delete ALL RSVP data? This cannot be undone.')) return;
-  db.ref('rsvps').remove().then(() => {
-    allRSVPs = [];
-    renderAdminTable([]);
+  // Mobile menu
+  document.getElementById('mob-btn').addEventListener('click', function() {
+    document.getElementById('mob-menu').classList.toggle('hidden');
   });
-}
-
-function exportCSV() {
-  if (!allRSVPs || allRSVPs.length === 0) {
-    alert('No data to export.');
-    return;
-  }
-  const headers = ['ID', 'Name', 'Email', 'Phone', 'Status', 'Guests', 'Dietary', 'Message', 'Referral', 'Date'];
-  const rows = allRSVPs.map(r => [
-    r.id || '',
-    r.name || '',
-    r.email || '',
-    r.phone || '',
-    r.status || '',
-    r.guests || 0,
-    r.dietary || '',
-    (r.message || '').replace(/,/g, ';'),
-    r.ref || '',
-    r.timestamp ? new Date(r.timestamp).toLocaleString() : ''
-  ]);
-  let csv = headers.join(',') + '\n' + rows.map(r => r.map(c => '"' + c + '"').join(',')).join('\n');
-  const blob = new Blob([csv], { type: 'text/csv' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'rsvp-data-' + new Date().toISOString().slice(0,10) + '.csv';
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
-function escapeHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-}
-
-// ──────────────────────────────────────────────
-// CONFIRMATION MODAL
-// ──────────────────────────────────────────────
-function closeConfirmation() {
-  document.getElementById('confirm-modal').classList.remove('active');
-}
-
-function printConfirmation() {
-  window.print();
-}
-
-// ──────────────────────────────────────────────
-// TOAST NOTIFICATIONS
-// ──────────────────────────────────────────────
-function showToastSuccess() {
-  const t = document.getElementById('toast');
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3500);
-}
-
-function showToastError() {
-  const t = document.getElementById('toast-error');
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3500);
-}
-
-// ──────────────────────────────────────────────
-// CONFETTI
-// ──────────────────────────────────────────────
-function launchConfetti() {
-  const container = document.getElementById('confetti-container');
-  const colors = ['#d4a574','#e8b668','#f0c987','#e8b4b8','#d4868e','#a3b89c','#fff'];
-  for (let i = 0; i < 60; i++) {
-    const piece = document.createElement('div');
-    piece.className = 'confetti-piece';
-    piece.style.left = Math.random() * 100 + 'vw';
-    piece.style.top = '-10px';
-    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-    piece.style.width = (Math.random() * 8 + 5) + 'px';
-    piece.style.height = (Math.random() * 8 + 5) + 'px';
-    piece.style.opacity = Math.random() * 0.7 + 0.3;
-    container.appendChild(piece);
-    const duration = Math.random() * 2000 + 1500;
-    const xDrift = (Math.random() - 0.5) * 200;
-    piece.animate([
-      { transform: 'translateY(0) translateX(0) rotate(0deg)', opacity: 1 },
-      { transform: `translateY(100vh) translateX(${xDrift}px) rotate(${Math.random()*720}deg)`, opacity: 0 }
-    ], { duration, easing: 'cubic-bezier(0.25,0.46,0.45,0.94)' }).onfinish = () => piece.remove();
-  }
-}
-
-// ──────────────────────────────────────────────
-// LIGHTBOX
-// ──────────────────────────────────────────────
-function openLightbox(src) {
-  document.getElementById('lightbox-img').src = src;
-  document.getElementById('lightbox').classList.add('active');
-}
-
-// ──────────────────────────────────────────────
-// MOBILE MENU
-// ──────────────────────────────────────────────
-document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-  document.getElementById('mobile-menu').classList.toggle('hidden');
-});
-// Close mobile menu on link click
-document.querySelectorAll('#mobile-menu a').forEach(a => {
-  a.addEventListener('click', () => {
-    document.getElementById('mobile-menu').classList.add('hidden');
+  document.querySelectorAll('#mob-menu a').forEach(function(a) {
+    a.addEventListener('click', function() { document.getElementById('mob-menu').classList.add('hidden'); });
   });
-});
 
-// ──────────────────────────────────────────────
-// NAVBAR SCROLL EFFECT
-// ──────────────────────────────────────────────
-window.addEventListener('scroll', () => {
-  const nav = document.getElementById('navbar');
-  if (window.scrollY > 80) {
-    nav.style.background = 'rgba(8,8,13,0.85)';
-    nav.style.backdropFilter = 'blur(20px)';
-    nav.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
-  } else {
-    nav.style.background = 'transparent';
-    nav.style.backdropFilter = 'none';
-    nav.style.borderBottom = 'none';
-  }
-});
-
-// ──────────────────────────────────────────────
-// COUNTDOWN TIMER
-// ──────────────────────────────────────────────
-function updateCountdown() {
-  const wedding = new Date('2025-06-14T16:00:00').getTime();
-  const now = Date.now();
-  const diff = wedding - now;
-  if (diff <= 0) {
-    document.getElementById('cd-days').textContent = '00';
-    document.getElementById('cd-hours').textContent = '00';
-    document.getElementById('cd-mins').textContent = '00';
-    document.getElementById('cd-secs').textContent = '00';
-    return;
-  }
-  const d = Math.floor(diff / (1000*60*60*24));
-  const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-  const m = Math.floor((diff % (1000*60*60)) / (1000*60));
-  const s = Math.floor((diff % (1000*60)) / 1000);
-  document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
-  document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
-  document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
-  document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
-}
-updateCountdown();
-setInterval(updateCountdown, 1000);
-
-// ──────────────────────────────────────────────
-// SCROLL ANIMATIONS (IntersectionObserver)
-// ──────────────────────────────────────────────
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
+  // Navbar scroll
+  window.addEventListener('scroll', function() {
+    var n = document.getElementById('nav');
+    if (window.scrollY > 80) {
+      n.style.background = 'rgba(8,8,13,.85)';
+      n.style.backdropFilter = 'blur(20px)';
+      n.style.borderBottom = '1px solid rgba(255,255,255,.05)';
+    } else {
+      n.style.background = 'transparent';
+      n.style.backdropFilter = 'none';
+      n.style.borderBottom = 'none';
     }
   });
-}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-document.querySelectorAll('.fade-up,.fade-left,.fade-right,.scale-in,.blur-in').forEach(el => {
-  observer.observe(el);
-});
+  // Countdown
+  function tick() {
+    var diff = new Date('2025-06-14T16:00:00').getTime() - Date.now();
+    if (diff <= 0) { ['cd-d','cd-h','cd-m','cd-s'].forEach(function(id){ document.getElementById(id).textContent = '00'; }); return; }
+    document.getElementById('cd-d').textContent = String(Math.floor(diff/864e5)).padStart(2,'0');
+    document.getElementById('cd-h').textContent = String(Math.floor(diff%864e5/36e5)).padStart(2,'0');
+    document.getElementById('cd-m').textContent = String(Math.floor(diff%36e5/6e4)).padStart(2,'0');
+    document.getElementById('cd-s').textContent = String(Math.floor(diff%6e4/1e3)).padStart(2,'0');
+  }
+  tick(); setInterval(tick, 1000);
 
-// ──────────────────────────────────────────────
-// INIT LUCIDE ICONS
-// ──────────────────────────────────────────────
-lucide.createIcons();
+  // Scroll animations
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(en) { if (en.isIntersecting) en.target.classList.add('v'); });
+  }, { threshold:.1, rootMargin:'0px 0px -50px 0px' });
+  document.querySelectorAll('.fade-up,.fade-l,.fade-r,.scale-in').forEach(function(el) { obs.observe(el); });
+
+})();
 </script>
 
-<!-- Three.js Background (module script) -->
+<!-- Three.js Background -->
 <script type="module">
 import * as THREE from 'three';
+var canvas = document.getElementById('bg-canvas');
+var R = new THREE.WebGLRenderer({ canvas:canvas, alpha:true, antialias:true });
+R.setSize(innerWidth, innerHeight);
+R.setPixelRatio(Math.min(devicePixelRatio, 2));
+var S = new THREE.Scene();
+var C = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, .1, 1000);
+C.position.z = 5;
 
-const canvas = document.getElementById('three-canvas');
-const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.z = 5;
-
-// Particle system
-const particleCount = 1500;
-const positions = new Float32Array(particleCount * 3);
-const colors = new Float32Array(particleCount * 3);
-const sizes = new Float32Array(particleCount);
-const goldColor = new THREE.Color('#d4a574');
-const roseColor = new THREE.Color('#e8b4b8');
-const sageColor = new THREE.Color('#a3b89c');
-
-for (let i = 0; i < particleCount; i++) {
-  positions[i*3] = (Math.random() - 0.5) * 20;
-  positions[i*3+1] = (Math.random() - 0.5) * 20;
-  positions[i*3+2] = (Math.random() - 0.5) * 20;
-  const colorChoice = Math.random();
-  const c = colorChoice < 0.5 ? goldColor : colorChoice < 0.8 ? roseColor : sageColor;
-  colors[i*3] = c.r;
-  colors[i*3+1] = c.g;
-  colors[i*3+2] = c.b;
-  sizes[i] = Math.random() * 2 + 0.5;
+var N = 1500, pos = new Float32Array(N*3), col = new Float32Array(N*3), sz = new Float32Array(N);
+var gc = new THREE.Color('#d4a574'), rc = new THREE.Color('#e8b4b8'), sc = new THREE.Color('#a3b89c');
+for (var i=0; i<N; i++) {
+  pos[i*3]=(Math.random()-.5)*20; pos[i*3+1]=(Math.random()-.5)*20; pos[i*3+2]=(Math.random()-.5)*20;
+  var c = Math.random()<.5?gc:Math.random()<.8?rc:sc;
+  col[i*3]=c.r; col[i*3+1]=c.g; col[i*3+2]=c.b;
+  sz[i]=Math.random()*2+.5;
 }
-
-const geometry = new THREE.BufferGeometry();
-geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-geometry.setAttribute('aColor', new THREE.BufferAttribute(colors, 3));
-geometry.setAttribute('aSize', new THREE.BufferAttribute(sizes, 1));
-
-const material = new THREE.ShaderMaterial({
-  vertexShader: `
-    attribute vec3 aColor;
-    attribute float aSize;
-    varying vec3 vColor;
-    varying float vAlpha;
-    void main() {
-      vColor = aColor;
-      vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
-      gl_PointSize = aSize * (200.0 / -mvPos.z);
-      gl_Position = projectionMatrix * mvPos;
-      vAlpha = smoothstep(0.0, 3.0, aSize) * 0.6;
-    }
-  `,
-  fragmentShader: `
-    varying vec3 vColor;
-    varying float vAlpha;
-    void main() {
-      float d = length(gl_PointCoord - vec2(0.5));
-      if (d > 0.5) discard;
-      float alpha = smoothstep(0.5, 0.1, d) * vAlpha;
-      gl_FragColor = vec4(vColor, alpha);
-    }
-  `,
-  transparent: true,
-  depthWrite: false,
-  blending: THREE.AdditiveBlending
+var G = new THREE.BufferGeometry();
+G.setAttribute('position', new THREE.BufferAttribute(pos,3));
+G.setAttribute('aColor', new THREE.BufferAttribute(col,3));
+G.setAttribute('aSize', new THREE.BufferAttribute(sz,1));
+var M = new THREE.ShaderMaterial({
+  vertexShader:'attribute vec3 aColor;attribute float aSize;varying vec3 vC;varying float vA;void main(){vC=aColor;vec4 mv=modelViewMatrix*vec4(position,1.);gl_PointSize=aSize*(200./-mv.z);gl_Position=projectionMatrix*mv;vA=smoothstep(0.,3.,aSize)*.6;}',
+  fragmentShader:'varying vec3 vC;varying float vA;void main(){float d=length(gl_PointCoord-vec2(.5));if(d>.5)discard;gl_FragColor=vec4(vC,smoothstep(.5,.1,d)*vA);}',
+  transparent:true, depthWrite:false, blending:THREE.AdditiveBlending
 });
-
-const particles = new THREE.Points(geometry, material);
-scene.add(particles);
-
-let mouseX = 0, mouseY = 0;
-document.addEventListener('mousemove', (e) => {
-  mouseX = (e.clientX / window.innerWidth - 0.5) * 0.5;
-  mouseY = (e.clientY / window.innerHeight - 0.5) * 0.5;
-});
-
-function animate() {
-  requestAnimationFrame(animate);
-  particles.rotation.y += 0.0005;
-  particles.rotation.x += 0.0002;
-  camera.position.x += (mouseX - camera.position.x) * 0.02;
-  camera.position.y += (-mouseY - camera.position.y) * 0.02;
-  camera.lookAt(scene.position);
-  renderer.render(scene, camera);
-}
-animate();
-
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-});
+var P = new THREE.Points(G,M); S.add(P);
+var mx=0, my=0;
+document.addEventListener('mousemove', function(e){ mx=(e.clientX/innerWidth-.5)*.5; my=(e.clientY/innerHeight-.5)*.5; });
+(function loop(){ requestAnimationFrame(loop); P.rotation.y+=.0005; P.rotation.x+=.0002; C.position.x+=(mx-C.position.x)*.02; C.position.y+=(-my-C.position.y)*.02; C.lookAt(S.position); R.render(S,C); })();
+addEventListener('resize', function(){ C.aspect=innerWidth/innerHeight; C.updateProjectionMatrix(); R.setSize(innerWidth,innerHeight); });
 </script>
 
 </body>
