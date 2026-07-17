@@ -651,5 +651,23 @@ document.addEventListener('mousemove', function(e){ mx=(e.clientX/innerWidth-.5)
 (function loop(){ requestAnimationFrame(loop); P.rotation.y+=.0005; P.rotation.x+=.0002; C.position.x+=(mx-C.position.x)*.02; C.position.y+=(-my-C.position.y)*.02; C.lookAt(S.position); R.render(S,C); })();
 addEventListener('resize', function(){ C.aspect=innerWidth/innerHeight; C.updateProjectionMatrix(); R.setSize(innerWidth,innerHeight); });
 </script>
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyASy8TI4ahocNinm5f7V89Ctn37j5S3jtc",
+  authDomain: "wedding-ed222.firebaseapp.com",
+  projectId: "wedding-ed222",
+  storageBucket: "wedding-ed222.firebasestorage.app",
+  messagingSenderId: "188977542680",
+  appId: "1:188977542680:web:a279577f74bf216729756d"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.db = db;
+</script>
 </body>
 </html>
