@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
 
-<!-- Firebase SDK (compat — no importmap conflict with Three.js) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<!-- Firebase Compat SDK — known-good version -->
+<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
 
 <script>
 tailwind.config={theme:{extend:{colors:{gold:{50:'#fefaf3',100:'#fef7ed',200:'#f0c987',300:'#e8b668',400:'#d4a574',500:'#c49a6c',600:'#a67c52',700:'#8a6440'},rose:{50:'#fff5f6',100:'#fff1f2',200:'#e8b4b8',300:'#d4868e',400:'#b8636e',500:'#9e4a55'},sage:{200:'#c5d5c0',300:'#a3b89c',400:'#8aa87f'},cream:{100:'#faf6f0',200:'#f5ede0'},dark:{900:'#08080d',800:'#0e0e16',700:'#16161f',600:'#1e1e2a',500:'#2a2a38'}},fontFamily:{sans:['Inter','sans-serif'],serif:['Playfair Display','serif']}}}}
@@ -20,26 +20,8 @@ tailwind.config={theme:{extend:{colors:{gold:{50:'#fefaf3',100:'#fef7ed',200:'#f
 html{scroll-behavior:smooth}
 body{font-family:'Inter',sans-serif;background:#08080d;color:#fff;overflow-x:hidden}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#08080d}::-webkit-scrollbar-thumb{background:rgba(212,165,116,.3);border-radius:3px}
-
-/* Canvas behind EVERYTHING */
 #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
-
-/* All page content above canvas */
 .z1{position:relative;z-index:1}
-
-/* All modals above everything */
-.modal{position:fixed;inset:0;background:rgba(8,8,13,.85);backdrop-filter:blur(8px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
-.modal.on{display:flex}
-
-/* Nav above page content */
-#nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .5s}
-
-/* Toast above modals */
-.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(120px);padding:16px 32px;border-radius:16px;font-weight:500;z-index:300;transition:all .5s cubic-bezier(.34,1.56,.64,1);backdrop-filter:blur(20px);white-space:nowrap}
-.toast.show{transform:translateX(-50%) translateY(0)}
-.toast-ok{background:rgba(163,184,156,.95);color:#08080d;box-shadow:0 10px 40px rgba(0,0,0,.3)}
-.toast-err{background:rgba(184,99,110,.95);color:#fff;box-shadow:0 10px 40px rgba(0,0,0,.3)}
-
 .text-gold-grad{background:linear-gradient(135deg,#f0c987,#d4a574,#e8b668,#f0c987);background-size:200% 200%;animation:shimmer 3s ease infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 @keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 .divider-w{width:200px;height:1px;background:linear-gradient(to right,transparent,rgba(212,165,116,.3),transparent)}
@@ -47,68 +29,14 @@ body{font-family:'Inter',sans-serif;background:#08080d;color:#fff;overflow-x:hid
 .glass:hover{background:rgba(255,255,255,.05);border-color:rgba(212,165,116,.2);transform:translateY(-6px);box-shadow:0 30px 60px -15px rgba(0,0,0,.5),0 0 40px -10px rgba(212,165,116,.08)}
 .gold-border{position:relative;overflow:hidden}
 .gold-border::before{content:'';position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(212,165,116,.4),transparent 40%,transparent 60%,rgba(232,180,184,.3));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;z-index:1}
-
-/* ═══ BUTTONS — always visible, always clickable ═══ */
-.btn-g{
-  background:linear-gradient(135deg,#d4a574,#e8b668,#d4a574);
-  background-size:200% 200%;
-  animation:shimmer 3s ease infinite;
-  color:#08080d!important;
-  font-weight:600;
-  transition:all .3s;
-  box-shadow:0 4px 20px -4px rgba(212,165,116,.5);
-  letter-spacing:.05em;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  cursor:pointer!important;
-  position:relative;
-  z-index:5;
-  pointer-events:auto!important;
-  border:none;
-  text-decoration:none;
-}
+.btn-g{background:linear-gradient(135deg,#d4a574,#e8b668,#d4a574);background-size:200% 200%;animation:shimmer 3s ease infinite;color:#08080d!important;font-weight:600;transition:all .3s;box-shadow:0 4px 20px -4px rgba(212,165,116,.5);letter-spacing:.05em;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer!important;position:relative;z-index:5;pointer-events:auto!important;border:none;text-decoration:none}
 .btn-g:hover{box-shadow:0 8px 35px -4px rgba(212,165,116,.7);transform:translateY(-2px) scale(1.02)}
 .btn-g:active{transform:translateY(0) scale(.98)}
 .btn-g:disabled{opacity:.5;cursor:not-allowed!important;transform:none!important}
-
-.btn-o{
-  border:1px solid rgba(212,165,116,.3);
-  color:#d4a574!important;
-  transition:all .3s;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  cursor:pointer!important;
-  position:relative;
-  z-index:5;
-  pointer-events:auto!important;
-  background:transparent;
-  text-decoration:none;
-}
+.btn-o{border:1px solid rgba(212,165,116,.3);color:#d4a574!important;transition:all .3s;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer!important;position:relative;z-index:5;pointer-events:auto!important;background:transparent;text-decoration:none}
 .btn-o:hover{background:rgba(212,165,116,.08);border-color:#d4a574}
-
-.icon-btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  width:36px;height:36px;
-  border-radius:50%;
-  border:1px solid rgba(255,255,255,.1);
-  color:rgba(255,255,255,.5);
-  font-size:16px;
-  transition:all .3s;
-  cursor:pointer!important;
-  background:transparent;
-  position:relative;
-  z-index:5;
-  pointer-events:auto!important;
-}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);font-size:16px;transition:all .3s;cursor:pointer!important;background:transparent;position:relative;z-index:5;pointer-events:auto!important}
 .icon-btn:hover{color:#d4a574;border-color:rgba(212,165,116,.3);background:rgba(212,165,116,.05)}
-
-/* ═══ ANIMATIONS ═══ */
 .fade-up{opacity:0;transform:translateY(40px);transition:all .9s cubic-bezier(.25,.46,.45,.94)}
 .fade-up.v{opacity:1;transform:translateY(0)}
 .fade-l{opacity:0;transform:translateX(-50px);transition:all .9s cubic-bezier(.25,.46,.45,.94)}
@@ -139,7 +67,7 @@ body{font-family:'Inter',sans-serif;background:#08080d;color:#fff;overflow-x:hid
 .dec-card:hover img{transform:scale(1.08)}
 .swatch{width:48px;height:48px;border-radius:50%;border:2px solid rgba(255,255,255,.1);transition:all .3s;cursor:pointer}
 .swatch:hover{transform:scale(1.2);border-color:rgba(255,255,255,.3)}
-input,textarea,select{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);color:#fff;transition:all .3s;outline:none;font-family:'Inter',sans-serif;cursor:pointer}
+input,textarea,select{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);color:#fff;transition:all .3s;outline:none;font-family:'Inter',sans-serif}
 input:focus,textarea:focus,select:focus{border-color:rgba(212,165,116,.5);box-shadow:0 0 0 4px rgba(212,165,116,.08);background:rgba(255,255,255,.05)}
 input::placeholder,textarea::placeholder{color:rgba(255,255,255,.25)}
 select option{background:#16161f;color:#fff}
@@ -161,6 +89,8 @@ select option{background:#16161f;color:#fff}
 .badge-y{background:rgba(163,184,156,.15);color:#a3b89c;border:1px solid rgba(163,184,156,.2);padding:2px 10px;border-radius:999px;font-size:11px;font-weight:500}
 .badge-n{background:rgba(184,99,110,.15);color:#d4868e;border:1px solid rgba(184,99,110,.2);padding:2px 10px;border-radius:999px;font-size:11px;font-weight:500}
 @keyframes check{0%{stroke-dashoffset:50}100%{stroke-dashoffset:0}}
+.modal{position:fixed;inset:0;background:rgba(8,8,13,.85);backdrop-filter:blur(8px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.modal.on{display:flex}
 .faq-i{border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);border-radius:16px;overflow:hidden;transition:all .3s;cursor:pointer}
 .faq-i:hover{border-color:rgba(212,165,116,.15)}
 .faq-q{cursor:pointer;padding:20px 24px;display:flex;align-items:center;gap:16px;user-select:none}
@@ -177,6 +107,11 @@ select option{background:#16161f;color:#fff}
 .db-warn .db-dot{background:#e8b668}
 .row-new{animation:rowFlash 1.5s ease}
 @keyframes rowFlash{0%{background:rgba(212,165,116,.15)}100%{background:transparent}}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(120px);padding:16px 32px;border-radius:16px;font-weight:500;z-index:300;transition:all .5s cubic-bezier(.34,1.56,.64,1);backdrop-filter:blur(20px);white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast-ok{background:rgba(163,184,156,.95);color:#08080d;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+.toast-err{background:rgba(184,99,110,.95);color:#fff;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+#nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .5s}
 @media(max-width:768px){.tl-line{left:20px}}
 </style>
 <script type="importmap">
@@ -187,19 +122,18 @@ select option{background:#16161f;color:#fff}
 
 <canvas id="bg-canvas"></canvas>
 
-<!-- Toasts — z-index 300 -->
 <div id="toast-ok" class="toast toast-ok">✓ RSVP submitted successfully!</div>
 <div id="toast-err" class="toast toast-err">✗ Please fill in all required fields</div>
 
-<!-- Lightbox — z-index 200 -->
+<!-- Lightbox -->
 <div id="lb" class="modal" onclick="closeLB()">
   <div class="max-w-4xl w-full relative" onclick="event.stopPropagation()">
     <img id="lb-img" src="" class="w-full rounded-2xl border border-white/10 shadow-2xl" alt="">
-    <button onclick="closeLB()" style="position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5">✕</button>
+    <button onclick="closeLB()" style="position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
   </div>
 </div>
 
-<!-- Admin Modal — z-index 200 -->
+<!-- Admin Modal -->
 <div id="admin-m" class="modal" onclick="if(event.target===this)closeAdmin()">
   <div class="bg-dark-700 border border-white/10 rounded-3xl max-w-4xl w-full max-h-[85vh] overflow-hidden flex flex-col" onclick="event.stopPropagation()">
     <div class="p-6 border-b border-white/5 flex items-center justify-between">
@@ -208,7 +142,7 @@ select option{background:#16161f;color:#fff}
           <h3 class="font-serif text-xl text-white">RSVP Dashboard</h3>
           <span id="db-stat" class="text-[10px] px-2.5 py-1 rounded-full db-warn flex items-center gap-1.5"><span class="db-dot"></span><span id="db-txt">Checking...</span></span>
         </div>
-        <p class="text-xs text-neutral-500 mt-1" id="db-sub">Initializing database connection...</p>
+        <p class="text-xs text-neutral-500 mt-1" id="db-sub">Initializing...</p>
       </div>
       <button onclick="closeAdmin()" class="icon-btn" style="color:rgba(255,255,255,.4)">✕</button>
     </div>
@@ -229,18 +163,18 @@ select option{background:#16161f;color:#fff}
             <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium hidden md:table-cell">Guests</th>
             <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium hidden lg:table-cell">Date</th>
           </tr></thead>
-          <tbody id="admin-tb"><tr><td colspan="6" class="text-center py-12 text-neutral-600">Loading...</td></tr></tbody>
+          <tbody id="admin-tb"><tr><td colspan="6" class="text-center py-12 text-neutral-600">No responses yet</td></tr></tbody>
         </table>
       </div>
     </div>
     <div class="p-4 border-t border-white/5 flex items-center justify-between">
-      <button onclick="clearAll()" class="text-xs text-rose-300 hover:text-rose-200 transition-colors cursor-pointer" style="background:none;border:none">Clear All Data</button>
+      <button onclick="clearAll()" style="background:none;border:none;color:#d4868e;font-size:12px;cursor:pointer">Clear All Data</button>
       <button onclick="exportCSV()" class="btn-o px-4 py-2 rounded-lg text-xs">⬇ Export CSV</button>
     </div>
   </div>
 </div>
 
-<!-- Confirmation Modal — z-index 200 -->
+<!-- Confirmation Modal -->
 <div id="conf-m" class="modal" onclick="if(event.target===this)document.getElementById('conf-m').classList.remove('on')">
   <div class="max-w-lg w-full" onclick="event.stopPropagation()">
     <div class="conf-card p-8 sm:p-10 text-center">
@@ -265,10 +199,9 @@ select option{background:#16161f;color:#fff}
   </div>
 </div>
 
-<!-- ═════════════ PAGE CONTENT ═════════════ -->
+<!-- ═════════════ PAGE ═════════════ -->
 <div class="z1">
 
-<!-- ═══ NAVIGATION — z-index 100 ═══ -->
 <nav id="nav">
   <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
     <a href="#hero" class="font-serif text-2xl tracking-wide" style="text-decoration:none;cursor:pointer;position:relative;z-index:5;pointer-events:auto">
@@ -295,9 +228,7 @@ select option{background:#16161f;color:#fff}
     <a href="#gallery" class="mob-link block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5" style="text-decoration:none;cursor:pointer">Gallery</a>
     <a href="#faq" class="mob-link block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5" style="text-decoration:none;cursor:pointer">FAQ</a>
     <a href="#rsvp" class="mob-link block py-3 text-sm text-neutral-400 hover:text-gold-200" style="text-decoration:none;cursor:pointer">RSVP</a>
-    <div class="py-3 border-t border-white/5 mt-1">
-      <button onclick="openAdmin()" class="text-sm text-neutral-500 hover:text-gold-200 flex items-center gap-2 cursor-pointer" style="background:none;border:none">📊 Dashboard</button>
-    </div>
+    <div class="py-3 border-t border-white/5 mt-1"><button onclick="openAdmin()" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:14px;cursor:pointer">📊 Dashboard</button></div>
   </div>
 </nav>
 
@@ -362,7 +293,7 @@ select option{background:#16161f;color:#fff}
 </section>
 
 <!-- Quote -->
-<section class="py-20 px-6 relative"><div class="absolute inset-0" style="pointer-events:none;background:radial-gradient(ellipse at center,rgba(212,165,116,.03) 0%,transparent 70%)"></div><div class="max-w-3xl mx-auto text-center fade-up relative"><div class="w-16 h-16 rounded-full border border-gold-400/10 flex items-center justify-center mx-auto mb-8 spin-s"><span style="color:rgba(212,165,116,.4);font-size:24px">♥</span></div><p class="font-serif text-2xl sm:text-3xl lg:text-4xl italic text-neutral-200 leading-relaxed mb-6">"Whatever our souls are made of, his and mine are the same."</p><div class="flex items-center justify-center gap-3"><div class="w-8 h-px bg-gold-400/30"></div><span class="text-sm text-gold-400">Emily Brontë</span><div class="w-8 h-px bg-gold-400/30"></div></div></div></section>
+<section class="py-20 px-6 relative"><div style="pointer-events:none;position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(212,165,116,.03) 0%,transparent 70%)"></div><div class="max-w-3xl mx-auto text-center fade-up relative"><div class="w-16 h-16 rounded-full border border-gold-400/10 flex items-center justify-center mx-auto mb-8 spin-s"><span style="color:rgba(212,165,116,.4);font-size:24px">♥</span></div><p class="font-serif text-2xl sm:text-3xl lg:text-4xl italic text-neutral-200 leading-relaxed mb-6">"Whatever our souls are made of, his and mine are the same."</p><div class="flex items-center justify-center gap-3"><div class="w-8 h-px bg-gold-400/30"></div><span class="text-sm text-gold-400">Emily Brontë</span><div class="w-8 h-px bg-gold-400/30"></div></div></div></section>
 
 <!-- Details -->
 <section id="details" class="py-28 sm:py-36 px-6">
@@ -411,7 +342,7 @@ select option{background:#16161f;color:#fff}
 
 <!-- RSVP -->
 <section id="rsvp" class="py-28 sm:py-36 px-6 relative">
-  <div class="absolute inset-0" style="pointer-events:none;background:radial-gradient(ellipse at center bottom,rgba(212,165,116,.04) 0%,transparent 60%)"></div>
+  <div style="pointer-events:none;position:absolute;inset:0;background:radial-gradient(ellipse at center bottom,rgba(212,165,116,.04) 0%,transparent 60%)"></div>
   <div class="max-w-2xl mx-auto relative">
     <div class="text-center mb-12"><p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">Respond</p><h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">RSVP</h2><div class="fade-up flex items-center justify-center gap-3 mt-5 mb-4"><div class="divider-w"></div></div><p class="fade-up text-neutral-400 text-sm">Kindly respond by May 15, 2025</p></div>
     <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10">
@@ -440,239 +371,195 @@ select option{background:#16161f;color:#fff}
 
 <footer class="py-16 px-6 border-t border-white/5"><div class="max-w-4xl mx-auto text-center"><p class="font-serif text-3xl mb-4"><span class="text-gold-200">J</span><span class="text-white/20 mx-1">&</span><span class="text-rose-200">O</span></p><p class="text-xs text-neutral-600 tracking-widest uppercase mb-6">June 14, 2025 · Tuscany, Italy</p><div class="flex items-center justify-center gap-3 mb-8"><div class="divider-w"></div></div><p class="text-xs text-neutral-600">Made with ♥</p></div></footer>
 
-</div><!-- end .z1 -->
+</div>
 
 <!--
-  ═══════════════════════════════════════════════════════════════════
-  FIRESTORE + APP LOGIC
+  ═══════════════════════════════════════════════════
+  FIREBASE + APP LOGIC — NO IIFE, global scope
   
-  SETUP STEPS:
+  TO CONNECT FIREBASE:
   1. Go to https://console.firebase.google.com
-  2. Create a new project (or use existing)
-  3. Click "Add app" → Web (</>) → Register → Copy config below
-  4. Go to Firestore Database → Create database → Start in test mode
-  5. Replace the config object below with YOUR config
-  6. Deploy — it works on GitHub Pages!
+  2. Create project → Add Web app → Copy config
+  3. Firestore Database → Create → Start in test mode
+  4. Replace YOUR_* values below
+  5. Works on GitHub Pages!
   
-  The app automatically falls back to localStorage if Firebase
-  is not configured (config left as placeholder).
-  ═══════════════════════════════════════════════════════════════════
+  WITHOUT Firebase: app uses localStorage automatically.
+  ═══════════════════════════════════════════════════
 -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyASy8TI4ahocNinm5f7V89Ctn37j5S3jtc",
-  authDomain: "wedding-ed222.firebaseapp.com",
-  projectId: "wedding-ed222",
-  storageBucket: "wedding-ed222.firebasestorage.app",
-  messagingSenderId: "188977542680",
-  appId: "1:188977542680:web:a279577f74bf216729756d"
+<script>
+/* ── Firebase config — replace YOUR_* with real values ── */
+var firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+/* ── State ── */
+var STORAGE_KEY = 'jando_rsvp_data';
+var allData = [];
+var curStep = 1;
+var db = null;
+var useFirestore = false;
+var unsubSnapshot = null;
+
+/* ── Helpers ── */
+function esc(s) { var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+
 function setDBStatus(type, label, sub) {
   var stat = document.getElementById('db-stat');
-  var txt  = document.getElementById('db-txt');
+  var txt = document.getElementById('db-txt');
   var subEl = document.getElementById('db-sub');
-  txt.textContent = label;
+  if (txt) txt.textContent = label;
   if (subEl) subEl.textContent = sub;
-  stat.className = 'text-[10px] px-2.5 py-1 rounded-full flex items-center gap-1.5';
-  if (type === 'ok')       stat.classList.add('db-on');
-  else if (type === 'err') stat.classList.add('db-off');
-  else if (type === 'warn')stat.classList.add('db-warn');
-  else                     stat.classList.add('db-on');
-}
-
-/* ═════════════════════════════════════════
-   DATA ACCESS (unified API)
-   ═════════════════════════════════════════ */
-function loadData() {
-  if (useFirestore && db) {
-    // Firestore: set up real-time listener
-    if (unsubSnapshot) unsubSnapshot(); // remove old listener
-    unsubSnapshot = db.collection(COLLECTION)
-      .orderBy('timestamp', 'desc')
-      .onSnapshot(function(snapshot) {
-        allData = [];
-        snapshot.forEach(function(doc) {
-          var d = doc.data();
-          d._docId = doc.id;
-          allData.push(d);
-        });
-        renderAdmin();
-      }, function(err) {
-        console.warn('[RSVP] Firestore listener error:', err);
-        setDBStatus('err', 'Firestore Error', err.message);
-        // Fallback to local
-        useFirestore = false;
-        loadLocal();
-      });
-  } else {
-    loadLocal();
+  if (stat) {
+    stat.className = 'text-[10px] px-2.5 py-1 rounded-full flex items-center gap-1.5';
+    if (type === 'ok') stat.classList.add('db-on');
+    else if (type === 'err') stat.classList.add('db-off');
+    else stat.classList.add('db-on');
   }
 }
 
-function loadLocal() {
-  try {
-    var raw = localStorage.getItem(STORAGE_KEY);
-    allData = raw ? JSON.parse(raw) : [];
-  } catch(e) { allData = []; }
+function showToast(type) {
+  var el = document.getElementById(type === 'ok' ? 'toast-ok' : 'toast-err');
+  if (!el) return;
+  el.classList.add('show');
+  setTimeout(function() { el.classList.remove('show'); }, 3500);
 }
 
-function saveLocal() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
+/* ── Init Firebase ── */
+function initFirebase() {
+  try {
+    if (typeof firebase === 'undefined') {
+      console.log('[RSVP] Firebase SDK not loaded — using localStorage');
+      setDBStatus('local', 'Local Storage', 'Data saved in this browser');
+      return;
+    }
+    if (!firebaseConfig || firebaseConfig.apiKey === "YOUR_API_KEY" || !firebaseConfig.projectId || firebaseConfig.projectId === "YOUR_PROJECT_ID") {
+      console.log('[RSVP] Firebase not configured — using localStorage');
+      setDBStatus('local', 'Local Storage', 'Set your Firebase config to enable sync');
+      return;
+    }
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.firestore();
+    useFirestore = true;
+    console.log('[RSVP] Firebase ready — using Firestore');
+    setDBStatus('ok', 'Firestore Live', 'Real-time sync across all devices');
+  } catch (e) {
+    console.warn('[RSVP] Firebase error:', e);
+    setDBStatus('err', 'Error', e.message);
+  }
+}
+
+/* ── Data access ── */
+function loadLocal() {
+  try { var r = localStorage.getItem(STORAGE_KEY); allData = r ? JSON.parse(r) : []; }
+  catch (e) { allData = []; }
+}
+function saveLocal() { localStorage.setItem(STORAGE_KEY, JSON.stringify(allData)); }
+
+function startListening() {
+  if (!useFirestore || !db) { loadLocal(); renderAdmin(); return; }
+  if (unsubSnapshot) unsubSnapshot();
+  unsubSnapshot = db.collection('rsvps').orderBy('timestamp', 'desc')
+    .onSnapshot(function(snap) {
+      allData = [];
+      snap.forEach(function(doc) { var d = doc.data(); d._docId = doc.id; allData.push(d); });
+      renderAdmin();
+    }, function(err) {
+      console.warn('[RSVP] Listener error:', err);
+      setDBStatus('err', 'Error', err.message);
+      useFirestore = false;
+      loadLocal();
+      renderAdmin();
+    });
 }
 
 function saveEntry(entry) {
   if (useFirestore && db) {
-    // Add timestamp for Firestore ordering
     entry.timestamp = firebase.firestore.FieldValue.serverTimestamp();
-    return db.collection(COLLECTION).add(entry)
-      .then(function(docRef) {
-        entry._docId = docRef.id;
-        return entry;
-      })
-      .catch(function(err) {
-        console.warn('[RSVP] Firestore write failed, saving locally:', err);
-        loadLocal();
-        allData.push(entry);
-        saveLocal();
-        return entry;
-      });
-  } else {
-    loadLocal();
-    allData.push(entry);
-    saveLocal();
-    return Promise.resolve(entry);
-  }
-}
-
-function deleteAllEntries() {
-  if (useFirestore && db) {
-    // Batch delete all documents
-    db.collection(COLLECTION).get().then(function(snapshot) {
-      var batch = db.batch();
-      snapshot.forEach(function(doc) { batch.delete(doc.ref); });
-      return batch.commit();
+    return db.collection('rsvps').add(entry).then(function(ref) {
+      entry._docId = ref.id;
+      return entry;
     }).catch(function(err) {
-      console.warn('[RSVP] Firestore delete failed:', err);
+      console.warn('[RSVP] Write failed, saving locally:', err);
+      useFirestore = false;
+      loadLocal();
+      allData.push(entry);
+      saveLocal();
+      return entry;
     });
   }
-  allData = [];
+  loadLocal();
+  allData.push(entry);
   saveLocal();
+  return Promise.resolve(entry);
 }
 
-/* ═════════════════════════════════════════
-   HTML ESCAPE
-   ═════════════════════════════════════════ */
-function esc(s) {
-  var d = document.createElement('div');
-  d.textContent = s || '';
-  return d.innerHTML;
+/* ── Lightbox ── */
+function openLB(src) {
+  var img = document.getElementById('lb-img');
+  if (img) img.src = src;
+  var lb = document.getElementById('lb');
+  if (lb) lb.classList.add('on');
+}
+function closeLB() {
+  var lb = document.getElementById('lb');
+  if (lb) lb.classList.remove('on');
 }
 
-/* ═════════════════════════════════════════
-   TOAST
-   ═════════════════════════════════════════ */
-function showToast(type) {
-  var el = document.getElementById(type === 'ok' ? 'toast-ok' : 'toast-err');
-  el.classList.add('show');
-  setTimeout(function(){ el.classList.remove('show'); }, 3500);
+/* ── Admin ── */
+function openAdmin() {
+  startListening();
+  var m = document.getElementById('admin-m');
+  if (m) m.classList.add('on');
+}
+function closeAdmin() {
+  var m = document.getElementById('admin-m');
+  if (m) m.classList.remove('on');
 }
 
-/* ═════════════════════════════════════════
-   LIGHTBOX
-   ═════════════════════════════════════════ */
-window.openLB = function(src) {
-  document.getElementById('lb-img').src = src;
-  document.getElementById('lb').classList.add('on');
-};
-window.closeLB = function() {
-  document.getElementById('lb').classList.remove('on');
-};
-
-/* ═════════════════════════════════════════
-   ADMIN MODAL
-   ═════════════════════════════════════════ */
-window.openAdmin = function() {
-  if (!useFirestore) loadLocal(); // refresh local data
-  renderAdmin();
-  document.getElementById('admin-m').classList.add('on');
-  if (useFirestore && db && !unsubSnapshot) loadData(); // start listener
-};
-window.closeAdmin = function() {
-  document.getElementById('admin-m').classList.remove('on');
-  // Keep listener running for real-time, or stop to save reads:
-  // if (unsubSnapshot) { unsubSnapshot(); unsubSnapshot = null; }
-};
-
-/* ═════════════════════════════════════════
-   RENDER ADMIN TABLE
-   ═════════════════════════════════════════ */
+/* ── Render admin table ── */
 function renderAdmin() {
   var tb = document.getElementById('admin-tb');
-  var total = allData.length;
-  var attending = 0, declined = 0, guests = 0;
-
+  if (!tb) return;
+  var total = allData.length, att = 0, dec = 0, gue = 0;
   for (var i = 0; i < allData.length; i++) {
-    if (allData[i].status === 'yes') {
-      attending++;
-      guests += parseInt(allData[i].guests) || 1;
-    } else {
-      declined++;
-    }
+    if (allData[i].status === 'yes') { att++; gue += parseInt(allData[i].guests) || 1; }
+    else dec++;
   }
-
-  document.getElementById('s-t').textContent = total;
-  document.getElementById('s-a').textContent = attending;
-  document.getElementById('s-d').textContent = declined;
-  document.getElementById('s-g').textContent = guests;
-
-  if (total === 0) {
-    tb.innerHTML = '<tr><td colspan="6" class="text-center py-12 text-neutral-600">No responses yet</td></tr>';
-    return;
-  }
-
-  var html = '';
+  var st = document.getElementById('s-t'); if (st) st.textContent = total;
+  var sa = document.getElementById('s-a'); if (sa) sa.textContent = att;
+  var sd = document.getElementById('s-d'); if (sd) sd.textContent = dec;
+  var sg = document.getElementById('s-g'); if (sg) sg.textContent = gue;
+  if (total === 0) { tb.innerHTML = '<tr><td colspan="6" class="text-center py-12 text-neutral-600">No responses yet</td></tr>'; return; }
+  var h = '';
   for (var i = 0; i < allData.length; i++) {
-    var d = allData[i];
-    var yes = d.status === 'yes';
-    html += '<tr class="row-new">'
-      + '<td class="px-4 py-3 text-neutral-500 font-mono text-xs">#' + esc(d.id || String(i+1)) + '</td>'
-      + '<td class="px-4 py-3 text-white font-medium">' + esc(d.name) + '</td>'
-      + '<td class="px-4 py-3 text-neutral-400 hidden sm:table-cell">' + esc(d.email) + '</td>'
-      + '<td class="px-4 py-3">' + (yes ? '<span class="badge-y">Attending</span>' : '<span class="badge-n">Declined</span>') + '</td>'
-      + '<td class="px-4 py-3 text-neutral-400 hidden md:table-cell">' + (yes ? d.guests : '—') + '</td>'
-      + '<td class="px-4 py-3 text-neutral-500 text-xs hidden lg:table-cell">' + esc(d.date || '') + '</td>'
-      + '</tr>';
+    var d = allData[i], y = d.status === 'yes';
+    h += '<tr class="row-new"><td class="px-4 py-3 text-neutral-500 font-mono text-xs">#' + esc(d.id || String(i+1)) + '</td><td class="px-4 py-3 text-white font-medium">' + esc(d.name) + '</td><td class="px-4 py-3 text-neutral-400 hidden sm:table-cell">' + esc(d.email) + '</td><td class="px-4 py-3">' + (y ? '<span class="badge-y">Attending</span>' : '<span class="badge-n">Declined</span>') + '</td><td class="px-4 py-3 text-neutral-400 hidden md:table-cell">' + (y ? d.guests : '—') + '</td><td class="px-4 py-3 text-neutral-500 text-xs hidden lg:table-cell">' + esc(d.date || '') + '</td></tr>';
   }
-  tb.innerHTML = html;
+  tb.innerHTML = h;
 }
 
-/* ═════════════════════════════════════════
-   MOBILE MENU
-   ═════════════════════════════════════════ */
+/* ── Mobile menu ── */
 document.getElementById('mob-btn').addEventListener('click', function() {
   var menu = document.getElementById('mob-menu');
-  var isHidden = menu.classList.contains('hidden');
+  var hidden = menu.classList.contains('hidden');
   menu.classList.toggle('hidden');
-  this.textContent = isHidden ? '✕' : '☰';
+  this.textContent = hidden ? '✕' : '☰';
 });
-
-var mobLinks = document.querySelectorAll('.mob-link');
-for (var i = 0; i < mobLinks.length; i++) {
-  mobLinks[i].addEventListener('click', function() {
+var ml = document.querySelectorAll('.mob-link');
+for (var i = 0; i < ml.length; i++) {
+  ml[i].addEventListener('click', function() {
     document.getElementById('mob-menu').classList.add('hidden');
     document.getElementById('mob-btn').textContent = '☰';
   });
 }
 
-/* ═════════════════════════════════════════
-   NAVBAR SCROLL
-   ═════════════════════════════════════════ */
+/* ── Nav scroll ── */
 var nav = document.getElementById('nav');
 window.addEventListener('scroll', function() {
   if (window.scrollY > 80) {
@@ -686,332 +573,148 @@ window.addEventListener('scroll', function() {
   }
 });
 
-/* ═════════════════════════════════════════
-   COUNTDOWN
-   ═════════════════════════════════════════ */
-var weddingDate = new Date('2025-06-14T16:00:00').getTime();
-
-function updateCountdown() {
-  var diff = weddingDate - Date.now();
-  if (diff <= 0) {
-    document.getElementById('cd-d').textContent = '0';
-    document.getElementById('cd-h').textContent = '00';
-    document.getElementById('cd-m').textContent = '00';
-    document.getElementById('cd-s').textContent = '00';
-    return;
-  }
-  document.getElementById('cd-d').textContent = Math.floor(diff / 86400000);
-  document.getElementById('cd-h').textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2, '0');
-  document.getElementById('cd-m').textContent = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
-  document.getElementById('cd-s').textContent = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+/* ── Countdown ── */
+var wd = new Date('2025-06-14T16:00:00').getTime();
+function tick() {
+  var d = wd - Date.now();
+  if (d <= 0) { document.getElementById('cd-d').textContent='0'; document.getElementById('cd-h').textContent='00'; document.getElementById('cd-m').textContent='00'; document.getElementById('cd-s').textContent='00'; return; }
+  document.getElementById('cd-d').textContent = Math.floor(d/86400000);
+  document.getElementById('cd-h').textContent = String(Math.floor((d%86400000)/3600000)).padStart(2,'0');
+  document.getElementById('cd-m').textContent = String(Math.floor((d%3600000)/60000)).padStart(2,'0');
+  document.getElementById('cd-s').textContent = String(Math.floor((d%60000)/1000)).padStart(2,'0');
 }
-updateCountdown();
-setInterval(updateCountdown, 1000);
+tick(); setInterval(tick, 1000);
 
-/* ═════════════════════════════════════════
-   SCROLL ANIMATIONS
-   ═════════════════════════════════════════ */
-var animEls = document.querySelectorAll('.fade-up,.fade-l,.fade-r,.scale-in');
-var obs = new IntersectionObserver(function(entries) {
-  for (var i = 0; i < entries.length; i++) {
-    if (entries[i].isIntersecting) entries[i].target.classList.add('v');
-  }
-}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-for (var i = 0; i < animEls.length; i++) obs.observe(animEls[i]);
+/* ── Scroll animations ── */
+var ae = document.querySelectorAll('.fade-up,.fade-l,.fade-r,.scale-in');
+var ob = new IntersectionObserver(function(e) { for (var i=0;i<e.length;i++) { if(e[i].isIntersecting) e[i].target.classList.add('v'); } }, {threshold:0.15,rootMargin:'0px 0px -40px 0px'});
+for (var i=0;i<ae.length;i++) ob.observe(ae[i]);
 
-/* ═════════════════════════════════════════
-   RSVP STEP NAVIGATION
-   ═════════════════════════════════════════ */
-window.goStep = function(step) {
+/* ── RSVP steps ── */
+function goStep(step) {
   if (step > curStep) {
     if (curStep === 1) {
-      var name = document.getElementById('f-name').value.trim();
-      var email = document.getElementById('f-email').value.trim();
-      if (!name || !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        showToast('err'); return;
-      }
+      var n = document.getElementById('f-name').value.trim();
+      var e = document.getElementById('f-email').value.trim();
+      if (!n || !e || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) { showToast('err'); return; }
     }
-    if (curStep === 2) {
-      if (!document.querySelector('input[name="att"]:checked')) {
-        showToast('err'); return;
-      }
-    }
+    if (curStep === 2 && !document.querySelector('input[name="att"]:checked')) { showToast('err'); return; }
   }
-
   curStep = step;
-  document.getElementById('fs1').classList.toggle('hidden', step !== 1);
-  document.getElementById('fs2').classList.toggle('hidden', step !== 2);
-  document.getElementById('fs3').classList.toggle('hidden', step !== 3);
-
-  for (var s = 1; s <= 3; s++) {
-    var si = document.getElementById('si' + s);
-    si.className = 'si ' + (s < step ? 'si-d' : s === step ? 'si-a' : 'si-p');
-  }
-  for (var s = 1; s <= 2; s++) {
-    var sl = document.getElementById('sl' + s);
-    if (s < step) sl.classList.add('f'); else sl.classList.remove('f');
-  }
-
-  var att = document.querySelector('input[name="att"]:checked');
-  document.getElementById('gs').style.display = (att && att.value === 'no') ? 'none' : '';
-};
-
-var attRadios = document.querySelectorAll('input[name="att"]');
-for (var i = 0; i < attRadios.length; i++) {
-  attRadios[i].addEventListener('change', function() {
-    document.getElementById('gs').style.display = this.value === 'no' ? 'none' : '';
-  });
+  document.getElementById('fs1').classList.toggle('hidden', step!==1);
+  document.getElementById('fs2').classList.toggle('hidden', step!==2);
+  document.getElementById('fs3').classList.toggle('hidden', step!==3);
+  for (var s=1;s<=3;s++) { var si=document.getElementById('si'+s); si.className='si '+(s<step?'si-d':s===step?'si-a':'si-p'); }
+  for (var s=1;s<=2;s++) { var sl=document.getElementById('sl'+s); if(s<step)sl.classList.add('f');else sl.classList.remove('f'); }
+  var a=document.querySelector('input[name="att"]:checked');
+  document.getElementById('gs').style.display=(a&&a.value==='no')?'none':'';
 }
+var ar=document.querySelectorAll('input[name="att"]');
+for(var i=0;i<ar.length;i++) ar[i].addEventListener('change',function(){ document.getElementById('gs').style.display=this.value==='no'?'none':''; });
 
-/* ═════════════════════════════════════════
-   SUBMIT RSVP
-   ═════════════════════════════════════════ */
-window.submitRSVP = function() {
-  var name  = document.getElementById('f-name').value.trim();
-  var email = document.getElementById('f-email').value.trim();
-  var phone = document.getElementById('f-phone').value.trim();
-  var att   = document.querySelector('input[name="att"]:checked');
-  var guests = document.getElementById('f-guests').value;
-  var diet  = document.getElementById('f-diet').value;
-  var msg   = document.getElementById('f-msg').value.trim();
-
-  if (!name || !email || !att) { showToast('err'); return; }
-
-  var yes = att.value === 'yes';
-  var now = new Date();
-
-  // Get next ID
-  if (!useFirestore) loadLocal();
-  var nextNum = allData.length + 1;
-  var id = 'JO-' + String(nextNum).padStart(3, '0');
-
-  var entry = {
-    id: id,
-    name: name,
-    email: email,
-    phone: phone,
-    status: att.value,
-    guests: yes ? guests : '0',
-    diet: diet,
-    message: msg,
-    date: now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
-       + ' ' + now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),
-    timestamp: now.toISOString()
-  };
-
-  // Show spinner
+/* ── Submit ── */
+function submitRSVP() {
+  var name=document.getElementById('f-name').value.trim();
+  var email=document.getElementById('f-email').value.trim();
+  var phone=document.getElementById('f-phone').value.trim();
+  var att=document.querySelector('input[name="att"]:checked');
+  var guests=document.getElementById('f-guests').value;
+  var diet=document.getElementById('f-diet').value;
+  var msg=document.getElementById('f-msg').value.trim();
+  if(!name||!email||!att){showToast('err');return;}
+  var yes=att.value==='yes', now=new Date();
+  if(!useFirestore) loadLocal();
+  var id='JO-'+String(allData.length+1).padStart(3,'0');
+  var entry={id:id,name:name,email:email,phone:phone,status:att.value,guests:yes?guests:'0',diet:diet,message:msg,date:now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+' '+now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),timestamp:now.toISOString()};
   document.getElementById('sub-txt').classList.add('hidden');
   document.getElementById('sub-spin').classList.remove('hidden');
-  document.getElementById('sub-btn').disabled = true;
-
-  saveEntry(entry).then(function(savedEntry) {
-    // Hide spinner
+  document.getElementById('sub-btn').disabled=true;
+  saveEntry(entry).then(function(saved){
     document.getElementById('sub-txt').classList.remove('hidden');
     document.getElementById('sub-spin').classList.add('hidden');
-    document.getElementById('sub-btn').disabled = false;
-
-    // Show confirmation
-    document.getElementById('c-id').textContent = savedEntry.id;
-    document.getElementById('c-name').textContent = savedEntry.name;
-    document.getElementById('c-guests').textContent = yes
-      ? savedEntry.guests + (parseInt(savedEntry.guests)===1?' guest':' guests')
-      : '—';
-    document.getElementById('c-date').textContent = savedEntry.date;
-    document.getElementById('c-status').innerHTML = yes
-      ? '<span class="badge-y">Joyfully Accepts</span>'
-      : '<span class="badge-n">Regretfully Declines</span>';
-
+    document.getElementById('sub-btn').disabled=false;
+    document.getElementById('c-id').textContent=saved.id;
+    document.getElementById('c-name').textContent=saved.name;
+    document.getElementById('c-guests').textContent=yes?saved.guests+(parseInt(saved.guests)===1?' guest':' guests'):'—';
+    document.getElementById('c-date').textContent=saved.date;
+    document.getElementById('c-status').innerHTML=yes?'<span class="badge-y">Joyfully Accepts</span>':'<span class="badge-n">Regretfully Declines</span>';
     document.getElementById('conf-m').classList.add('on');
     showToast('ok');
-    if (yes) launchConfetti();
-
-    // Reset form
+    if(yes) launchConfetti();
     document.getElementById('rsvp-form').reset();
     goStep(1);
-  }).catch(function(err) {
-    console.error('[RSVP] Save error:', err);
+  }).catch(function(err){
+    console.error('[RSVP] Save error:',err);
     document.getElementById('sub-txt').classList.remove('hidden');
     document.getElementById('sub-spin').classList.add('hidden');
-    document.getElementById('sub-btn').disabled = false;
+    document.getElementById('sub-btn').disabled=false;
     showToast('err');
   });
-};
-
-/* ═════════════════════════════════════════
-   CLEAR ALL
-   ═════════════════════════════════════════ */
-window.clearAll = function() {
-  if (!confirm('Delete all RSVP data? This cannot be undone.')) return;
-  deleteAllEntries();
-  renderAdmin();
-  showToast('ok');
-};
-
-/* ═════════════════════════════════════════
-   EXPORT CSV
-   ═════════════════════════════════════════ */
-window.exportCSV = function() {
-  if (allData.length === 0) { showToast('err'); return; }
-  var h = ['ID','Name','Email','Phone','Status','Guests','Dietary','Message','Date'];
-  var rows = [h.join(',')];
-  for (var i = 0; i < allData.length; i++) {
-    var d = allData[i];
-    rows.push([
-      d.id,
-      '"'+(d.name||'').replace(/"/g,'""')+'"',
-      '"'+(d.email||'').replace(/"/g,'""')+'"',
-      '"'+(d.phone||'').replace(/"/g,'""')+'"',
-      d.status==='yes'?'Attending':'Declined',
-      d.guests,
-      d.diet||'',
-      '"'+(d.message||'').replace(/"/g,'""')+'"',
-      d.date
-    ].join(','));
-  }
-  var blob = new Blob([rows.join('\n')], {type:'text/csv'});
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'rsvp_james_olivia_'+new Date().toISOString().slice(0,10)+'.csv';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(a.href);
-};
-
-/* ═════════════════════════════════════════
-   CONFETTI
-   ═════════════════════════════════════════ */
-function launchConfetti() {
-  var colors = ['#d4a574','#e8b668','#a3b89c','#e8b4b8','#f0c987','#ffffff'];
-  var c = document.createElement('div');
-  c.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:250;overflow:hidden';
-  document.body.appendChild(c);
-
-  if (!document.getElementById('conf-kf')) {
-    var s = document.createElement('style');
-    s.id = 'conf-kf';
-    s.textContent = '@keyframes cFall{0%{transform:translateY(0) translateX(0) rotate(0);opacity:1}100%{transform:translateY(100vh) translateX(var(--dx,0)) rotate(720deg);opacity:0}}';
-    document.head.appendChild(s);
-  }
-
-  for (var i = 0; i < 120; i++) {
-    var p = document.createElement('div');
-    var sz = Math.random()*8+4;
-    p.style.cssText = 'position:absolute;left:'+Math.random()*100+'%;top:-20px;width:'+sz+'px;height:'+sz+'px;background:'+colors[Math.floor(Math.random()*colors.length)]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';opacity:.9;--dx:'+(Math.random()-.5)*200+'px;animation:cFall '+(Math.random()*2+2)+'s ease-out '+(Math.random()*.5)+'s forwards';
-    c.appendChild(p);
-  }
-  setTimeout(function(){ c.remove(); }, 5000);
 }
 
-/* ═════════════════════════════════════════
-   KEYBOARD: ESCAPE CLOSES MODALS
-   ═════════════════════════════════════════ */
+/* ── Clear all ── */
+function clearAll() {
+  if(!confirm('Delete all RSVP data?')) return;
+  if(useFirestore&&db) {
+    db.collection('rsvps').get().then(function(snap){ var batch=db.batch(); snap.forEach(function(d){batch.delete(d.ref);}); return batch.commit(); }).catch(function(){});
+  }
+  allData=[]; saveLocal(); renderAdmin(); showToast('ok');
+}
+
+/* ── Export CSV ── */
+function exportCSV() {
+  if(allData.length===0){showToast('err');return;}
+  var rows=[['ID','Name','Email','Phone','Status','Guests','Dietary','Message','Date'].join(',')];
+  for(var i=0;i<allData.length;i++){var d=allData[i];rows.push([d.id,'"'+(d.name||'').replace(/"/g,'""')+'"','"'+(d.email||'').replace(/"/g,'""')+'"','"'+(d.phone||'').replace(/"/g,'""')+'"',d.status==='yes'?'Attending':'Declined',d.guests,d.diet||'',  '"'+(d.message||'').replace(/"/g,'""')+'"',d.date].join(','));}
+  var blob=new Blob([rows.join('\n')],{type:'text/csv'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='rsvp_'+new Date().toISOString().slice(0,10)+'.csv';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(a.href);
+}
+
+/* ── Confetti ── */
+function launchConfetti() {
+  var colors=['#d4a574','#e8b668','#a3b89c','#e8b4b8','#f0c987','#fff'];
+  var c=document.createElement('div');c.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:250;overflow:hidden';document.body.appendChild(c);
+  if(!document.getElementById('ckf')){var s=document.createElement('style');s.id='ckf';s.textContent='@keyframes cf{0%{transform:translateY(0) translateX(0) rotate(0);opacity:1}100%{transform:translateY(100vh) translateX(var(--dx,0)) rotate(720deg);opacity:0}}';document.head.appendChild(s);}
+  for(var i=0;i<120;i++){var p=document.createElement('div');var sz=Math.random()*8+4;p.style.cssText='position:absolute;left:'+Math.random()*100+'%;top:-20px;width:'+sz+'px;height:'+sz+'px;background:'+colors[Math.floor(Math.random()*colors.length)]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';opacity:.9;--dx:'+(Math.random()-.5)*200+'px;animation:cf '+(Math.random()*2+2)+'s ease-out '+(Math.random()*.5)+'s forwards';c.appendChild(p);}
+  setTimeout(function(){c.remove();},5000);
+}
+
+/* ── Escape key ── */
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
-    document.getElementById('lb').classList.remove('on');
-    document.getElementById('admin-m').classList.remove('on');
-    document.getElementById('conf-m').classList.remove('on');
+    closeLB(); closeAdmin();
+    var cm = document.getElementById('conf-m'); if (cm) cm.classList.remove('on');
   }
 });
 
-/* ═════════════════════════════════════════
-   INIT
-   ═════════════════════════════════════════ */
+/* ── Boot ── */
 initFirebase();
-
-})();
 </script>
 
-<!-- ═════════════ THREE.JS PARTICLE BACKGROUND ═════════════ -->
+<!-- Three.js Background -->
 <script type="module">
 import * as THREE from 'three';
-
 const canvas = document.getElementById('bg-canvas');
-const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
+const renderer = new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
+renderer.setSize(window.innerWidth,window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(60,window.innerWidth/window.innerHeight,0.1,1000);
 camera.position.z = 50;
-
 const count = 500;
-const positions = new Float32Array(count * 3);
-const sizes = new Float32Array(count);
-
-for (let i = 0; i < count; i++) {
-  positions[i*3]   = (Math.random()-0.5)*120;
-  positions[i*3+1] = (Math.random()-0.5)*120;
-  positions[i*3+2] = (Math.random()-0.5)*80;
-  sizes[i] = Math.random()*2.5+0.5;
-}
-
+const pos = new Float32Array(count*3);
+const sz = new Float32Array(count);
+for(let i=0;i<count;i++){pos[i*3]=(Math.random()-.5)*120;pos[i*3+1]=(Math.random()-.5)*120;pos[i*3+2]=(Math.random()-.5)*80;sz[i]=Math.random()*2.5+.5;}
 const geo = new THREE.BufferGeometry();
-geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-geo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
-
-const mat = new THREE.ShaderMaterial({
-  transparent: true, depthWrite: false,
-  uniforms: {
-    uTime: { value: 0 },
-    uColor1: { value: new THREE.Color('#d4a574') },
-    uColor2: { value: new THREE.Color('#e8b4b8') }
-  },
-  vertexShader: `
-    attribute float size;
-    varying float vAlpha;
-    varying float vMix;
-    uniform float uTime;
-    void main(){
-      vec3 p = position;
-      p.y += sin(uTime*0.3 + position.x*0.1)*2.0;
-      p.x += cos(uTime*0.2 + position.y*0.1)*1.5;
-      vec4 mv = modelViewMatrix * vec4(p,1.0);
-      gl_PointSize = size * (40.0 / -mv.z);
-      gl_Position = projectionMatrix * mv;
-      vAlpha = smoothstep(80.0,20.0,-mv.z)*0.5;
-      vMix = sin(position.x*0.05+position.y*0.05+uTime*0.1)*0.5+0.5;
-    }
-  `,
-  fragmentShader: `
-    varying float vAlpha;
-    varying float vMix;
-    uniform vec3 uColor1;
-    uniform vec3 uColor2;
-    void main(){
-      float d = length(gl_PointCoord - vec2(0.5));
-      if(d>0.5) discard;
-      float a = smoothstep(0.5,0.1,d)*vAlpha;
-      gl_FragColor = vec4(mix(uColor1,uColor2,vMix), a);
-    }
-  `
-});
-
-const points = new THREE.Points(geo, mat);
-scene.add(points);
-
-let mx = 0, my = 0;
-window.addEventListener('mousemove', e => {
-  mx = (e.clientX/window.innerWidth - 0.5)*2;
-  my = (e.clientY/window.innerHeight - 0.5)*2;
-});
-
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth/window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-});
-
-(function animate(){
-  requestAnimationFrame(animate);
-  mat.uniforms.uTime.value += 0.016;
-  points.rotation.y += 0.0003;
-  points.rotation.x += 0.0001;
-  camera.position.x += (mx*3 - camera.position.x)*0.02;
-  camera.position.y += (-my*3 - camera.position.y)*0.02;
-  camera.lookAt(0,0,0);
-  renderer.render(scene, camera);
-})();
+geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+geo.setAttribute('size',new THREE.BufferAttribute(sz,1));
+const mat = new THREE.ShaderMaterial({transparent:true,depthWrite:false,uniforms:{uTime:{value:0},uColor1:{value:new THREE.Color('#d4a574')},uColor2:{value:new THREE.Color('#e8b4b8')}},vertexShader:`attribute float size;varying float vA;varying float vM;uniform float uTime;void main(){vec3 p=position;p.y+=sin(uTime*.3+position.x*.1)*2.0;p.x+=cos(uTime*.2+position.y*.1)*1.5;vec4 mv=modelViewMatrix*vec4(p,1.0);gl_PointSize=size*(40.0/-mv.z);gl_Position=projectionMatrix*mv;vA=smoothstep(80.0,20.0,-mv.z)*.5;vM=sin(position.x*.05+position.y*.05+uTime*.1)*.5+.5;}`,fragmentShader:`varying float vA;varying float vM;uniform vec3 uColor1;uniform vec3 uColor2;void main(){float d=length(gl_PointCoord-vec2(.5));if(d>.5)discard;gl_FragColor=vec4(mix(uColor1,uColor2,vM),smoothstep(.5,.1,d)*vA);}`});
+const pts = new THREE.Points(geo,mat);scene.add(pts);
+let mx=0,my=0;
+window.addEventListener('mousemove',e=>{mx=(e.clientX/window.innerWidth-.5)*2;my=(e.clientY/window.innerHeight-.5)*2;});
+window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);});
+(function a(){requestAnimationFrame(a);mat.uniforms.uTime.value+=.016;pts.rotation.y+=.0003;pts.rotation.x+=.0001;camera.position.x+=(mx*3-camera.position.x)*.02;camera.position.y+=(-my*3-camera.position.y)*.02;camera.lookAt(0,0,0);renderer.render(scene,camera);})();
 </script>
 
 </body>
