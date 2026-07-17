@@ -458,49 +458,21 @@ select option{background:#16161f;color:#fff}
   is not configured (config left as placeholder).
   ═══════════════════════════════════════════════════════════════════
 -->
-<script>
-(function(){
-'use strict';
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-/* ═════════════════════════════════════════
-   🔥 FIREBASE CONFIG — REPLACE WITH YOURS
-   ═════════════════════════════════════════ */
-firebaseConfig
+const firebaseConfig = {
+  apiKey: "AIzaSyASy8TI4ahocNinm5f7V89Ctn37j5S3jtc",
+  authDomain: "wedding-ed222.firebaseapp.com",
+  projectId: "wedding-ed222",
+  storageBucket: "wedding-ed222.firebasestorage.app",
+  messagingSenderId: "188977542680",
+  appId: "1:188977542680:web:a279577f74bf216729756d"
+};
 
-/* ═════════════════════════════════════════
-   APP STATE
-   ═════════════════════════════════════════ */
-var STORAGE_KEY = 'jando_rsvp_data';
-var COLLECTION  = 'rsvps';
-var allData = [];
-var curStep = 1;
-var db = null;          // Firestore instance (null = not configured)
-var useFirestore = false;
-var unsubSnapshot = null; // real-time listener unsubscribe
-
-/* ═════════════════════════════════════════
-   INIT FIREBASE
-   ═════════════════════════════════════════ */
-function initFirebase() {
-  try {
-    // Check if config has been replaced (not placeholder)
-    if (firebaseConfig.apiKey === "YOUR_API_KEY" || !firebaseConfig.projectId || firebaseConfig.projectId === "YOUR_PROJECT_ID") {
-      console.log('[RSVP] Firebase not configured — using localStorage fallback');
-      setDBStatus('local', 'Local Storage', 'Data saved in this browser only');
-      return;
-    }
-    
-    firebase.initializeApp(firebaseConfig);
-    db = firebase.firestore();
-    useFirestore = true;
-    console.log('[RSVP] Firebase initialized — using Firestore');
-    setDBStatus('ok', 'Firestore Live', 'Real-time sync across all devices');
-  } catch(e) {
-    console.warn('[RSVP] Firebase init failed:', e.message);
-    setDBStatus('local', 'Local Storage', 'Firebase error — using fallback');
-  }
-}
-
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 function setDBStatus(type, label, sub) {
   var stat = document.getElementById('db-stat');
   var txt  = document.getElementById('db-txt');
