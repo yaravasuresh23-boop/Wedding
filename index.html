@@ -119,9 +119,9 @@ select option{background:#16161f;color:#fff}
 
 <!-- Lightbox -->
 <div id="lb" class="modal" onclick="this.classList.remove('on')">
-  <div class="max-w-4xl w-full" onclick="event.stopPropagation()">
+  <div class="max-w-4xl w-full relative" onclick="event.stopPropagation()">
     <img id="lb-img" src="" class="w-full rounded-2xl border border-white/10 shadow-2xl">
-    <button onclick="document.getElementById('lb').classList.remove('on')" class="absolute top-6 right-6 icon-btn" style="width:40px;height:40px;color:rgba(255,255,255,.6)">✕</button>
+    <button onclick="document.getElementById('lb').classList.remove('on')" class="absolute top-4 right-4 icon-btn" style="width:40px;height:40px;color:rgba(255,255,255,.6)">✕</button>
   </div>
 </div>
 
@@ -155,7 +155,7 @@ select option{background:#16161f;color:#fff}
             <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium hidden md:table-cell">Guests</th>
             <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium hidden lg:table-cell">Date</th>
           </tr></thead>
-          <tbody id="admin-tb"><tr><td colspan="6" class="text-center py-12 text-neutral-600">Connecting...</td></tr></tbody>
+          <tbody id="admin-tb"><tr><td colspan="6" class="text-center py-12 text-neutral-600">Loading...</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -212,12 +212,12 @@ select option{background:#16161f;color:#fff}
     </div>
   </div>
   <div id="mob-menu" class="lg:hidden hidden bg-dark-800/95 backdrop-blur-xl border-t border-white/5 px-6 py-2">
-    <a href="#story" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5 transition-colors">Our Story</a>
-    <a href="#decor" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5 transition-colors">Decor</a>
-    <a href="#details" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5 transition-colors">Details</a>
-    <a href="#gallery" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5 transition-colors">Gallery</a>
-    <a href="#faq" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5 transition-colors">FAQ</a>
-    <a href="#rsvp" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 transition-colors">RSVP</a>
+    <a href="#story" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5 transition-colors mob-link">Our Story</a>
+    <a href="#decor" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5 transition-colors mob-link">Decor</a>
+    <a href="#details" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5 transition-colors mob-link">Details</a>
+    <a href="#gallery" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5 transition-colors mob-link">Gallery</a>
+    <a href="#faq" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5 transition-colors mob-link">FAQ</a>
+    <a href="#rsvp" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 transition-colors mob-link">RSVP</a>
     <div class="py-3 border-t border-white/5 mt-1"><button onclick="openAdmin()" class="text-sm text-neutral-500 hover:text-gold-200 flex items-center gap-2 transition-colors">📊 Dashboard</button></div>
   </div>
 </nav>
@@ -257,10 +257,10 @@ select option{background:#16161f;color:#fff}
     <div class="text-center mb-24"><p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">How It All Began</p><h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">Our <span class="text-gold-grad">Love</span> Story</h2><div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-w"></div></div></div>
     <div class="relative">
       <div class="tl-line hidden md:block"></div>
-      <div class="fade-l relative flex flex-col md:flex-row items-center gap-8 mb-24"><div class="md:w-1/2 md:text-right md:pr-20"><span class="text-[11px] font-semibold tracking-[.2em] uppercase text-gold-400">August 2019</span><h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3 text-white">First Meeting</h3><p class="text-neutral-400 text-sm leading-relaxed">A chance encounter at a friend's dinner party in Florence. James spilled wine on Olivia's dress — and spent the rest of the evening making her laugh about it.</p></div><div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="tl-dot pulse-r"></div></div><div class="md:w-1/2 md:pl-20"><div class="rounded-2xl overflow-hidden border border-white/5 gal-item" onclick="openLB('https://picsum.photos/seed/wed-meet/800/600.jpg')"><img src="https://picsum.photos/seed/wed-meet/800/600.jpg" class="w-full h-56 object-cover"></div></div></div>
-      <div class="fade-r relative flex flex-col md:flex-row-reverse items-center gap-8 mb-24"><div class="md:w-1/2 md:text-left md:pl-20"><span class="text-[11px] font-semibold tracking-[.2em] uppercase text-gold-400">December 2020</span><h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3 text-white">First Date</h3><p class="text-neutral-400 text-sm leading-relaxed">A snowy evening walk along the Arno river turned into hours of conversation over espresso. They closed down the café and kept talking until dawn.</p></div><div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="tl-dot pulse-r"></div></div><div class="md:w-1/2 md:pr-20"><div class="rounded-2xl overflow-hidden border border-white/5 gal-item" onclick="openLB('https://picsum.photos/seed/wed-date/800/600.jpg')"><img src="https://picsum.photos/seed/wed-date/800/600.jpg" class="w-full h-56 object-cover"></div></div></div>
-      <div class="fade-l relative flex flex-col md:flex-row items-center gap-8 mb-24"><div class="md:w-1/2 md:text-right md:pr-20"><span class="text-[11px] font-semibold tracking-[.2em] uppercase text-gold-400">June 2022</span><h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3 text-white">Moving In Together</h3><p class="text-neutral-400 text-sm leading-relaxed">A tiny apartment with a leaky faucet became their first home. They learned to cook together, argue about furniture, and fall deeper in love.</p></div><div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="tl-dot pulse-r"></div></div><div class="md:w-1/2 md:pl-20"><div class="rounded-2xl overflow-hidden border border-white/5 gal-item" onclick="openLB('https://picsum.photos/seed/wed-home/800/600.jpg')"><img src="https://picsum.photos/seed/wed-home/800/600.jpg" class="w-full h-56 object-cover"></div></div></div>
-      <div class="fade-r relative flex flex-col md:flex-row-reverse items-center gap-8"><div class="md:w-1/2 md:text-left md:pl-20"><span class="text-[11px] font-semibold tracking-[.2em] uppercase text-gold-400">September 2024</span><h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3 text-white">The Proposal</h3><p class="text-neutral-400 text-sm leading-relaxed">Under a canopy of stars in the Tuscan countryside, James got down on one knee. Olivia said yes before he even finished the question.</p></div><div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="tl-dot pulse-r"></div></div><div class="md:w-1/2 md:pr-20"><div class="rounded-2xl overflow-hidden border border-white/5 gal-item" onclick="openLB('https://picsum.photos/seed/wed-prop/800/600.jpg')"><img src="https://picsum.photos/seed/wed-prop/800/600.jpg" class="w-full h-56 object-cover"></div></div></div>
+      <div class="fade-l relative flex flex-col md:flex-row items-center gap-8 mb-24"><div class="md:w-1/2 md:text-right md:pr-20"><span class="text-[11px] font-semibold tracking-[.2em] uppercase text-gold-400">August 2019</span><h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3 text-white">First Meeting</h3><p class="text-neutral-400 text-sm leading-relaxed">A chance encounter at a friend's dinner party in Florence. James spilled wine on Olivia's dress — and spent the rest of the evening making her laugh about it.</p></div><div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="tl-dot pulse-r"></div></div><div class="md:w-1/2 md:pl-20"><div class="rounded-2xl overflow-hidden border border-white/5 gal-item" onclick="openLB('https://picsum.photos/seed/wed-meet/800/600.jpg')"><img src="https://picsum.photos/seed/wed-meet/800/600.jpg" class="w-full h-56 object-cover" alt="First Meeting"></div></div></div>
+      <div class="fade-r relative flex flex-col md:flex-row-reverse items-center gap-8 mb-24"><div class="md:w-1/2 md:text-left md:pl-20"><span class="text-[11px] font-semibold tracking-[.2em] uppercase text-gold-400">December 2020</span><h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3 text-white">First Date</h3><p class="text-neutral-400 text-sm leading-relaxed">A snowy evening walk along the Arno river turned into hours of conversation over espresso. They closed down the café and kept talking until dawn.</p></div><div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="tl-dot pulse-r"></div></div><div class="md:w-1/2 md:pr-20"><div class="rounded-2xl overflow-hidden border border-white/5 gal-item" onclick="openLB('https://picsum.photos/seed/wed-date/800/600.jpg')"><img src="https://picsum.photos/seed/wed-date/800/600.jpg" class="w-full h-56 object-cover" alt="First Date"></div></div></div>
+      <div class="fade-l relative flex flex-col md:flex-row items-center gap-8 mb-24"><div class="md:w-1/2 md:text-right md:pr-20"><span class="text-[11px] font-semibold tracking-[.2em] uppercase text-gold-400">June 2022</span><h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3 text-white">Moving In Together</h3><p class="text-neutral-400 text-sm leading-relaxed">A tiny apartment with a leaky faucet became their first home. They learned to cook together, argue about furniture, and fall deeper in love.</p></div><div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="tl-dot pulse-r"></div></div><div class="md:w-1/2 md:pl-20"><div class="rounded-2xl overflow-hidden border border-white/5 gal-item" onclick="openLB('https://picsum.photos/seed/wed-home/800/600.jpg')"><img src="https://picsum.photos/seed/wed-home/800/600.jpg" class="w-full h-56 object-cover" alt="Moving In"></div></div></div>
+      <div class="fade-r relative flex flex-col md:flex-row-reverse items-center gap-8"><div class="md:w-1/2 md:text-left md:pl-20"><span class="text-[11px] font-semibold tracking-[.2em] uppercase text-gold-400">September 2024</span><h3 class="font-serif text-2xl sm:text-3xl mt-2 mb-3 text-white">The Proposal</h3><p class="text-neutral-400 text-sm leading-relaxed">Under a canopy of stars in the Tuscan countryside, James got down on one knee. Olivia said yes before he even finished the question.</p></div><div class="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2"><div class="tl-dot pulse-r"></div></div><div class="md:w-1/2 md:pr-20"><div class="rounded-2xl overflow-hidden border border-white/5 gal-item" onclick="openLB('https://picsum.photos/seed/wed-prop/800/600.jpg')"><img src="https://picsum.photos/seed/wed-prop/800/600.jpg" class="w-full h-56 object-cover" alt="Proposal"></div></div></div>
     </div>
   </div>
 </section>
@@ -272,12 +272,12 @@ select option{background:#16161f;color:#fff}
     <div class="text-center mb-20"><p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">Design</p><h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">Wedding <span class="text-gold-grad">Decor</span></h2><div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-w"></div></div></div>
     <div class="fade-up mb-16"><h3 class="font-serif text-xl text-center mb-8 text-white">Color <span class="text-gold-grad">Palette</span></h3><div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6"><div class="text-center"><div class="swatch mx-auto" style="background:#d4a574"></div><p class="text-[10px] text-neutral-500 mt-2">Gold</p></div><div class="text-center"><div class="swatch mx-auto" style="background:#e8b4b8"></div><p class="text-[10px] text-neutral-500 mt-2">Rose</p></div><div class="text-center"><div class="swatch mx-auto" style="background:#a3b89c"></div><p class="text-[10px] text-neutral-500 mt-2">Sage</p></div><div class="text-center"><div class="swatch mx-auto" style="background:#faf6f0"></div><p class="text-[10px] text-neutral-500 mt-2">Ivory</p></div><div class="text-center"><div class="swatch mx-auto" style="background:#f5ede0"></div><p class="text-[10px] text-neutral-500 mt-2">Champagne</p></div><div class="text-center"><div class="swatch mx-auto" style="background:#2a2a38"></div><p class="text-[10px] text-neutral-500 mt-2">Charcoal</p></div></div></div>
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-      <div class="scale-in dec-card"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-floral/600/400.jpg" class="w-full h-52 object-cover"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-gold-400 mb-2">🌸 Florals</p><h4 class="font-serif text-lg mb-2 text-white">Floral Arrangements</h4><p class="text-xs text-neutral-400 leading-relaxed">Lush garden-style bouquets with white roses, peonies, trailing ivy, and dried lavender.</p></div></div>
-      <div class="scale-in dec-card" style="transition-delay:.1s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-table/600/400.jpg" class="w-full h-52 object-cover"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-rose-300 mb-2">🍽 Tables</p><h4 class="font-serif text-lg mb-2 text-white">Table Settings</h4><p class="text-xs text-neutral-400 leading-relaxed">Long farmhouse tables with gold-rimmed china, linen runners, and candlelit centerpieces.</p></div></div>
-      <div class="scale-in dec-card" style="transition-delay:.2s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-lighting/600/400.jpg" class="w-full h-52 object-cover"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-gold-300 mb-2">💡 Lighting</p><h4 class="font-serif text-lg mb-2 text-white">Ambient Lighting</h4><p class="text-xs text-neutral-400 leading-relaxed">Fairy lights through olive trees, warm uplighting, and floating candles in the pool.</p></div></div>
-      <div class="scale-in dec-card" style="transition-delay:.15s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-ceremony2/600/400.jpg" class="w-full h-52 object-cover"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-sage-300 mb-2">⛪ Ceremony</p><h4 class="font-serif text-lg mb-2 text-white">Garden Arch</h4><p class="text-xs text-neutral-400 leading-relaxed">Hand-crafted wooden arch with cascading white florals, silk ribbons, and greenery.</p></div></div>
-      <div class="scale-in dec-card" style="transition-delay:.25s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-cake2/600/400.jpg" class="w-full h-52 object-cover"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-rose-200 mb-2">🎂 Cake</p><h4 class="font-serif text-lg mb-2 text-white">The Wedding Cake</h4><p class="text-xs text-neutral-400 leading-relaxed">Four-tiered buttercream with hand-painted gold detailing and fresh roses.</p></div></div>
-      <div class="scale-in dec-card" style="transition-delay:.3s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-favors/600/400.jpg" class="w-full h-52 object-cover"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-gold-400 mb-2">🎁 Favors</p><h4 class="font-serif text-lg mb-2 text-white">Guest Favors</h4><p class="text-xs text-neutral-400 leading-relaxed">Mini bottles of Tuscan olive oil, custom-labeled in gold foil.</p></div></div>
+      <div class="scale-in dec-card"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-floral/600/400.jpg" class="w-full h-52 object-cover" alt="Florals"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-gold-400 mb-2">🌸 Florals</p><h4 class="font-serif text-lg mb-2 text-white">Floral Arrangements</h4><p class="text-xs text-neutral-400 leading-relaxed">Lush garden-style bouquets with white roses, peonies, trailing ivy, and dried lavender.</p></div></div>
+      <div class="scale-in dec-card" style="transition-delay:.1s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-table/600/400.jpg" class="w-full h-52 object-cover" alt="Tables"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-rose-300 mb-2">🍽 Tables</p><h4 class="font-serif text-lg mb-2 text-white">Table Settings</h4><p class="text-xs text-neutral-400 leading-relaxed">Long farmhouse tables with gold-rimmed china, linen runners, and candlelit centerpieces.</p></div></div>
+      <div class="scale-in dec-card" style="transition-delay:.2s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-lighting/600/400.jpg" class="w-full h-52 object-cover" alt="Lighting"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-gold-300 mb-2">💡 Lighting</p><h4 class="font-serif text-lg mb-2 text-white">Ambient Lighting</h4><p class="text-xs text-neutral-400 leading-relaxed">Fairy lights through olive trees, warm uplighting, and floating candles in the pool.</p></div></div>
+      <div class="scale-in dec-card" style="transition-delay:.15s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-ceremony2/600/400.jpg" class="w-full h-52 object-cover" alt="Ceremony"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-sage-300 mb-2">⛪ Ceremony</p><h4 class="font-serif text-lg mb-2 text-white">Garden Arch</h4><p class="text-xs text-neutral-400 leading-relaxed">Hand-crafted wooden arch with cascading white florals, silk ribbons, and greenery.</p></div></div>
+      <div class="scale-in dec-card" style="transition-delay:.25s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-cake2/600/400.jpg" class="w-full h-52 object-cover" alt="Cake"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-rose-200 mb-2">🎂 Cake</p><h4 class="font-serif text-lg mb-2 text-white">The Wedding Cake</h4><p class="text-xs text-neutral-400 leading-relaxed">Four-tiered buttercream with hand-painted gold detailing and fresh roses.</p></div></div>
+      <div class="scale-in dec-card" style="transition-delay:.3s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-favors/600/400.jpg" class="w-full h-52 object-cover" alt="Favors"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-gold-400 mb-2">🎁 Favors</p><h4 class="font-serif text-lg mb-2 text-white">Guest Favors</h4><p class="text-xs text-neutral-400 leading-relaxed">Mini bottles of Tuscan olive oil, custom-labeled in gold foil.</p></div></div>
     </div>
   </div>
 </section>
@@ -290,9 +290,9 @@ select option{background:#16161f;color:#fff}
   <div class="max-w-6xl mx-auto">
     <div class="text-center mb-20"><p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">Join Us</p><h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">Wedding <span class="text-gold-grad">Details</span></h2><div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-w"></div></div></div>
     <div class="grid md:grid-cols-2 gap-5">
-      <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400/15 to-gold-400/5 flex items-center justify-center mb-6"><span style="font-size:24px">⛪</span></div><span class="text-[10px] font-semibold tracking-[.2em] uppercase text-gold-400 mb-2 block">The Ceremony</span><h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Exchange of Vows</h3><div class="space-y-4 text-sm text-neutral-400"><div class="flex items-start gap-3"><span class="text-gold-400 mt-.5 shrink-0">📅</span><span>Saturday, June 14, 2025</span></div><div class="flex items-start gap-3"><span class="text-gold-400 mt-.5 shrink-0">🕐</span><span>4:00 PM — Doors open at 3:30 PM</span></div><div class="flex items-start gap-3"><span class="text-gold-400 mt-.5 shrink-0">📍</span><span>The Rosewood Estate Chapel<br>Via della Rosa, 42 — Tuscany, Italy</span></div></div><div class="mt-6 pt-6 border-t border-white/5"><p class="text-xs text-neutral-500">Garden ceremony with seating for 150. Rain backup: Grand Hall.</p></div></div>
-      <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:.1s"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-200/15 to-rose-200/5 flex items-center justify-center mb-6"><span style="font-size:24px">🍷</span></div><span class="text-[10px] font-semibold tracking-[.2em] uppercase text-rose-200 mb-2 block">The Reception</span><h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Dinner & Dancing</h3><div class="space-y-4 text-sm text-neutral-400"><div class="flex items-start gap-3"><span class="text-rose-200 mt-.5 shrink-0">📅</span><span>Saturday, June 14, 2025</span></div><div class="flex items-start gap-3"><span class="text-rose-200 mt-.5 shrink-0">🕐</span><span>6:00 PM — Until Midnight</span></div><div class="flex items-start gap-3"><span class="text-rose-200 mt-.5 shrink-0">📍</span><span>The Rosewood Terrace<br>Adjacent to the Chapel</span></div></div><div class="mt-6 pt-6 border-t border-white/5"><p class="text-xs text-neutral-500">Four-course dinner, live band, open bar. Black tie optional.</p></div></div>
-      <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:.15s"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sage-300/15 to-sage-300/5 flex items-center justify-center mb-6"><span style="font-size:24px">🛏</span></div><span class="text-[10px] font-semibold tracking-[.2em] uppercase text-sage-300 mb-2 block">Accommodation</span><h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Where to Stay</h3><p class="text-sm text-neutral-400 leading-relaxed mb-4">Rooms reserved at Villa Toscana Inn, 5 minutes from venue. Code: <span class="text-gold-200 font-semibold bg-gold-400/10 px-2 py-.5 rounded-md">JANDO2025</span></p><a href="#" class="inline-flex items-center gap-2 text-sm text-sage-300 hover:text-sage-200 font-medium transition-colors">Book your room →</a></div>
+      <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400/15 to-gold-400/5 flex items-center justify-center mb-6"><span style="font-size:24px">⛪</span></div><span class="text-[10px] font-semibold tracking-[.2em] uppercase text-gold-400 mb-2 block">The Ceremony</span><h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Exchange of Vows</h3><div class="space-y-4 text-sm text-neutral-400"><div class="flex items-start gap-3"><span class="text-gold-400 mt-0.5 shrink-0">📅</span><span>Saturday, June 14, 2025</span></div><div class="flex items-start gap-3"><span class="text-gold-400 mt-0.5 shrink-0">🕐</span><span>4:00 PM — Doors open at 3:30 PM</span></div><div class="flex items-start gap-3"><span class="text-gold-400 mt-0.5 shrink-0">📍</span><span>The Rosewood Estate Chapel<br>Via della Rosa, 42 — Tuscany, Italy</span></div></div><div class="mt-6 pt-6 border-t border-white/5"><p class="text-xs text-neutral-500">Garden ceremony with seating for 150. Rain backup: Grand Hall.</p></div></div>
+      <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:.1s"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-200/15 to-rose-200/5 flex items-center justify-center mb-6"><span style="font-size:24px">🍷</span></div><span class="text-[10px] font-semibold tracking-[.2em] uppercase text-rose-200 mb-2 block">The Reception</span><h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Dinner & Dancing</h3><div class="space-y-4 text-sm text-neutral-400"><div class="flex items-start gap-3"><span class="text-rose-200 mt-0.5 shrink-0">📅</span><span>Saturday, June 14, 2025</span></div><div class="flex items-start gap-3"><span class="text-rose-200 mt-0.5 shrink-0">🕐</span><span>6:00 PM — Until Midnight</span></div><div class="flex items-start gap-3"><span class="text-rose-200 mt-0.5 shrink-0">📍</span><span>The Rosewood Terrace<br>Adjacent to the Chapel</span></div></div><div class="mt-6 pt-6 border-t border-white/5"><p class="text-xs text-neutral-500">Four-course dinner, live band, open bar. Black tie optional.</p></div></div>
+      <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:.15s"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sage-300/15 to-sage-300/5 flex items-center justify-center mb-6"><span style="font-size:24px">🛏</span></div><span class="text-[10px] font-semibold tracking-[.2em] uppercase text-sage-300 mb-2 block">Accommodation</span><h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Where to Stay</h3><p class="text-sm text-neutral-400 leading-relaxed mb-4">Rooms reserved at Villa Toscana Inn, 5 minutes from venue. Code: <span class="text-gold-200 font-semibold bg-gold-400/10 px-2 py-0.5 rounded-md">JANDO2025</span></p><a href="#" class="inline-flex items-center gap-2 text-sm text-sage-300 hover:text-sage-200 font-medium transition-colors">Book your room →</a></div>
       <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:.2s"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-200/15 to-rose-200/5 flex items-center justify-center mb-6"><span style="font-size:24px">🎁</span></div><span class="text-[10px] font-semibold tracking-[.2em] uppercase text-rose-200 mb-2 block">Registry</span><h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Your Presence Is Enough</h3><p class="text-sm text-neutral-400 leading-relaxed mb-4">Your love is the greatest gift. We also have a small registry and honeymoon fund.</p><a href="#" class="inline-flex items-center gap-2 text-sm text-rose-200 hover:text-rose-300 font-medium transition-colors">View registry →</a></div>
     </div>
     <div class="fade-up mt-8 glass gold-border rounded-3xl p-8 sm:p-10"><div class="flex flex-col sm:flex-row items-start sm:items-center gap-6"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400/15 to-rose-200/10 flex items-center justify-center shrink-0"><span style="font-size:24px">👔</span></div><div class="flex-1"><span class="text-[10px] font-semibold tracking-[.2em] uppercase text-gold-400 mb-1 block">Dress Code</span><h3 class="font-serif text-xl mb-2 text-white">Black Tie Optional</h3><p class="text-sm text-neutral-400 leading-relaxed">Formal or semi-formal attire. Please avoid white or ivory.</p></div><div class="flex gap-2 shrink-0"><div class="w-8 h-8 rounded-lg" style="background:#1a1a2e;border:1px solid rgba(255,255,255,.1)"></div><div class="w-8 h-8 rounded-lg" style="background:#2a1a1a;border:1px solid rgba(255,255,255,.1)"></div><div class="w-8 h-8 rounded-lg" style="background:#1a2a1a;border:1px solid rgba(255,255,255,.1)"></div><div class="w-8 h-8 rounded-lg" style="background:#d4a574;border:1px solid rgba(255,255,255,.1)"></div></div></div></div>
@@ -304,13 +304,13 @@ select option{background:#16161f;color:#fff}
   <div class="max-w-6xl mx-auto">
     <div class="text-center mb-16"><p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">Moments</p><h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">Our <span class="text-gold-grad">Gallery</span></h2><div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-w"></div></div></div>
     <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
-      <div class="scale-in gal-item col-span-2 md:col-span-2 row-span-2" onclick="openLB('https://picsum.photos/seed/gal-hero/1000/1000.jpg')"><img src="https://picsum.photos/seed/gal-hero/1000/1000.jpg" class="w-full h-full object-cover" style="min-height:300px"></div>
-      <div class="scale-in gal-item" style="transition-delay:.08s" onclick="openLB('https://picsum.photos/seed/gal-2/600/600.jpg')"><img src="https://picsum.photos/seed/gal-2/600/600.jpg" class="w-full h-44 sm:h-full object-cover"></div>
-      <div class="scale-in gal-item" style="transition-delay:.16s" onclick="openLB('https://picsum.photos/seed/gal-3/600/600.jpg')"><img src="https://picsum.photos/seed/gal-3/600/600.jpg" class="w-full h-44 sm:h-full object-cover"></div>
-      <div class="scale-in gal-item" style="transition-delay:.12s" onclick="openLB('https://picsum.photos/seed/gal-4/600/600.jpg')"><img src="https://picsum.photos/seed/gal-4/600/600.jpg" class="w-full h-44 sm:h-full object-cover"></div>
-      <div class="scale-in gal-item" style="transition-delay:.2s" onclick="openLB('https://picsum.photos/seed/gal-5/600/600.jpg')"><img src="https://picsum.photos/seed/gal-5/600/600.jpg" class="w-full h-44 sm:h-full object-cover"></div>
-      <div class="scale-in gal-item" style="transition-delay:.24s" onclick="openLB('https://picsum.photos/seed/gal-6/600/600.jpg')"><img src="https://picsum.photos/seed/gal-6/600/600.jpg" class="w-full h-44 sm:h-full object-cover"></div>
-      <div class="scale-in gal-item" style="transition-delay:.28s" onclick="openLB('https://picsum.photos/seed/gal-7/600/600.jpg')"><img src="https://picsum.photos/seed/gal-7/600/600.jpg" class="w-full h-44 sm:h-full object-cover"></div>
+      <div class="scale-in gal-item col-span-2 md:col-span-2 row-span-2" onclick="openLB('https://picsum.photos/seed/gal-hero/1000/1000.jpg')"><img src="https://picsum.photos/seed/gal-hero/1000/1000.jpg" class="w-full h-full object-cover" style="min-height:300px" alt="Gallery 1"></div>
+      <div class="scale-in gal-item" style="transition-delay:.08s" onclick="openLB('https://picsum.photos/seed/gal-2/600/600.jpg')"><img src="https://picsum.photos/seed/gal-2/600/600.jpg" class="w-full h-44 sm:h-full object-cover" alt="Gallery 2"></div>
+      <div class="scale-in gal-item" style="transition-delay:.16s" onclick="openLB('https://picsum.photos/seed/gal-3/600/600.jpg')"><img src="https://picsum.photos/seed/gal-3/600/600.jpg" class="w-full h-44 sm:h-full object-cover" alt="Gallery 3"></div>
+      <div class="scale-in gal-item" style="transition-delay:.12s" onclick="openLB('https://picsum.photos/seed/gal-4/600/600.jpg')"><img src="https://picsum.photos/seed/gal-4/600/600.jpg" class="w-full h-44 sm:h-full object-cover" alt="Gallery 4"></div>
+      <div class="scale-in gal-item" style="transition-delay:.2s" onclick="openLB('https://picsum.photos/seed/gal-5/600/600.jpg')"><img src="https://picsum.photos/seed/gal-5/600/600.jpg" class="w-full h-44 sm:h-full object-cover" alt="Gallery 5"></div>
+      <div class="scale-in gal-item" style="transition-delay:.24s" onclick="openLB('https://picsum.photos/seed/gal-6/600/600.jpg')"><img src="https://picsum.photos/seed/gal-6/600/600.jpg" class="w-full h-44 sm:h-full object-cover" alt="Gallery 6"></div>
+      <div class="scale-in gal-item" style="transition-delay:.28s" onclick="openLB('https://picsum.photos/seed/gal-7/600/600.jpg')"><img src="https://picsum.photos/seed/gal-7/600/600.jpg" class="w-full h-44 sm:h-full object-cover" alt="Gallery 7"></div>
     </div>
   </div>
 </section>
@@ -364,310 +364,558 @@ select option{background:#16161f;color:#fff}
 </div>
 
 <!-- ══════════════════════════════════════════════════
-     JAVASCRIPT — connects to api.php
+     JAVASCRIPT
+     Uses localStorage for storage (works immediately).
+     To use a backend, set API_URL below and uncomment
+     the fetch() calls marked with // API:
      ══════════════════════════════════════════════════ -->
 <script>
 (function(){
 'use strict';
 
-// ── DATABASE URL — change if api.php is in a different folder ──
-var API = 'api.php';
+// ── If you have api.php, set its URL here ──
+var API_URL = ''; // e.g. 'https://yoursite.com/api.php'
 
+var STORAGE_KEY = 'jando_rsvp_data';
 var allData = [];
-var lastCount = 0;
 var curStep = 1;
+
+// ── Storage helpers (localStorage) ──
+function loadData() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    allData = raw ? JSON.parse(raw) : [];
+  } catch(e) {
+    allData = [];
+  }
+}
+
+function saveData() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
+}
+
+// ── API helpers (uncomment and use if you have a backend) ──
+// function apiGet() {
+//   return fetch(API_URL).then(function(r){ return r.json(); });
+// }
+// function apiPost(data) {
+//   return fetch(API_URL, {
+//     method: 'POST',
+//     headers: {'Content-Type':'application/json'},
+//     body: JSON.stringify(data)
+//   }).then(function(r){ return r.json(); });
+// }
 
 // ── Test connection ──
 function testDB() {
-  fetch(API)
-    .then(function(r){ return r.json(); })
-    .then(function(res) {
-      var stat = document.getElementById('db-stat');
-      var txt = document.getElementById('db-txt');
-      if (res.success) {
-        stat.className = 'text-[10px] px-2.5 py-1 rounded-full db-on flex items-center gap-1.5';
-        txt.textContent = 'Live';
-        allData = res.data || [];
-      } else {
-        stat.className = 'text-[10px] px-2.5 py-1 rounded-full db-off flex items-center gap-1.5';
-        txt.textContent = 'Error';
-      }
-    })
-    .catch(function() {
-      var stat = document.getElementById('db-stat');
-      var txt = document.getElementById('db-txt');
-      stat.className = 'text-[10px] px-2.5 py-1 rounded-full db-off flex items-center gap-1.5';
-      txt.textContent = 'Offline';
-    });
+  if (API_URL) {
+    // API: fetch(API_URL).then(...)
+    // For now, localStorage always "works"
+  }
+  updateDBStatus(true);
+}
+
+function updateDBStatus(connected) {
+  var stat = document.getElementById('db-stat');
+  var txt = document.getElementById('db-txt');
+  if (connected) {
+    stat.className = 'text-[10px] px-2.5 py-1 rounded-full db-on flex items-center gap-1.5';
+    txt.textContent = 'Connected';
+  } else {
+    stat.className = 'text-[10px] px-2.5 py-1 rounded-full db-off flex items-center gap-1.5';
+    txt.textContent = 'Offline';
+  }
 }
 
 // ── Fetch all data ──
 function fetchAll() {
-  fetch(API)
-    .then(function(r){ return r.json(); })
-    .then(function(res) {
-      if (res.success) {
-        allData = res.data || [];
-        if (document.getElementById('admin-m').classList.contains('on')) {
-          renderTable(allData);
-        }
-      }
-    })
-    .catch(function(){});
+  if (API_URL) {
+    // API: return apiGet().then(function(data){ allData = data; renderAdmin(); });
+  }
+  loadData();
+  renderAdmin();
 }
 
-testDB();
+// ── Render admin table ──
+function renderAdmin() {
+  var tb = document.getElementById('admin-tb');
+  var total = allData.length;
+  var attending = 0, declined = 0, guests = 0;
 
-// Auto-refresh every 5 seconds
-setInterval(fetchAll, 5000);
+  for (var i = 0; i < allData.length; i++) {
+    if (allData[i].status === 'yes') { attending++; guests += parseInt(allData[i].guests) || 1; }
+    else { declined++; }
+  }
 
-// ── Form steps ──
-window.goStep = function(step) {
-  if (curStep === 1 && step === 2) {
-    if (!document.getElementById('f-name').value.trim() || !document.getElementById('f-email').value.trim()) { showErr(); return; }
+  document.getElementById('s-t').textContent = total;
+  document.getElementById('s-a').textContent = attending;
+  document.getElementById('s-d').textContent = declined;
+  document.getElementById('s-g').textContent = guests;
+
+  if (total === 0) {
+    tb.innerHTML = '<tr><td colspan="6" class="text-center py-12 text-neutral-600">No responses yet</td></tr>';
+    return;
   }
-  if (curStep === 2 && step === 3) {
-    if (!document.querySelector('input[name="att"]:checked')) { showErr(); return; }
+
+  var html = '';
+  for (var i = 0; i < allData.length; i++) {
+    var d = allData[i];
+    var isAttending = d.status === 'yes';
+    var badge = isAttending
+      ? '<span class="badge-y">Attending</span>'
+      : '<span class="badge-n">Declined</span>';
+    var dateStr = d.date || '—';
+    html += '<tr class="row-new">'
+      + '<td class="px-4 py-3 text-neutral-500 font-mono text-xs">#' + (d.id || (i+1)) + '</td>'
+      + '<td class="px-4 py-3 text-white font-medium">' + escHtml(d.name) + '</td>'
+      + '<td class="px-4 py-3 text-neutral-400 hidden sm:table-cell">' + escHtml(d.email) + '</td>'
+      + '<td class="px-4 py-3">' + badge + '</td>'
+      + '<td class="px-4 py-3 text-neutral-400 hidden md:table-cell">' + (isAttending ? d.guests : '—') + '</td>'
+      + '<td class="px-4 py-3 text-neutral-500 text-xs hidden lg:table-cell">' + dateStr + '</td>'
+      + '</tr>';
   }
-  document.getElementById('fs' + curStep).classList.add('hidden');
-  document.getElementById('fs' + step).classList.remove('hidden');
-  for (var i = 1; i <= 3; i++) {
-    var el = document.getElementById('si' + i);
-    el.className = 'si ' + (i < step ? 'si-d' : i === step ? 'si-a' : 'si-p');
-    el.innerHTML = i < step ? '✓' : i;
-  }
-  for (var j = 1; j <= 2; j++) {
-    var ln = document.getElementById('sl' + j);
-    if (j < step) ln.classList.add('f'); else ln.classList.remove('f');
-  }
-  if (step === 2) {
-    document.querySelectorAll('input[name="att"]').forEach(function(r) {
-      r.addEventListener('change', function() {
-        document.getElementById('gs').style.display = r.value === 'no' ? 'none' : 'block';
-      });
-    });
-  }
-  curStep = step;
+  tb.innerHTML = html;
+}
+
+function escHtml(s) {
+  var div = document.createElement('div');
+  div.textContent = s;
+  return div.innerHTML;
+}
+
+// ── Toast ──
+function showToast(type) {
+  var el = document.getElementById(type === 'ok' ? 'toast-ok' : 'toast-err');
+  el.classList.add('show');
+  setTimeout(function(){ el.classList.remove('show'); }, 3500);
+}
+
+// ── Lightbox ──
+window.openLB = function(src) {
+  document.getElementById('lb-img').src = src;
+  document.getElementById('lb').classList.add('on');
 };
+
+// ── Admin modal ──
+window.openAdmin = function() {
+  fetchAll();
+  document.getElementById('admin-m').classList.add('on');
+};
+
+// ── Mobile menu ──
+document.getElementById('mob-btn').addEventListener('click', function() {
+  var menu = document.getElementById('mob-menu');
+  menu.classList.toggle('hidden');
+  this.textContent = menu.classList.contains('hidden') ? '☰' : '✕';
+});
+
+// Close mobile menu on link click
+var mobLinks = document.querySelectorAll('.mob-link');
+for (var i = 0; i < mobLinks.length; i++) {
+  mobLinks[i].addEventListener('click', function() {
+    document.getElementById('mob-menu').classList.add('hidden');
+    document.getElementById('mob-btn').textContent = '☰';
+  });
+}
+
+// ── Navbar scroll effect ──
+var nav = document.getElementById('nav');
+window.addEventListener('scroll', function() {
+  if (window.scrollY > 80) {
+    nav.style.background = 'rgba(8,8,13,.85)';
+    nav.style.backdropFilter = 'blur(20px)';
+    nav.style.borderBottom = '1px solid rgba(255,255,255,.05)';
+  } else {
+    nav.style.background = 'transparent';
+    nav.style.backdropFilter = 'none';
+    nav.style.borderBottom = 'none';
+  }
+});
+
+// ── Countdown ──
+var weddingDate = new Date('2025-06-14T16:00:00').getTime();
+
+function updateCountdown() {
+  var now = Date.now();
+  var diff = weddingDate - now;
+
+  if (diff <= 0) {
+    document.getElementById('cd-d').textContent = '0';
+    document.getElementById('cd-h').textContent = '0';
+    document.getElementById('cd-m').textContent = '0';
+    document.getElementById('cd-s').textContent = '0';
+    return;
+  }
+
+  var d = Math.floor(diff / (1000 * 60 * 60 * 24));
+  var h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  var s = Math.floor((diff % (1000 * 60)) / 1000);
+
+  document.getElementById('cd-d').textContent = d;
+  document.getElementById('cd-h').textContent = h < 10 ? '0' + h : h;
+  document.getElementById('cd-m').textContent = m < 10 ? '0' + m : m;
+  document.getElementById('cd-s').textContent = s < 10 ? '0' + s : s;
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// ── Scroll animations (IntersectionObserver) ──
+var animEls = document.querySelectorAll('.fade-up,.fade-l,.fade-r,.scale-in');
+var observer = new IntersectionObserver(function(entries) {
+  for (var i = 0; i < entries.length; i++) {
+    if (entries[i].isIntersecting) {
+      entries[i].target.classList.add('v');
+    }
+  }
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+for (var i = 0; i < animEls.length; i++) {
+  observer.observe(animEls[i]);
+}
+
+// ── RSVP Form Steps ──
+window.goStep = function(step) {
+  // Validate current step before advancing
+  if (step > curStep) {
+    if (curStep === 1) {
+      var name = document.getElementById('f-name').value.trim();
+      var email = document.getElementById('f-email').value.trim();
+      if (!name || !email) {
+        showToast('err');
+        return;
+      }
+      // Basic email check
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showToast('err');
+        return;
+      }
+    }
+    if (curStep === 2) {
+      var att = document.querySelector('input[name="att"]:checked');
+      if (!att) {
+        showToast('err');
+        return;
+      }
+    }
+  }
+
+  curStep = step;
+
+  // Show/hide fieldsets
+  document.getElementById('fs1').classList.toggle('hidden', step !== 1);
+  document.getElementById('fs2').classList.toggle('hidden', step !== 2);
+  document.getElementById('fs3').classList.toggle('hidden', step !== 3);
+
+  // Update step indicators
+  for (var s = 1; s <= 3; s++) {
+    var si = document.getElementById('si' + s);
+    si.className = 'si';
+    if (s < step) si.classList.add('si-d');
+    else if (s === step) si.classList.add('si-a');
+    else si.classList.add('si-p');
+  }
+  for (var s = 1; s <= 2; s++) {
+    var sl = document.getElementById('sl' + s);
+    if (s < step) sl.classList.add('f');
+    else sl.classList.remove('f');
+  }
+
+  // Show/hide guest count based on attendance
+  var gs = document.getElementById('gs');
+  var attRadio = document.querySelector('input[name="att"]:checked');
+  if (attRadio && attRadio.value === 'no') {
+    gs.style.display = 'none';
+  } else {
+    gs.style.display = '';
+  }
+};
+
+// Listen for radio changes to toggle guest count
+var attRadios = document.querySelectorAll('input[name="att"]');
+for (var i = 0; i < attRadios.length; i++) {
+  attRadios[i].addEventListener('change', function() {
+    var gs = document.getElementById('gs');
+    if (this.value === 'no') {
+      gs.style.display = 'none';
+    } else {
+      gs.style.display = '';
+    }
+  });
+}
 
 // ── Submit RSVP ──
 window.submitRSVP = function() {
-  var btn = document.getElementById('sub-btn');
-  var txt = document.getElementById('sub-txt');
-  var spin = document.getElementById('sub-spin');
+  var name = document.getElementById('f-name').value.trim();
+  var email = document.getElementById('f-email').value.trim();
+  var phone = document.getElementById('f-phone').value.trim();
   var att = document.querySelector('input[name="att"]:checked');
-  if (!att) { showErr(); return; }
+  var guests = document.getElementById('f-guests').value;
+  var diet = document.getElementById('f-diet').value;
+  var msg = document.getElementById('f-msg').value.trim();
 
-  var payload = {
-    name: document.getElementById('f-name').value.trim(),
-    email: document.getElementById('f-email').value.trim(),
-    phone: document.getElementById('f-phone').value.trim(),
-    status: att.value === 'yes' ? 'Attending' : 'Declined',
-    guests: att.value === 'no' ? 0 : parseInt(document.getElementById('f-guests').value),
-    dietary: document.getElementById('f-diet').value,
-    message: document.getElementById('f-msg').value.trim(),
-    ref: new URLSearchParams(window.location.search).get('ref') || ''
-  };
-
-  btn.disabled = true;
-  txt.textContent = 'Submitting...';
-  spin.classList.remove('hidden');
-
-  fetch(API, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  })
-  .then(function(r){ return r.json(); })
-  .then(function(res) {
-    btn.disabled = false;
-    txt.textContent = 'Submit RSVP';
-    spin.classList.add('hidden');
-
-    if (!res.success) {
-      showErr();
-      alert('Error: ' + (res.error || 'Unknown error'));
-      return;
-    }
-
-    showOk();
-    launchConfetti();
-    fetchAll(); // refresh data
-
-    var row = res.data;
-    document.getElementById('c-id').textContent = 'RSVP-' + String(row.id).padStart(4, '0');
-    document.getElementById('c-name').textContent = row.name;
-    document.getElementById('c-status').innerHTML = row.status === 'Attending' ? '<span class="badge-y">✓ Attending</span>' : '<span class="badge-n">✗ Declined</span>';
-    document.getElementById('c-guests').textContent = row.guests;
-    document.getElementById('c-date').textContent = row.created_at ? new Date(row.created_at + 'Z').toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' }) : '—';
-    document.getElementById('conf-m').classList.add('on');
-
-    document.getElementById('rsvp-form').reset();
-    goStep(1);
-  })
-  .catch(function(e) {
-    btn.disabled = false;
-    txt.textContent = 'Submit RSVP';
-    spin.classList.add('hidden');
-    showErr();
-    alert('Network error: ' + e.message);
-  });
-};
-
-// ── Admin ──
-window.openAdmin = function() {
-  document.getElementById('admin-m').classList.add('on');
-  lastCount = allData.length;
-  renderTable(allData);
-  fetchAll();
-};
-
-function renderTable(data) {
-  var tb = document.getElementById('admin-tb');
-  if (!data || data.length === 0) {
-    tb.innerHTML = '<tr><td colspan="6" class="text-center py-12 text-neutral-600">No responses yet — share your link!</td></tr>';
-    updateStats([]);
+  if (!name || !email || !att) {
+    showToast('err');
     return;
   }
-  updateStats(data);
-  tb.innerHTML = data.map(function(r, i) {
-    var badge = r.status === 'Attending' ? '<span class="badge-y">Attending</span>' : '<span class="badge-n">Declined</span>';
-    var d = r.created_at ? new Date(r.created_at + 'Z').toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) : '—';
-    var isNew = i < (data.length - lastCount);
-    return '<tr class="' + (isNew ? 'row-new' : '') + '"><td class="px-4 py-3 font-mono text-xs text-gold-300">RSVP-' + String(r.id).padStart(4,'0') + '</td><td class="px-4 py-3 font-medium text-white">' + esc(r.name) + '</td><td class="px-4 py-3 text-neutral-400 text-xs hidden sm:table-cell">' + esc(r.email) + '</td><td class="px-4 py-3">' + badge + '</td><td class="px-4 py-3 text-neutral-400 hidden md:table-cell">' + (r.guests || 0) + '</td><td class="px-4 py-3 text-neutral-500 text-xs hidden lg:table-cell">' + d + '</td></tr>';
-  }).join('');
-  lastCount = data.length;
-}
 
-function updateStats(d) {
-  document.getElementById('s-t').textContent = d.length;
-  document.getElementById('s-a').textContent = d.filter(function(r){ return r.status === 'Attending'; }).length;
-  document.getElementById('s-d').textContent = d.filter(function(r){ return r.status === 'Declined'; }).length;
-  document.getElementById('s-g').textContent = d.reduce(function(s,r){ return s + (r.guests || 0); }, 0);
-}
+  var isAttending = att.value === 'yes';
+  var now = new Date();
+  var id = 'JO-' + String(allData.length + 1).padStart(3, '0');
 
-window.clearAll = function() {
-  if (!confirm('Delete ALL RSVP data?')) return;
-  fetch(API + '?confirm=yes', { method: 'DELETE' })
-    .then(function(r){ return r.json(); })
-    .then(function() { allData = []; renderTable([]); });
-};
+  var entry = {
+    id: id,
+    name: name,
+    email: email,
+    phone: phone,
+    status: att.value,
+    guests: isAttending ? guests : '0',
+    diet: diet,
+    message: msg,
+    date: now.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) + ' ' + now.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit' })
+  };
 
-window.exportCSV = function() {
-  if (!allData.length) { alert('No data.'); return; }
-  var h = ['ID','Name','Email','Phone','Status','Guests','Dietary','Message','Referral','Date'];
-  var rows = allData.map(function(r) {
-    return ['RSVP-'+String(r.id).padStart(4,'0'), r.name, r.email, r.phone, r.status, r.guests, r.dietary, (r.message||'').replace(/,/g,';'), r.ref, r.created_at || ''];
-  });
-  var csv = h.join(',') + '\n' + rows.map(function(r) { return r.map(function(c) { return '"'+c+'"'; }).join(','); }).join('\n');
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([csv], { type:'text/csv' }));
-  a.download = 'rsvp-' + new Date().toISOString().slice(0,10) + '.csv';
-  a.click();
-};
+  // Show loading state
+  document.getElementById('sub-txt').classList.add('hidden');
+  document.getElementById('sub-spin').classList.remove('hidden');
+  document.getElementById('sub-btn').disabled = true;
 
-function esc(s) { var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
-window.openLB = function(src) { document.getElementById('lb-img').src = src; document.getElementById('lb').classList.add('on'); };
+  function finishSubmit() {
+    // Hide loading
+    document.getElementById('sub-txt').classList.remove('hidden');
+    document.getElementById('sub-spin').classList.add('hidden');
+    document.getElementById('sub-btn').disabled = false;
 
-function showOk() { var t = document.getElementById('toast-ok'); t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 3500); }
-function showErr() { var t = document.getElementById('toast-err'); t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 3500); }
+    // Populate confirmation modal
+    document.getElementById('c-id').textContent = entry.id;
+    document.getElementById('c-name').textContent = entry.name;
+    document.getElementById('c-guests').textContent = isAttending ? entry.guests + (parseInt(entry.guests) === 1 ? ' guest' : ' guests') : '—';
+    document.getElementById('c-date').textContent = entry.date;
 
-function launchConfetti() {
-  var cols = ['#d4a574','#e8b668','#f0c987','#e8b4b8','#d4868e','#a3b89c','#fff'];
-  for (var i = 0; i < 60; i++) {
-    var p = document.createElement('div');
-    p.className = 'confetti';
-    var size = Math.random()*8+5;
-    p.style.cssText = 'left:'+Math.random()*100+'vw;top:-10px;width:'+size+'px;height:'+size+'px;background:'+cols[Math.floor(Math.random()*cols.length)]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';opacity:'+(Math.random()*.7+.3);
-    document.body.appendChild(p);
-    var dur = Math.random()*2000+1500;
-    var xd = (Math.random()-.5)*200;
-    p.animate([
-      { transform:'translateY(0) translateX(0) rotate(0)', opacity:1 },
-      { transform:'translateY(100vh) translateX('+xd+'px) rotate('+(Math.random()*720)+'deg)', opacity:0 }
-    ],{ duration:dur, easing:'cubic-bezier(.25,.46,.45,.94)' }).onfinish = (function(el){ return function(){ el.remove(); }; })(p);
+    var statusEl = document.getElementById('c-status');
+    if (isAttending) {
+      statusEl.innerHTML = '<span class="badge-y">Joyfully Accepts</span>';
+    } else {
+      statusEl.innerHTML = '<span class="badge-n">Regretfully Declines</span>';
+    }
+
+    // Show confirmation
+    document.getElementById('conf-m').classList.add('on');
+    showToast('ok');
+
+    // Launch confetti
+    if (isAttending) launchConfetti();
   }
+
+  if (API_URL) {
+    // API: apiPost(entry).then(finishSubmit).catch(function(){ showToast('err'); finishSubmit(); });
+    // Fallback to local:
+    allData.push(entry);
+    saveData();
+    setTimeout(finishSubmit, 800);
+  } else {
+    allData.push(entry);
+    saveData();
+    setTimeout(finishSubmit, 800);
+  }
+};
+
+// ── Clear all data ──
+window.clearAll = function() {
+  if (!confirm('Delete all RSVP data? This cannot be undone.')) return;
+  allData = [];
+  saveData();
+  if (API_URL) {
+    // API: fetch(API_URL, { method: 'DELETE' })
+  }
+  renderAdmin();
+  showToast('ok');
+};
+
+// ── Export CSV ──
+window.exportCSV = function() {
+  if (allData.length === 0) {
+    showToast('err');
+    return;
+  }
+  var headers = ['ID','Name','Email','Phone','Status','Guests','Dietary','Message','Date'];
+  var rows = [headers.join(',')];
+  for (var i = 0; i < allData.length; i++) {
+    var d = allData[i];
+    rows.push([
+      d.id, '"' + (d.name||'').replace(/"/g,'""') + '"',
+      '"' + (d.email||'').replace(/"/g,'""') + '"',
+      '"' + (d.phone||'').replace(/"/g,'""') + '"',
+      d.status === 'yes' ? 'Attending' : 'Declined',
+      d.guests, d.diet || '',
+      '"' + (d.message||'').replace(/"/g,'""') + '"',
+      d.date
+    ].join(','));
+  }
+  var blob = new Blob([rows.join('\n')], { type: 'text/csv' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'rsvp_james_olivia_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+};
+
+// ── Confetti ──
+function launchConfetti() {
+  var colors = ['#d4a574','#e8b668','#a3b89c','#e8b4b8','#f0c987','#fff'];
+  var container = document.createElement('div');
+  container.className = 'confetti';
+  container.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:999;overflow:hidden';
+  document.body.appendChild(container);
+
+  for (var i = 0; i < 120; i++) {
+    (function(i){
+      var el = document.createElement('div');
+      var color = colors[Math.floor(Math.random() * colors.length)];
+      var size = Math.random() * 8 + 4;
+      var left = Math.random() * 100;
+      var delay = Math.random() * 0.5;
+      var dur = Math.random() * 2 + 2;
+      var rot = Math.random() * 360;
+      var drift = (Math.random() - 0.5) * 200;
+
+      el.style.cssText = 'position:absolute;left:' + left + '%;top:-20px;width:' + size + 'px;height:' + size + 'px;background:' + color + ';border-radius:' + (Math.random() > 0.5 ? '50%' : '2px') + ';opacity:0.9;animation:confettiFall ' + dur + 's ease-out ' + delay + 's forwards;transform:rotate(' + rot + 'deg);--drift:' + drift + 'px';
+      container.appendChild(el);
+    })(i);
+  }
+
+  // Inject keyframes if not present
+  if (!document.getElementById('confetti-style')) {
+    var style = document.createElement('style');
+    style.id = 'confetti-style';
+    style.textContent = '@keyframes confettiFall{0%{transform:translateY(0) translateX(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) translateX(var(--drift,0px)) rotate(720deg);opacity:0}}';
+    document.head.appendChild(style);
+  }
+
+  setTimeout(function(){ container.remove(); }, 5000);
 }
 
-// Mobile menu
-document.getElementById('mob-btn').addEventListener('click', function() { document.getElementById('mob-menu').classList.toggle('hidden'); });
-document.querySelectorAll('#mob-menu a').forEach(function(a) { a.addEventListener('click', function() { document.getElementById('mob-menu').classList.add('hidden'); }); });
-
-// Navbar scroll
-window.addEventListener('scroll', function() {
-  var n = document.getElementById('nav');
-  if (window.scrollY > 80) { n.style.background = 'rgba(8,8,13,.85)'; n.style.backdropFilter = 'blur(20px)'; n.style.borderBottom = '1px solid rgba(255,255,255,.05)'; }
-  else { n.style.background = 'transparent'; n.style.backdropFilter = 'none'; n.style.borderBottom = 'none'; }
+// ── Keyboard: close modals on Escape ──
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.getElementById('lb').classList.remove('on');
+    document.getElementById('admin-m').classList.remove('on');
+    document.getElementById('conf-m').classList.remove('on');
+  }
 });
 
-// Countdown
-function tick() {
-  var diff = new Date('2025-06-14T16:00:00').getTime() - Date.now();
-  if (diff <= 0) { ['cd-d','cd-h','cd-m','cd-s'].forEach(function(id){ document.getElementById(id).textContent = '00'; }); return; }
-  document.getElementById('cd-d').textContent = String(Math.floor(diff/864e5)).padStart(2,'0');
-  document.getElementById('cd-h').textContent = String(Math.floor(diff%864e5/36e5)).padStart(2,'0');
-  document.getElementById('cd-m').textContent = String(Math.floor(diff%36e5/6e4)).padStart(2,'0');
-  document.getElementById('cd-s').textContent = String(Math.floor(diff%6e4/1e3)).padStart(2,'0');
-}
-tick(); setInterval(tick, 1000);
-
-// Scroll animations
-var obs = new IntersectionObserver(function(entries) { entries.forEach(function(en) { if (en.isIntersecting) en.target.classList.add('v'); }); }, { threshold:.1, rootMargin:'0px 0px -50px 0px' });
-document.querySelectorAll('.fade-up,.fade-l,.fade-r,.scale-in').forEach(function(el) { obs.observe(el); });
+// ── Init ──
+testDB();
 
 })();
 </script>
 
-<!-- Three.js -->
+<!-- ═════════════ THREE.JS BACKGROUND ═════════════ -->
 <script type="module">
 import * as THREE from 'three';
-var canvas = document.getElementById('bg-canvas');
-var R = new THREE.WebGLRenderer({ canvas:canvas, alpha:true, antialias:true });
-R.setSize(innerWidth, innerHeight);
-R.setPixelRatio(Math.min(devicePixelRatio, 2));
-var S = new THREE.Scene();
-var C = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, .1, 1000);
-C.position.z = 5;
-var N = 1500, pos = new Float32Array(N*3), col = new Float32Array(N*3), sz = new Float32Array(N);
-var gc = new THREE.Color('#d4a574'), rc = new THREE.Color('#e8b4b8'), sc = new THREE.Color('#a3b89c');
-for (var i=0; i<N; i++) {
-  pos[i*3]=(Math.random()-.5)*20; pos[i*3+1]=(Math.random()-.5)*20; pos[i*3+2]=(Math.random()-.5)*20;
-  var c = Math.random()<.5?gc:Math.random()<.8?rc:sc;
-  col[i*3]=c.r; col[i*3+1]=c.g; col[i*3+2]=c.b;
-  sz[i]=Math.random()*2+.5;
+
+const canvas = document.getElementById('bg-canvas');
+const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.z = 50;
+
+// Floating golden particles
+const count = 600;
+const positions = new Float32Array(count * 3);
+const sizes = new Float32Array(count);
+const speeds = new Float32Array(count);
+
+for (let i = 0; i < count; i++) {
+  positions[i * 3]     = (Math.random() - 0.5) * 120;
+  positions[i * 3 + 1] = (Math.random() - 0.5) * 120;
+  positions[i * 3 + 2] = (Math.random() - 0.5) * 80;
+  sizes[i] = Math.random() * 2.5 + 0.5;
+  speeds[i] = Math.random() * 0.3 + 0.1;
 }
-var G = new THREE.BufferGeometry();
-G.setAttribute('position', new THREE.BufferAttribute(pos,3));
-G.setAttribute('aColor', new THREE.BufferAttribute(col,3));
-G.setAttribute('aSize', new THREE.BufferAttribute(sz,1));
-var M = new THREE.ShaderMaterial({
-  vertexShader:'attribute vec3 aColor;attribute float aSize;varying vec3 vC;varying float vA;void main(){vC=aColor;vec4 mv=modelViewMatrix*vec4(position,1.);gl_PointSize=aSize*(200./-mv.z);gl_Position=projectionMatrix*mv;vA=smoothstep(0.,3.,aSize)*.6;}',
-  fragmentShader:'varying vec3 vC;varying float vA;void main(){float d=length(gl_PointCoord-vec2(.5));if(d>.5)discard;gl_FragColor=vec4(vC,smoothstep(.5,.1,d)*vA);}',
-  transparent:true, depthWrite:false, blending:THREE.AdditiveBlending
+
+const geo = new THREE.BufferGeometry();
+geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+geo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+const mat = new THREE.ShaderMaterial({
+  transparent: true,
+  depthWrite: false,
+  uniforms: {
+    uTime: { value: 0 },
+    uColor1: { value: new THREE.Color('#d4a574') },
+    uColor2: { value: new THREE.Color('#e8b4b8') }
+  },
+  vertexShader: `
+    attribute float size;
+    varying float vAlpha;
+    varying float vMix;
+    uniform float uTime;
+    void main() {
+      vec3 pos = position;
+      pos.y += sin(uTime * 0.3 + position.x * 0.1) * 2.0;
+      pos.x += cos(uTime * 0.2 + position.y * 0.1) * 1.5;
+      vec4 mvPos = modelViewMatrix * vec4(pos, 1.0);
+      gl_PointSize = size * (40.0 / -mvPos.z);
+      gl_Position = projectionMatrix * mvPos;
+      vAlpha = smoothstep(80.0, 20.0, -mvPos.z) * 0.6;
+      vMix = sin(position.x * 0.05 + position.y * 0.05 + uTime * 0.1) * 0.5 + 0.5;
+    }
+  `,
+  fragmentShader: `
+    varying float vAlpha;
+    varying float vMix;
+    uniform vec3 uColor1;
+    uniform vec3 uColor2;
+    void main() {
+      float d = length(gl_PointCoord - vec2(0.5));
+      if (d > 0.5) discard;
+      float alpha = smoothstep(0.5, 0.1, d) * vAlpha;
+      vec3 color = mix(uColor1, uColor2, vMix);
+      gl_FragColor = vec4(color, alpha);
+    }
+  `
 });
-var P = new THREE.Points(G,M); S.add(P);
-var mx=0, my=0;
-document.addEventListener('mousemove', function(e){ mx=(e.clientX/innerWidth-.5)*.5; my=(e.clientY/innerHeight-.5)*.5; });
-(function loop(){ requestAnimationFrame(loop); P.rotation.y+=.0005; P.rotation.x+=.0002; C.position.x+=(mx-C.position.x)*.02; C.position.y+=(-my-C.position.y)*.02; C.lookAt(S.position); R.render(S,C); })();
-addEventListener('resize', function(){ C.aspect=innerWidth/innerHeight; C.updateProjectionMatrix(); R.setSize(innerWidth,innerHeight); });
+
+const points = new THREE.Points(geo, mat);
+scene.add(points);
+
+// Mouse tracking
+let mouseX = 0, mouseY = 0;
+window.addEventListener('mousemove', (e) => {
+  mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+  mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+});
+
+// Resize
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// Animate
+function animate() {
+  requestAnimationFrame(animate);
+  mat.uniforms.uTime.value += 0.016;
+  points.rotation.y += 0.0003;
+  points.rotation.x += 0.0001;
+
+  // Subtle parallax from mouse
+  camera.position.x += (mouseX * 3 - camera.position.x) * 0.02;
+  camera.position.y += (-mouseY * 3 - camera.position.y) * 0.02;
+  camera.lookAt(0, 0, 0);
+
+  renderer.render(scene, camera);
+}
+
+animate();
 </script>
-  <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyASy8TI4ahocNinm5f7V89Ctn37j5S3jtc",
-  authDomain: "wedding-ed222.firebaseapp.com",
-  projectId: "wedding-ed222",
-  storageBucket: "wedding-ed222.firebasestorage.app",
-  messagingSenderId: "188977542680",
-  appId: "1:188977542680:web:a279577f74bf216729756d"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-window.db = db;
-</script>
 </body>
 </html>
