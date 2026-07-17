@@ -7,6 +7,11 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+
+<!-- Firebase SDK (compat — no importmap conflict with Three.js) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
 <script>
 tailwind.config={theme:{extend:{colors:{gold:{50:'#fefaf3',100:'#fef7ed',200:'#f0c987',300:'#e8b668',400:'#d4a574',500:'#c49a6c',600:'#a67c52',700:'#8a6440'},rose:{50:'#fff5f6',100:'#fff1f2',200:'#e8b4b8',300:'#d4868e',400:'#b8636e',500:'#9e4a55'},sage:{200:'#c5d5c0',300:'#a3b89c',400:'#8aa87f'},cream:{100:'#faf6f0',200:'#f5ede0'},dark:{900:'#08080d',800:'#0e0e16',700:'#16161f',600:'#1e1e2a',500:'#2a2a38'}},fontFamily:{sans:['Inter','sans-serif'],serif:['Playfair Display','serif']}}}}
 </script>
@@ -15,23 +20,95 @@ tailwind.config={theme:{extend:{colors:{gold:{50:'#fefaf3',100:'#fef7ed',200:'#f
 html{scroll-behavior:smooth}
 body{font-family:'Inter',sans-serif;background:#08080d;color:#fff;overflow-x:hidden}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#08080d}::-webkit-scrollbar-thumb{background:rgba(212,165,116,.3);border-radius:3px}
+
+/* Canvas behind EVERYTHING */
 #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* All page content above canvas */
 .z1{position:relative;z-index:1}
+
+/* All modals above everything */
+.modal{position:fixed;inset:0;background:rgba(8,8,13,.85);backdrop-filter:blur(8px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.modal.on{display:flex}
+
+/* Nav above page content */
+#nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .5s}
+
+/* Toast above modals */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(120px);padding:16px 32px;border-radius:16px;font-weight:500;z-index:300;transition:all .5s cubic-bezier(.34,1.56,.64,1);backdrop-filter:blur(20px);white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast-ok{background:rgba(163,184,156,.95);color:#08080d;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+.toast-err{background:rgba(184,99,110,.95);color:#fff;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+
 .text-gold-grad{background:linear-gradient(135deg,#f0c987,#d4a574,#e8b668,#f0c987);background-size:200% 200%;animation:shimmer 3s ease infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 @keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 .divider-w{width:200px;height:1px;background:linear-gradient(to right,transparent,rgba(212,165,116,.3),transparent)}
 .glass{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(16px);transition:all .5s cubic-bezier(.25,.46,.45,.94)}
 .glass:hover{background:rgba(255,255,255,.05);border-color:rgba(212,165,116,.2);transform:translateY(-6px);box-shadow:0 30px 60px -15px rgba(0,0,0,.5),0 0 40px -10px rgba(212,165,116,.08)}
 .gold-border{position:relative;overflow:hidden}
-.gold-border::before{content:'';position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(212,165,116,.4),transparent 40%,transparent 60%,rgba(232,180,184,.3));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
-.btn-g{background:linear-gradient(135deg,#d4a574,#e8b668,#d4a574);background-size:200% 200%;animation:shimmer 3s ease infinite;color:#08080d!important;font-weight:600;transition:all .3s;box-shadow:0 4px 20px -4px rgba(212,165,116,.5);letter-spacing:.05em;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.gold-border::before{content:'';position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(212,165,116,.4),transparent 40%,transparent 60%,rgba(232,180,184,.3));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;z-index:1}
+
+/* ═══ BUTTONS — always visible, always clickable ═══ */
+.btn-g{
+  background:linear-gradient(135deg,#d4a574,#e8b668,#d4a574);
+  background-size:200% 200%;
+  animation:shimmer 3s ease infinite;
+  color:#08080d!important;
+  font-weight:600;
+  transition:all .3s;
+  box-shadow:0 4px 20px -4px rgba(212,165,116,.5);
+  letter-spacing:.05em;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  cursor:pointer!important;
+  position:relative;
+  z-index:5;
+  pointer-events:auto!important;
+  border:none;
+  text-decoration:none;
+}
 .btn-g:hover{box-shadow:0 8px 35px -4px rgba(212,165,116,.7);transform:translateY(-2px) scale(1.02)}
 .btn-g:active{transform:translateY(0) scale(.98)}
-.btn-g:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
-.btn-o{border:1px solid rgba(212,165,116,.3);color:#d4a574!important;transition:all .3s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn-g:disabled{opacity:.5;cursor:not-allowed!important;transform:none!important}
+
+.btn-o{
+  border:1px solid rgba(212,165,116,.3);
+  color:#d4a574!important;
+  transition:all .3s;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  cursor:pointer!important;
+  position:relative;
+  z-index:5;
+  pointer-events:auto!important;
+  background:transparent;
+  text-decoration:none;
+}
 .btn-o:hover{background:rgba(212,165,116,.08);border-color:#d4a574}
-.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);font-size:16px;transition:all .3s;cursor:pointer;background:transparent}
+
+.icon-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:36px;height:36px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.1);
+  color:rgba(255,255,255,.5);
+  font-size:16px;
+  transition:all .3s;
+  cursor:pointer!important;
+  background:transparent;
+  position:relative;
+  z-index:5;
+  pointer-events:auto!important;
+}
 .icon-btn:hover{color:#d4a574;border-color:rgba(212,165,116,.3);background:rgba(212,165,116,.05)}
+
+/* ═══ ANIMATIONS ═══ */
 .fade-up{opacity:0;transform:translateY(40px);transition:all .9s cubic-bezier(.25,.46,.45,.94)}
 .fade-up.v{opacity:1;transform:translateY(0)}
 .fade-l{opacity:0;transform:translateX(-50px);transition:all .9s cubic-bezier(.25,.46,.45,.94)}
@@ -62,7 +139,7 @@ body{font-family:'Inter',sans-serif;background:#08080d;color:#fff;overflow-x:hid
 .dec-card:hover img{transform:scale(1.08)}
 .swatch{width:48px;height:48px;border-radius:50%;border:2px solid rgba(255,255,255,.1);transition:all .3s;cursor:pointer}
 .swatch:hover{transform:scale(1.2);border-color:rgba(255,255,255,.3)}
-input,textarea,select{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);color:#fff;transition:all .3s;outline:none;font-family:'Inter',sans-serif}
+input,textarea,select{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);color:#fff;transition:all .3s;outline:none;font-family:'Inter',sans-serif;cursor:pointer}
 input:focus,textarea:focus,select:focus{border-color:rgba(212,165,116,.5);box-shadow:0 0 0 4px rgba(212,165,116,.08);background:rgba(255,255,255,.05)}
 input::placeholder,textarea::placeholder{color:rgba(255,255,255,.25)}
 select option{background:#16161f;color:#fff}
@@ -74,11 +151,7 @@ select option{background:#16161f;color:#fff}
 .slf{position:absolute;inset:0;background:linear-gradient(to right,#d4a574,#e8b668);transform:scaleX(0);transform-origin:left;transition:transform .6s}
 .slf.f{transform:scaleX(1)}
 .conf-card{background:linear-gradient(135deg,rgba(212,165,116,.08),rgba(232,180,184,.05));border:1px solid rgba(212,165,116,.2);border-radius:24px}
-.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(120px);padding:16px 32px;border-radius:16px;font-weight:500;z-index:1000;transition:all .5s cubic-bezier(.34,1.56,.64,1);backdrop-filter:blur(20px);white-space:nowrap}
-.toast.show{transform:translateX(-50%) translateY(0)}
-.toast-ok{background:rgba(163,184,156,.95);color:#08080d;box-shadow:0 10px 40px rgba(0,0,0,.3)}
-.toast-err{background:rgba(184,99,110,.95);color:#fff;box-shadow:0 10px 40px rgba(0,0,0,.3)}
-.nav-l{position:relative;color:rgba(255,255,255,.6)!important}
+.nav-l{position:relative;color:rgba(255,255,255,.6)!important;cursor:pointer!important;text-decoration:none;pointer-events:auto!important}
 .nav-l::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:linear-gradient(to right,#d4a574,#e8b668);transition:width .3s;border-radius:1px}
 .nav-l:hover{color:#d4a574!important}
 .nav-l:hover::after{width:100%}
@@ -88,9 +161,7 @@ select option{background:#16161f;color:#fff}
 .badge-y{background:rgba(163,184,156,.15);color:#a3b89c;border:1px solid rgba(163,184,156,.2);padding:2px 10px;border-radius:999px;font-size:11px;font-weight:500}
 .badge-n{background:rgba(184,99,110,.15);color:#d4868e;border:1px solid rgba(184,99,110,.2);padding:2px 10px;border-radius:999px;font-size:11px;font-weight:500}
 @keyframes check{0%{stroke-dashoffset:50}100%{stroke-dashoffset:0}}
-.modal{position:fixed;inset:0;background:rgba(8,8,13,.85);backdrop-filter:blur(8px);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
-.modal.on{display:flex}
-.faq-i{border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);border-radius:16px;overflow:hidden;transition:all .3s}
+.faq-i{border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);border-radius:16px;overflow:hidden;transition:all .3s;cursor:pointer}
 .faq-i:hover{border-color:rgba(212,165,116,.15)}
 .faq-q{cursor:pointer;padding:20px 24px;display:flex;align-items:center;gap:16px;user-select:none}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .4s,padding .4s}
@@ -102,6 +173,8 @@ select option{background:#16161f;color:#fff}
 .db-on .db-dot{background:#a3b89c;animation:pulse-ring 2s infinite}
 .db-off{color:#d4868e;background:rgba(184,99,110,.1);border:1px solid rgba(184,99,110,.2)}
 .db-off .db-dot{background:#d4868e}
+.db-warn{color:#e8b668;background:rgba(232,182,104,.1);border:1px solid rgba(232,182,104,.2)}
+.db-warn .db-dot{background:#e8b668}
 .row-new{animation:rowFlash 1.5s ease}
 @keyframes rowFlash{0%{background:rgba(212,165,116,.15)}100%{background:transparent}}
 @media(max-width:768px){.tl-line{left:20px}}
@@ -113,29 +186,31 @@ select option{background:#16161f;color:#fff}
 <body>
 
 <canvas id="bg-canvas"></canvas>
+
+<!-- Toasts — z-index 300 -->
 <div id="toast-ok" class="toast toast-ok">✓ RSVP submitted successfully!</div>
 <div id="toast-err" class="toast toast-err">✗ Please fill in all required fields</div>
 
-<!-- Lightbox -->
-<div id="lb" class="modal" onclick="this.classList.remove('on')">
+<!-- Lightbox — z-index 200 -->
+<div id="lb" class="modal" onclick="closeLB()">
   <div class="max-w-4xl w-full relative" onclick="event.stopPropagation()">
-    <img id="lb-img" src="" class="w-full rounded-2xl border border-white/10 shadow-2xl">
-    <button onclick="document.getElementById('lb').classList.remove('on')" class="absolute top-4 right-4 icon-btn" style="width:40px;height:40px;color:rgba(255,255,255,.6)">✕</button>
+    <img id="lb-img" src="" class="w-full rounded-2xl border border-white/10 shadow-2xl" alt="">
+    <button onclick="closeLB()" style="position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5">✕</button>
   </div>
 </div>
 
-<!-- Admin Modal -->
-<div id="admin-m" class="modal" onclick="if(event.target===this)this.classList.remove('on')">
+<!-- Admin Modal — z-index 200 -->
+<div id="admin-m" class="modal" onclick="if(event.target===this)closeAdmin()">
   <div class="bg-dark-700 border border-white/10 rounded-3xl max-w-4xl w-full max-h-[85vh] overflow-hidden flex flex-col" onclick="event.stopPropagation()">
     <div class="p-6 border-b border-white/5 flex items-center justify-between">
       <div>
         <div class="flex items-center gap-3 flex-wrap">
           <h3 class="font-serif text-xl text-white">RSVP Dashboard</h3>
-          <span id="db-stat" class="text-[10px] px-2.5 py-1 rounded-full db-on flex items-center gap-1.5"><span class="db-dot"></span><span id="db-txt">Local Storage</span></span>
+          <span id="db-stat" class="text-[10px] px-2.5 py-1 rounded-full db-warn flex items-center gap-1.5"><span class="db-dot"></span><span id="db-txt">Checking...</span></span>
         </div>
-        <p class="text-xs text-neutral-500 mt-1">Guest responses saved in this browser</p>
+        <p class="text-xs text-neutral-500 mt-1" id="db-sub">Initializing database connection...</p>
       </div>
-      <button onclick="document.getElementById('admin-m').classList.remove('on')" class="icon-btn" style="color:rgba(255,255,255,.4)">✕</button>
+      <button onclick="closeAdmin()" class="icon-btn" style="color:rgba(255,255,255,.4)">✕</button>
     </div>
     <div class="overflow-auto flex-1 p-6">
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
@@ -154,19 +229,19 @@ select option{background:#16161f;color:#fff}
             <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium hidden md:table-cell">Guests</th>
             <th class="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-neutral-400 font-medium hidden lg:table-cell">Date</th>
           </tr></thead>
-          <tbody id="admin-tb"><tr><td colspan="6" class="text-center py-12 text-neutral-600">No responses yet</td></tr></tbody>
+          <tbody id="admin-tb"><tr><td colspan="6" class="text-center py-12 text-neutral-600">Loading...</td></tr></tbody>
         </table>
       </div>
     </div>
     <div class="p-4 border-t border-white/5 flex items-center justify-between">
-      <button onclick="clearAll()" class="text-xs text-rose-300 hover:text-rose-200 transition-colors">Clear All Data</button>
+      <button onclick="clearAll()" class="text-xs text-rose-300 hover:text-rose-200 transition-colors cursor-pointer" style="background:none;border:none">Clear All Data</button>
       <button onclick="exportCSV()" class="btn-o px-4 py-2 rounded-lg text-xs">⬇ Export CSV</button>
     </div>
   </div>
 </div>
 
-<!-- Confirmation Modal -->
-<div id="conf-m" class="modal" onclick="if(event.target===this)this.classList.remove('on')">
+<!-- Confirmation Modal — z-index 200 -->
+<div id="conf-m" class="modal" onclick="if(event.target===this)document.getElementById('conf-m').classList.remove('on')">
   <div class="max-w-lg w-full" onclick="event.stopPropagation()">
     <div class="conf-card p-8 sm:p-10 text-center">
       <div class="w-20 h-20 rounded-full bg-sage-300/15 flex items-center justify-center mx-auto mb-6 pulse-r">
@@ -183,19 +258,22 @@ select option{background:#16161f;color:#fff}
         <div class="flex justify-between text-sm"><span class="text-neutral-500">Submitted</span><span class="text-white text-xs" id="c-date">—</span></div>
       </div>
       <div class="flex flex-col sm:flex-row gap-3">
-        <button onclick="window.print()" class="btn-g flex-1 py-3 rounded-xl text-sm">🖨 Print</button>
+        <button onclick="window.print()" class="btn-g flex-1 py-3 rounded-xl text-sm">Print</button>
         <button onclick="document.getElementById('conf-m').classList.remove('on')" class="btn-o flex-1 py-3 rounded-xl text-sm">Close</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ═════════════ PAGE ═════════════ -->
+<!-- ═════════════ PAGE CONTENT ═════════════ -->
 <div class="z1">
 
-<nav id="nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+<!-- ═══ NAVIGATION — z-index 100 ═══ -->
+<nav id="nav">
   <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-    <a href="#hero" class="font-serif text-2xl tracking-wide"><span class="text-gold-200">J</span><span class="text-white/20 mx-1">&</span><span class="text-rose-200">O</span></a>
+    <a href="#hero" class="font-serif text-2xl tracking-wide" style="text-decoration:none;cursor:pointer;position:relative;z-index:5;pointer-events:auto">
+      <span class="text-gold-200">J</span><span class="text-white/20 mx-1">&</span><span class="text-rose-200">O</span>
+    </a>
     <div class="hidden lg:flex items-center gap-8">
       <a href="#story" class="nav-l text-[13px]">Our Story</a>
       <a href="#decor" class="nav-l text-[13px]">Decor</a>
@@ -204,26 +282,28 @@ select option{background:#16161f;color:#fff}
       <a href="#faq" class="nav-l text-[13px]">FAQ</a>
       <a href="#rsvp" class="nav-l text-[13px]">RSVP</a>
     </div>
-    <div class="flex items-center gap-3">
-      <button onclick="openAdmin()" class="icon-btn hidden sm:flex" title="Dashboard">📊</button>
-      <a href="#rsvp" class="btn-g px-5 py-2.5 rounded-full text-xs hidden md:inline-flex">RSVP NOW</a>
+    <div class="flex items-center gap-3" style="position:relative;z-index:5">
+      <button onclick="openAdmin()" class="icon-btn" title="Dashboard">📊</button>
+      <a href="#rsvp" class="btn-g px-5 py-2.5 rounded-full text-xs" style="text-decoration:none">RSVP NOW</a>
       <button id="mob-btn" class="icon-btn lg:hidden" style="width:40px;height:40px;font-size:20px">☰</button>
     </div>
   </div>
-  <div id="mob-menu" class="lg:hidden hidden bg-dark-800/95 backdrop-blur-xl border-t border-white/5 px-6 py-2">
-    <a href="#story" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5 transition-colors mob-link">Our Story</a>
-    <a href="#decor" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5 transition-colors mob-link">Decor</a>
-    <a href="#details" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5 transition-colors mob-link">Details</a>
-    <a href="#gallery" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5 transition-colors mob-link">Gallery</a>
-    <a href="#faq" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5 transition-colors mob-link">FAQ</a>
-    <a href="#rsvp" class="block py-3 text-sm text-neutral-400 hover:text-gold-200 transition-colors mob-link">RSVP</a>
-    <div class="py-3 border-t border-white/5 mt-1"><button onclick="openAdmin()" class="text-sm text-neutral-500 hover:text-gold-200 flex items-center gap-2 transition-colors">📊 Dashboard</button></div>
+  <div id="mob-menu" class="lg:hidden hidden bg-dark-800/95 backdrop-blur-xl border-t border-white/5 px-6 py-2" style="position:relative;z-index:5">
+    <a href="#story" class="mob-link block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5" style="text-decoration:none;cursor:pointer">Our Story</a>
+    <a href="#decor" class="mob-link block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5" style="text-decoration:none;cursor:pointer">Decor</a>
+    <a href="#details" class="mob-link block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5" style="text-decoration:none;cursor:pointer">Details</a>
+    <a href="#gallery" class="mob-link block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5" style="text-decoration:none;cursor:pointer">Gallery</a>
+    <a href="#faq" class="mob-link block py-3 text-sm text-neutral-400 hover:text-gold-200 border-b border-white/5" style="text-decoration:none;cursor:pointer">FAQ</a>
+    <a href="#rsvp" class="mob-link block py-3 text-sm text-neutral-400 hover:text-gold-200" style="text-decoration:none;cursor:pointer">RSVP</a>
+    <div class="py-3 border-t border-white/5 mt-1">
+      <button onclick="openAdmin()" class="text-sm text-neutral-500 hover:text-gold-200 flex items-center gap-2 cursor-pointer" style="background:none;border:none">📊 Dashboard</button>
+    </div>
   </div>
 </nav>
 
 <!-- Hero -->
 <section id="hero" class="relative min-h-screen flex flex-col items-center justify-center px-6">
-  <div class="hero-bg absolute inset-0 z-10"></div>
+  <div class="hero-bg absolute inset-0 z-10" style="pointer-events:none"></div>
   <div class="relative z-20 text-center max-w-4xl mx-auto">
     <div class="fade-up mb-8"><div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold-400/15 bg-gold-400/5 mb-6"><span class="w-2 h-2 rounded-full bg-sage-300 animate-pulse"></span><span class="text-[11px] font-medium tracking-widest uppercase text-gold-300">Save the Date</span></div></div>
     <h1 class="fade-up font-serif text-6xl sm:text-8xl lg:text-9xl font-normal tracking-tight leading-[.95] mb-6" style="transition-delay:.15s">James<br><span class="text-gold-grad text-5xl sm:text-6xl lg:text-7xl italic">&</span><br>Olivia</h1>
@@ -240,11 +320,11 @@ select option{background:#16161f;color:#fff}
       <div class="cd-box rounded-2xl px-5 py-5 text-center min-w-[80px]"><span id="cd-s" class="block text-3xl sm:text-4xl font-serif text-gold-200">--</span><span class="text-[9px] uppercase tracking-[.2em] text-neutral-600 mt-1.5 block">Secs</span></div>
     </div>
     <div class="fade-up mt-12 flex flex-col sm:flex-row items-center justify-center gap-4" style="transition-delay:.7s">
-      <a href="#rsvp" class="btn-g px-8 py-4 rounded-full text-sm">Confirm Your Attendance</a>
-      <a href="#story" class="btn-o px-8 py-4 rounded-full text-sm">Our Story</a>
+      <a href="#rsvp" class="btn-g px-8 py-4 rounded-full text-sm" style="text-decoration:none">Confirm Your Attendance</a>
+      <a href="#story" class="btn-o px-8 py-4 rounded-full text-sm" style="text-decoration:none">Our Story</a>
     </div>
   </div>
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 float">
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 float" style="pointer-events:none">
     <span class="text-[9px] uppercase tracking-[.25em] text-neutral-700">Scroll</span>
     <div class="w-5 h-8 rounded-full border border-neutral-700 flex items-start justify-center p-1"><div class="w-1 h-2 rounded-full bg-gold-400/50 animate-bounce"></div></div>
   </div>
@@ -266,23 +346,23 @@ select option{background:#16161f;color:#fff}
 
 <!-- Decor -->
 <section id="decor" class="py-28 sm:py-36 px-6 relative">
-  <div class="absolute inset-0 bg-gradient-to-b from-transparent via-gold-400/[.02] to-transparent pointer-events-none"></div>
+  <div class="absolute inset-0 bg-gradient-to-b from-transparent via-gold-400/[.02] to-transparent" style="pointer-events:none"></div>
   <div class="max-w-6xl mx-auto relative">
     <div class="text-center mb-20"><p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">Design</p><h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">Wedding <span class="text-gold-grad">Decor</span></h2><div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-w"></div></div></div>
     <div class="fade-up mb-16"><h3 class="font-serif text-xl text-center mb-8 text-white">Color <span class="text-gold-grad">Palette</span></h3><div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6"><div class="text-center"><div class="swatch mx-auto" style="background:#d4a574"></div><p class="text-[10px] text-neutral-500 mt-2">Gold</p></div><div class="text-center"><div class="swatch mx-auto" style="background:#e8b4b8"></div><p class="text-[10px] text-neutral-500 mt-2">Rose</p></div><div class="text-center"><div class="swatch mx-auto" style="background:#a3b89c"></div><p class="text-[10px] text-neutral-500 mt-2">Sage</p></div><div class="text-center"><div class="swatch mx-auto" style="background:#faf6f0"></div><p class="text-[10px] text-neutral-500 mt-2">Ivory</p></div><div class="text-center"><div class="swatch mx-auto" style="background:#f5ede0"></div><p class="text-[10px] text-neutral-500 mt-2">Champagne</p></div><div class="text-center"><div class="swatch mx-auto" style="background:#2a2a38"></div><p class="text-[10px] text-neutral-500 mt-2">Charcoal</p></div></div></div>
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-      <div class="scale-in dec-card"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-floral/600/400.jpg" class="w-full h-52 object-cover" alt="Florals"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-gold-400 mb-2">🌸 Florals</p><h4 class="font-serif text-lg mb-2 text-white">Floral Arrangements</h4><p class="text-xs text-neutral-400 leading-relaxed">Lush garden-style bouquets with white roses, peonies, trailing ivy, and dried lavender.</p></div></div>
-      <div class="scale-in dec-card" style="transition-delay:.1s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-table/600/400.jpg" class="w-full h-52 object-cover" alt="Tables"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-rose-300 mb-2">🍽 Tables</p><h4 class="font-serif text-lg mb-2 text-white">Table Settings</h4><p class="text-xs text-neutral-400 leading-relaxed">Long farmhouse tables with gold-rimmed china, linen runners, and candlelit centerpieces.</p></div></div>
-      <div class="scale-in dec-card" style="transition-delay:.2s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-lighting/600/400.jpg" class="w-full h-52 object-cover" alt="Lighting"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-gold-300 mb-2">💡 Lighting</p><h4 class="font-serif text-lg mb-2 text-white">Ambient Lighting</h4><p class="text-xs text-neutral-400 leading-relaxed">Fairy lights through olive trees, warm uplighting, and floating candles in the pool.</p></div></div>
-      <div class="scale-in dec-card" style="transition-delay:.15s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-ceremony2/600/400.jpg" class="w-full h-52 object-cover" alt="Ceremony"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-sage-300 mb-2">⛪ Ceremony</p><h4 class="font-serif text-lg mb-2 text-white">Garden Arch</h4><p class="text-xs text-neutral-400 leading-relaxed">Hand-crafted wooden arch with cascading white florals, silk ribbons, and greenery.</p></div></div>
-      <div class="scale-in dec-card" style="transition-delay:.25s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-cake2/600/400.jpg" class="w-full h-52 object-cover" alt="Cake"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-rose-200 mb-2">🎂 Cake</p><h4 class="font-serif text-lg mb-2 text-white">The Wedding Cake</h4><p class="text-xs text-neutral-400 leading-relaxed">Four-tiered buttercream with hand-painted gold detailing and fresh roses.</p></div></div>
-      <div class="scale-in dec-card" style="transition-delay:.3s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-favors/600/400.jpg" class="w-full h-52 object-cover" alt="Favors"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-gold-400 mb-2">🎁 Favors</p><h4 class="font-serif text-lg mb-2 text-white">Guest Favors</h4><p class="text-xs text-neutral-400 leading-relaxed">Mini bottles of Tuscan olive oil, custom-labeled in gold foil.</p></div></div>
+      <div class="scale-in dec-card"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-floral/600/400.jpg" class="w-full h-52 object-cover" alt="Florals"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-gold-400 mb-2">Florals</p><h4 class="font-serif text-lg mb-2 text-white">Floral Arrangements</h4><p class="text-xs text-neutral-400 leading-relaxed">Lush garden-style bouquets with white roses, peonies, trailing ivy, and dried lavender.</p></div></div>
+      <div class="scale-in dec-card" style="transition-delay:.1s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-table/600/400.jpg" class="w-full h-52 object-cover" alt="Tables"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-rose-300 mb-2">Tables</p><h4 class="font-serif text-lg mb-2 text-white">Table Settings</h4><p class="text-xs text-neutral-400 leading-relaxed">Long farmhouse tables with gold-rimmed china, linen runners, and candlelit centerpieces.</p></div></div>
+      <div class="scale-in dec-card" style="transition-delay:.2s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-lighting/600/400.jpg" class="w-full h-52 object-cover" alt="Lighting"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-gold-300 mb-2">Lighting</p><h4 class="font-serif text-lg mb-2 text-white">Ambient Lighting</h4><p class="text-xs text-neutral-400 leading-relaxed">Fairy lights through olive trees, warm uplighting, and floating candles in the pool.</p></div></div>
+      <div class="scale-in dec-card" style="transition-delay:.15s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-ceremony2/600/400.jpg" class="w-full h-52 object-cover" alt="Ceremony"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-sage-300 mb-2">Ceremony</p><h4 class="font-serif text-lg mb-2 text-white">Garden Arch</h4><p class="text-xs text-neutral-400 leading-relaxed">Hand-crafted wooden arch with cascading white florals, silk ribbons, and greenery.</p></div></div>
+      <div class="scale-in dec-card" style="transition-delay:.25s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-cake2/600/400.jpg" class="w-full h-52 object-cover" alt="Cake"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-rose-200 mb-2">Cake</p><h4 class="font-serif text-lg mb-2 text-white">The Wedding Cake</h4><p class="text-xs text-neutral-400 leading-relaxed">Four-tiered buttercream with hand-painted gold detailing and fresh roses.</p></div></div>
+      <div class="scale-in dec-card" style="transition-delay:.3s"><div class="overflow-hidden rounded-t-[23px]"><img src="https://picsum.photos/seed/decor-favors/600/400.jpg" class="w-full h-52 object-cover" alt="Favors"></div><div class="p-6"><p class="text-[10px] font-semibold tracking-widest uppercase text-gold-400 mb-2">Favors</p><h4 class="font-serif text-lg mb-2 text-white">Guest Favors</h4><p class="text-xs text-neutral-400 leading-relaxed">Mini bottles of Tuscan olive oil, custom-labeled in gold foil.</p></div></div>
     </div>
   </div>
 </section>
 
 <!-- Quote -->
-<section class="py-20 px-6 relative"><div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at center,rgba(212,165,116,.03) 0%,transparent 70%)"></div><div class="max-w-3xl mx-auto text-center fade-up relative"><div class="w-16 h-16 rounded-full border border-gold-400/10 flex items-center justify-center mx-auto mb-8 spin-s"><span style="color:rgba(212,165,116,.4);font-size:24px">♥</span></div><p class="font-serif text-2xl sm:text-3xl lg:text-4xl italic text-neutral-200 leading-relaxed mb-6">"Whatever our souls are made of, his and mine are the same."</p><div class="flex items-center justify-center gap-3"><div class="w-8 h-px bg-gold-400/30"></div><span class="text-sm text-gold-400">Emily Brontë</span><div class="w-8 h-px bg-gold-400/30"></div></div></div></section>
+<section class="py-20 px-6 relative"><div class="absolute inset-0" style="pointer-events:none;background:radial-gradient(ellipse at center,rgba(212,165,116,.03) 0%,transparent 70%)"></div><div class="max-w-3xl mx-auto text-center fade-up relative"><div class="w-16 h-16 rounded-full border border-gold-400/10 flex items-center justify-center mx-auto mb-8 spin-s"><span style="color:rgba(212,165,116,.4);font-size:24px">♥</span></div><p class="font-serif text-2xl sm:text-3xl lg:text-4xl italic text-neutral-200 leading-relaxed mb-6">"Whatever our souls are made of, his and mine are the same."</p><div class="flex items-center justify-center gap-3"><div class="w-8 h-px bg-gold-400/30"></div><span class="text-sm text-gold-400">Emily Brontë</span><div class="w-8 h-px bg-gold-400/30"></div></div></div></section>
 
 <!-- Details -->
 <section id="details" class="py-28 sm:py-36 px-6">
@@ -291,8 +371,8 @@ select option{background:#16161f;color:#fff}
     <div class="grid md:grid-cols-2 gap-5">
       <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400/15 to-gold-400/5 flex items-center justify-center mb-6"><span style="font-size:24px">⛪</span></div><span class="text-[10px] font-semibold tracking-[.2em] uppercase text-gold-400 mb-2 block">The Ceremony</span><h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Exchange of Vows</h3><div class="space-y-4 text-sm text-neutral-400"><div class="flex items-start gap-3"><span class="text-gold-400 mt-0.5 shrink-0">📅</span><span>Saturday, June 14, 2025</span></div><div class="flex items-start gap-3"><span class="text-gold-400 mt-0.5 shrink-0">🕐</span><span>4:00 PM — Doors open at 3:30 PM</span></div><div class="flex items-start gap-3"><span class="text-gold-400 mt-0.5 shrink-0">📍</span><span>The Rosewood Estate Chapel<br>Via della Rosa, 42 — Tuscany, Italy</span></div></div><div class="mt-6 pt-6 border-t border-white/5"><p class="text-xs text-neutral-500">Garden ceremony with seating for 150. Rain backup: Grand Hall.</p></div></div>
       <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:.1s"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-200/15 to-rose-200/5 flex items-center justify-center mb-6"><span style="font-size:24px">🍷</span></div><span class="text-[10px] font-semibold tracking-[.2em] uppercase text-rose-200 mb-2 block">The Reception</span><h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Dinner & Dancing</h3><div class="space-y-4 text-sm text-neutral-400"><div class="flex items-start gap-3"><span class="text-rose-200 mt-0.5 shrink-0">📅</span><span>Saturday, June 14, 2025</span></div><div class="flex items-start gap-3"><span class="text-rose-200 mt-0.5 shrink-0">🕐</span><span>6:00 PM — Until Midnight</span></div><div class="flex items-start gap-3"><span class="text-rose-200 mt-0.5 shrink-0">📍</span><span>The Rosewood Terrace<br>Adjacent to the Chapel</span></div></div><div class="mt-6 pt-6 border-t border-white/5"><p class="text-xs text-neutral-500">Four-course dinner, live band, open bar. Black tie optional.</p></div></div>
-      <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:.15s"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sage-300/15 to-sage-300/5 flex items-center justify-center mb-6"><span style="font-size:24px">🛏</span></div><span class="text-[10px] font-semibold tracking-[.2em] uppercase text-sage-300 mb-2 block">Accommodation</span><h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Where to Stay</h3><p class="text-sm text-neutral-400 leading-relaxed mb-4">Rooms reserved at Villa Toscana Inn, 5 minutes from venue. Code: <span class="text-gold-200 font-semibold bg-gold-400/10 px-2 py-0.5 rounded-md">JANDO2025</span></p><a href="#" class="inline-flex items-center gap-2 text-sm text-sage-300 hover:text-sage-200 font-medium transition-colors">Book your room →</a></div>
-      <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:.2s"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-200/15 to-rose-200/5 flex items-center justify-center mb-6"><span style="font-size:24px">🎁</span></div><span class="text-[10px] font-semibold tracking-[.2em] uppercase text-rose-200 mb-2 block">Registry</span><h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Your Presence Is Enough</h3><p class="text-sm text-neutral-400 leading-relaxed mb-4">Your love is the greatest gift. We also have a small registry and honeymoon fund.</p><a href="#" class="inline-flex items-center gap-2 text-sm text-rose-200 hover:text-rose-300 font-medium transition-colors">View registry →</a></div>
+      <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:.15s"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sage-300/15 to-sage-300/5 flex items-center justify-center mb-6"><span style="font-size:24px">🛏</span></div><span class="text-[10px] font-semibold tracking-[.2em] uppercase text-sage-300 mb-2 block">Accommodation</span><h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Where to Stay</h3><p class="text-sm text-neutral-400 leading-relaxed mb-4">Rooms reserved at Villa Toscana Inn, 5 minutes from venue. Code: <span class="text-gold-200 font-semibold bg-gold-400/10 px-2 py-0.5 rounded-md">JANDO2025</span></p><a href="#" class="btn-o px-4 py-2 rounded-lg text-sm" style="text-decoration:none">Book your room →</a></div>
+      <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10" style="transition-delay:.2s"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-200/15 to-rose-200/5 flex items-center justify-center mb-6"><span style="font-size:24px">🎁</span></div><span class="text-[10px] font-semibold tracking-[.2em] uppercase text-rose-200 mb-2 block">Registry</span><h3 class="font-serif text-2xl sm:text-3xl mb-5 text-white">Your Presence Is Enough</h3><p class="text-sm text-neutral-400 leading-relaxed mb-4">Your love is the greatest gift. We also have a small registry and honeymoon fund.</p><a href="#" class="btn-o px-4 py-2 rounded-lg text-sm" style="text-decoration:none">View registry →</a></div>
     </div>
     <div class="fade-up mt-8 glass gold-border rounded-3xl p-8 sm:p-10"><div class="flex flex-col sm:flex-row items-start sm:items-center gap-6"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400/15 to-rose-200/10 flex items-center justify-center shrink-0"><span style="font-size:24px">👔</span></div><div class="flex-1"><span class="text-[10px] font-semibold tracking-[.2em] uppercase text-gold-400 mb-1 block">Dress Code</span><h3 class="font-serif text-xl mb-2 text-white">Black Tie Optional</h3><p class="text-sm text-neutral-400 leading-relaxed">Formal or semi-formal attire. Please avoid white or ivory.</p></div><div class="flex gap-2 shrink-0"><div class="w-8 h-8 rounded-lg" style="background:#1a1a2e;border:1px solid rgba(255,255,255,.1)"></div><div class="w-8 h-8 rounded-lg" style="background:#2a1a1a;border:1px solid rgba(255,255,255,.1)"></div><div class="w-8 h-8 rounded-lg" style="background:#1a2a1a;border:1px solid rgba(255,255,255,.1)"></div><div class="w-8 h-8 rounded-lg" style="background:#d4a574;border:1px solid rgba(255,255,255,.1)"></div></div></div></div>
   </div>
@@ -319,19 +399,19 @@ select option{background:#16161f;color:#fff}
   <div class="max-w-3xl mx-auto">
     <div class="text-center mb-16"><p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">Questions</p><h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">Frequently <span class="text-gold-grad">Asked</span></h2><div class="fade-up flex items-center justify-center gap-3 mt-5"><div class="divider-w"></div></div></div>
     <div class="space-y-3">
-      <div class="fade-up faq-i"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span class="flex-1 text-sm font-medium text-white">Is there parking available?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Yes, complimentary valet parking for all guests.</div></div>
-      <div class="fade-up faq-i" style="transition-delay:.05s"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span class="flex-1 text-sm font-medium text-white">Can I bring a plus-one?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Your invitation will indicate if a plus-one is included.</div></div>
-      <div class="fade-up faq-i" style="transition-delay:.1s"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span class="flex-1 text-sm font-medium text-white">Are children welcome?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Yes! A supervised kids' area with activities will be available.</div></div>
-      <div class="fade-up faq-i" style="transition-delay:.15s"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span class="flex-1 text-sm font-medium text-white">Dietary restrictions?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Note any requirements in your RSVP — we accommodate all needs.</div></div>
-      <div class="fade-up faq-i" style="transition-delay:.2s"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span class="flex-1 text-sm font-medium text-white">What if it rains?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">The Grand Hall is our beautiful indoor alternative.</div></div>
-      <div class="fade-up faq-i" style="transition-delay:.25s"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span class="flex-1 text-sm font-medium text-white">RSVP deadline?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Please respond by May 15, 2025.</div></div>
+      <div class="fade-up faq-i" onclick="this.classList.toggle('open')"><div class="faq-q"><span class="flex-1 text-sm font-medium text-white">Is there parking available?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Yes, complimentary valet parking for all guests.</div></div>
+      <div class="fade-up faq-i" style="transition-delay:.05s" onclick="this.classList.toggle('open')"><div class="faq-q"><span class="flex-1 text-sm font-medium text-white">Can I bring a plus-one?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Your invitation will indicate if a plus-one is included.</div></div>
+      <div class="fade-up faq-i" style="transition-delay:.1s" onclick="this.classList.toggle('open')"><div class="faq-q"><span class="flex-1 text-sm font-medium text-white">Are children welcome?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Yes! A supervised kids' area with activities will be available.</div></div>
+      <div class="fade-up faq-i" style="transition-delay:.15s" onclick="this.classList.toggle('open')"><div class="faq-q"><span class="flex-1 text-sm font-medium text-white">Dietary restrictions?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Note any requirements in your RSVP — we accommodate all needs.</div></div>
+      <div class="fade-up faq-i" style="transition-delay:.2s" onclick="this.classList.toggle('open')"><div class="faq-q"><span class="flex-1 text-sm font-medium text-white">What if it rains?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">The Grand Hall is our beautiful indoor alternative.</div></div>
+      <div class="fade-up faq-i" style="transition-delay:.25s" onclick="this.classList.toggle('open')"><div class="faq-q"><span class="flex-1 text-sm font-medium text-white">RSVP deadline?</span><span class="text-neutral-500 faq-chev">▼</span></div><div class="faq-a text-sm text-neutral-400 leading-relaxed">Please respond by May 15, 2025.</div></div>
     </div>
   </div>
 </section>
 
 <!-- RSVP -->
 <section id="rsvp" class="py-28 sm:py-36 px-6 relative">
-  <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at center bottom,rgba(212,165,116,.04) 0%,transparent 60%)"></div>
+  <div class="absolute inset-0" style="pointer-events:none;background:radial-gradient(ellipse at center bottom,rgba(212,165,116,.04) 0%,transparent 60%)"></div>
   <div class="max-w-2xl mx-auto relative">
     <div class="text-center mb-12"><p class="fade-up text-xs font-medium tracking-[.3em] uppercase text-gold-400 mb-4">Respond</p><h2 class="fade-up font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight mb-4 text-white">RSVP</h2><div class="fade-up flex items-center justify-center gap-3 mt-5 mb-4"><div class="divider-w"></div></div><p class="fade-up text-neutral-400 text-sm">Kindly respond by May 15, 2025</p></div>
     <div class="fade-up glass gold-border rounded-3xl p-8 sm:p-10">
@@ -360,63 +440,213 @@ select option{background:#16161f;color:#fff}
 
 <footer class="py-16 px-6 border-t border-white/5"><div class="max-w-4xl mx-auto text-center"><p class="font-serif text-3xl mb-4"><span class="text-gold-200">J</span><span class="text-white/20 mx-1">&</span><span class="text-rose-200">O</span></p><p class="text-xs text-neutral-600 tracking-widest uppercase mb-6">June 14, 2025 · Tuscany, Italy</p><div class="flex items-center justify-center gap-3 mb-8"><div class="divider-w"></div></div><p class="text-xs text-neutral-600">Made with ♥</p></div></footer>
 
-</div>
+</div><!-- end .z1 -->
 
 <!--
-  ═══════════════════════════════════════════════════════════
-  JAVASCRIPT — 100% localStorage, ZERO network calls.
-  No api.php, no fetch(), no polling, no backend needed.
-  Works perfectly on GitHub Pages.
-  ═══════════════════════════════════════════════════════════
+  ═══════════════════════════════════════════════════════════════════
+  FIRESTORE + APP LOGIC
+  
+  SETUP STEPS:
+  1. Go to https://console.firebase.google.com
+  2. Create a new project (or use existing)
+  3. Click "Add app" → Web (</>) → Register → Copy config below
+  4. Go to Firestore Database → Create database → Start in test mode
+  5. Replace the config object below with YOUR config
+  6. Deploy — it works on GitHub Pages!
+  
+  The app automatically falls back to localStorage if Firebase
+  is not configured (config left as placeholder).
+  ═══════════════════════════════════════════════════════════════════
 -->
 <script>
 (function(){
 'use strict';
 
+/* ═════════════════════════════════════════
+   🔥 FIREBASE CONFIG — REPLACE WITH YOURS
+   ═════════════════════════════════════════ */
+var firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+/* ═════════════════════════════════════════
+   APP STATE
+   ═════════════════════════════════════════ */
 var STORAGE_KEY = 'jando_rsvp_data';
+var COLLECTION  = 'rsvps';
 var allData = [];
 var curStep = 1;
+var db = null;          // Firestore instance (null = not configured)
+var useFirestore = false;
+var unsubSnapshot = null; // real-time listener unsubscribe
 
-/* ── localStorage helpers ── */
+/* ═════════════════════════════════════════
+   INIT FIREBASE
+   ═════════════════════════════════════════ */
+function initFirebase() {
+  try {
+    // Check if config has been replaced (not placeholder)
+    if (firebaseConfig.apiKey === "YOUR_API_KEY" || !firebaseConfig.projectId || firebaseConfig.projectId === "YOUR_PROJECT_ID") {
+      console.log('[RSVP] Firebase not configured — using localStorage fallback');
+      setDBStatus('local', 'Local Storage', 'Data saved in this browser only');
+      return;
+    }
+    
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.firestore();
+    useFirestore = true;
+    console.log('[RSVP] Firebase initialized — using Firestore');
+    setDBStatus('ok', 'Firestore Live', 'Real-time sync across all devices');
+  } catch(e) {
+    console.warn('[RSVP] Firebase init failed:', e.message);
+    setDBStatus('local', 'Local Storage', 'Firebase error — using fallback');
+  }
+}
+
+function setDBStatus(type, label, sub) {
+  var stat = document.getElementById('db-stat');
+  var txt  = document.getElementById('db-txt');
+  var subEl = document.getElementById('db-sub');
+  txt.textContent = label;
+  if (subEl) subEl.textContent = sub;
+  stat.className = 'text-[10px] px-2.5 py-1 rounded-full flex items-center gap-1.5';
+  if (type === 'ok')       stat.classList.add('db-on');
+  else if (type === 'err') stat.classList.add('db-off');
+  else if (type === 'warn')stat.classList.add('db-warn');
+  else                     stat.classList.add('db-on');
+}
+
+/* ═════════════════════════════════════════
+   DATA ACCESS (unified API)
+   ═════════════════════════════════════════ */
 function loadData() {
+  if (useFirestore && db) {
+    // Firestore: set up real-time listener
+    if (unsubSnapshot) unsubSnapshot(); // remove old listener
+    unsubSnapshot = db.collection(COLLECTION)
+      .orderBy('timestamp', 'desc')
+      .onSnapshot(function(snapshot) {
+        allData = [];
+        snapshot.forEach(function(doc) {
+          var d = doc.data();
+          d._docId = doc.id;
+          allData.push(d);
+        });
+        renderAdmin();
+      }, function(err) {
+        console.warn('[RSVP] Firestore listener error:', err);
+        setDBStatus('err', 'Firestore Error', err.message);
+        // Fallback to local
+        useFirestore = false;
+        loadLocal();
+      });
+  } else {
+    loadLocal();
+  }
+}
+
+function loadLocal() {
   try {
     var raw = localStorage.getItem(STORAGE_KEY);
     allData = raw ? JSON.parse(raw) : [];
   } catch(e) { allData = []; }
 }
 
-function saveData() {
+function saveLocal() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
 }
 
-/* ── HTML escape ── */
+function saveEntry(entry) {
+  if (useFirestore && db) {
+    // Add timestamp for Firestore ordering
+    entry.timestamp = firebase.firestore.FieldValue.serverTimestamp();
+    return db.collection(COLLECTION).add(entry)
+      .then(function(docRef) {
+        entry._docId = docRef.id;
+        return entry;
+      })
+      .catch(function(err) {
+        console.warn('[RSVP] Firestore write failed, saving locally:', err);
+        loadLocal();
+        allData.push(entry);
+        saveLocal();
+        return entry;
+      });
+  } else {
+    loadLocal();
+    allData.push(entry);
+    saveLocal();
+    return Promise.resolve(entry);
+  }
+}
+
+function deleteAllEntries() {
+  if (useFirestore && db) {
+    // Batch delete all documents
+    db.collection(COLLECTION).get().then(function(snapshot) {
+      var batch = db.batch();
+      snapshot.forEach(function(doc) { batch.delete(doc.ref); });
+      return batch.commit();
+    }).catch(function(err) {
+      console.warn('[RSVP] Firestore delete failed:', err);
+    });
+  }
+  allData = [];
+  saveLocal();
+}
+
+/* ═════════════════════════════════════════
+   HTML ESCAPE
+   ═════════════════════════════════════════ */
 function esc(s) {
   var d = document.createElement('div');
-  d.textContent = s;
+  d.textContent = s || '';
   return d.innerHTML;
 }
 
-/* ── Toast ── */
+/* ═════════════════════════════════════════
+   TOAST
+   ═════════════════════════════════════════ */
 function showToast(type) {
   var el = document.getElementById(type === 'ok' ? 'toast-ok' : 'toast-err');
   el.classList.add('show');
   setTimeout(function(){ el.classList.remove('show'); }, 3500);
 }
 
-/* ── Lightbox ── */
+/* ═════════════════════════════════════════
+   LIGHTBOX
+   ═════════════════════════════════════════ */
 window.openLB = function(src) {
   document.getElementById('lb-img').src = src;
   document.getElementById('lb').classList.add('on');
 };
-
-/* ── Admin modal ── */
-window.openAdmin = function() {
-  loadData();
-  renderAdmin();
-  document.getElementById('admin-m').classList.add('on');
+window.closeLB = function() {
+  document.getElementById('lb').classList.remove('on');
 };
 
-/* ── Render admin table ── */
+/* ═════════════════════════════════════════
+   ADMIN MODAL
+   ═════════════════════════════════════════ */
+window.openAdmin = function() {
+  if (!useFirestore) loadLocal(); // refresh local data
+  renderAdmin();
+  document.getElementById('admin-m').classList.add('on');
+  if (useFirestore && db && !unsubSnapshot) loadData(); // start listener
+};
+window.closeAdmin = function() {
+  document.getElementById('admin-m').classList.remove('on');
+  // Keep listener running for real-time, or stop to save reads:
+  // if (unsubSnapshot) { unsubSnapshot(); unsubSnapshot = null; }
+};
+
+/* ═════════════════════════════════════════
+   RENDER ADMIN TABLE
+   ═════════════════════════════════════════ */
 function renderAdmin() {
   var tb = document.getElementById('admin-tb');
   var total = allData.length;
@@ -457,11 +687,14 @@ function renderAdmin() {
   tb.innerHTML = html;
 }
 
-/* ── Mobile menu ── */
+/* ═════════════════════════════════════════
+   MOBILE MENU
+   ═════════════════════════════════════════ */
 document.getElementById('mob-btn').addEventListener('click', function() {
   var menu = document.getElementById('mob-menu');
+  var isHidden = menu.classList.contains('hidden');
   menu.classList.toggle('hidden');
-  this.textContent = menu.classList.contains('hidden') ? '☰' : '✕';
+  this.textContent = isHidden ? '✕' : '☰';
 });
 
 var mobLinks = document.querySelectorAll('.mob-link');
@@ -472,7 +705,9 @@ for (var i = 0; i < mobLinks.length; i++) {
   });
 }
 
-/* ── Navbar scroll ── */
+/* ═════════════════════════════════════════
+   NAVBAR SCROLL
+   ═════════════════════════════════════════ */
 var nav = document.getElementById('nav');
 window.addEventListener('scroll', function() {
   if (window.scrollY > 80) {
@@ -486,16 +721,18 @@ window.addEventListener('scroll', function() {
   }
 });
 
-/* ── Countdown ── */
+/* ═════════════════════════════════════════
+   COUNTDOWN
+   ═════════════════════════════════════════ */
 var weddingDate = new Date('2025-06-14T16:00:00').getTime();
 
 function updateCountdown() {
   var diff = weddingDate - Date.now();
   if (diff <= 0) {
     document.getElementById('cd-d').textContent = '0';
-    document.getElementById('cd-h').textContent = '0';
-    document.getElementById('cd-m').textContent = '0';
-    document.getElementById('cd-s').textContent = '0';
+    document.getElementById('cd-h').textContent = '00';
+    document.getElementById('cd-m').textContent = '00';
+    document.getElementById('cd-s').textContent = '00';
     return;
   }
   document.getElementById('cd-d').textContent = Math.floor(diff / 86400000);
@@ -506,7 +743,9 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-/* ── Scroll animations ── */
+/* ═════════════════════════════════════════
+   SCROLL ANIMATIONS
+   ═════════════════════════════════════════ */
 var animEls = document.querySelectorAll('.fade-up,.fade-l,.fade-r,.scale-in');
 var obs = new IntersectionObserver(function(entries) {
   for (var i = 0; i < entries.length; i++) {
@@ -515,7 +754,9 @@ var obs = new IntersectionObserver(function(entries) {
 }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
 for (var i = 0; i < animEls.length; i++) obs.observe(animEls[i]);
 
-/* ── RSVP step navigation ── */
+/* ═════════════════════════════════════════
+   RSVP STEP NAVIGATION
+   ═════════════════════════════════════════ */
 window.goStep = function(step) {
   if (step > curStep) {
     if (curStep === 1) {
@@ -557,28 +798,40 @@ for (var i = 0; i < attRadios.length; i++) {
   });
 }
 
-/* ── Submit RSVP ── */
+/* ═════════════════════════════════════════
+   SUBMIT RSVP
+   ═════════════════════════════════════════ */
 window.submitRSVP = function() {
-  var name = document.getElementById('f-name').value.trim();
+  var name  = document.getElementById('f-name').value.trim();
   var email = document.getElementById('f-email').value.trim();
   var phone = document.getElementById('f-phone').value.trim();
-  var att = document.querySelector('input[name="att"]:checked');
+  var att   = document.querySelector('input[name="att"]:checked');
   var guests = document.getElementById('f-guests').value;
-  var diet = document.getElementById('f-diet').value;
-  var msg = document.getElementById('f-msg').value.trim();
+  var diet  = document.getElementById('f-diet').value;
+  var msg   = document.getElementById('f-msg').value.trim();
 
   if (!name || !email || !att) { showToast('err'); return; }
 
   var yes = att.value === 'yes';
   var now = new Date();
-  var id = 'JO-' + String(allData.length + 1).padStart(3, '0');
+
+  // Get next ID
+  if (!useFirestore) loadLocal();
+  var nextNum = allData.length + 1;
+  var id = 'JO-' + String(nextNum).padStart(3, '0');
 
   var entry = {
-    id: id, name: name, email: email, phone: phone,
-    status: att.value, guests: yes ? guests : '0',
-    diet: diet, message: msg,
+    id: id,
+    name: name,
+    email: email,
+    phone: phone,
+    status: att.value,
+    guests: yes ? guests : '0',
+    diet: diet,
+    message: msg,
     date: now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
-       + ' ' + now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})
+       + ' ' + now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),
+    timestamp: now.toISOString()
   };
 
   // Show spinner
@@ -586,20 +839,19 @@ window.submitRSVP = function() {
   document.getElementById('sub-spin').classList.remove('hidden');
   document.getElementById('sub-btn').disabled = true;
 
-  // Simulate brief save delay for UX
-  setTimeout(function() {
-    loadData();
-    allData.push(entry);
-    saveData();
-
+  saveEntry(entry).then(function(savedEntry) {
+    // Hide spinner
     document.getElementById('sub-txt').classList.remove('hidden');
     document.getElementById('sub-spin').classList.add('hidden');
     document.getElementById('sub-btn').disabled = false;
 
-    document.getElementById('c-id').textContent = entry.id;
-    document.getElementById('c-name').textContent = entry.name;
-    document.getElementById('c-guests').textContent = yes ? entry.guests + (parseInt(entry.guests)===1?' guest':' guests') : '—';
-    document.getElementById('c-date').textContent = entry.date;
+    // Show confirmation
+    document.getElementById('c-id').textContent = savedEntry.id;
+    document.getElementById('c-name').textContent = savedEntry.name;
+    document.getElementById('c-guests').textContent = yes
+      ? savedEntry.guests + (parseInt(savedEntry.guests)===1?' guest':' guests')
+      : '—';
+    document.getElementById('c-date').textContent = savedEntry.date;
     document.getElementById('c-status').innerHTML = yes
       ? '<span class="badge-y">Joyfully Accepts</span>'
       : '<span class="badge-n">Regretfully Declines</span>';
@@ -607,19 +859,32 @@ window.submitRSVP = function() {
     document.getElementById('conf-m').classList.add('on');
     showToast('ok');
     if (yes) launchConfetti();
-  }, 600);
+
+    // Reset form
+    document.getElementById('rsvp-form').reset();
+    goStep(1);
+  }).catch(function(err) {
+    console.error('[RSVP] Save error:', err);
+    document.getElementById('sub-txt').classList.remove('hidden');
+    document.getElementById('sub-spin').classList.add('hidden');
+    document.getElementById('sub-btn').disabled = false;
+    showToast('err');
+  });
 };
 
-/* ── Clear all ── */
+/* ═════════════════════════════════════════
+   CLEAR ALL
+   ═════════════════════════════════════════ */
 window.clearAll = function() {
   if (!confirm('Delete all RSVP data? This cannot be undone.')) return;
-  allData = [];
-  saveData();
+  deleteAllEntries();
   renderAdmin();
   showToast('ok');
 };
 
-/* ── Export CSV ── */
+/* ═════════════════════════════════════════
+   EXPORT CSV
+   ═════════════════════════════════════════ */
 window.exportCSV = function() {
   if (allData.length === 0) { showToast('err'); return; }
   var h = ['ID','Name','Email','Phone','Status','Guests','Dietary','Message','Date'];
@@ -628,29 +893,33 @@ window.exportCSV = function() {
     var d = allData[i];
     rows.push([
       d.id,
-      '"' + (d.name||'').replace(/"/g,'""') + '"',
-      '"' + (d.email||'').replace(/"/g,'""') + '"',
-      '"' + (d.phone||'').replace(/"/g,'""') + '"',
+      '"'+(d.name||'').replace(/"/g,'""')+'"',
+      '"'+(d.email||'').replace(/"/g,'""')+'"',
+      '"'+(d.phone||'').replace(/"/g,'""')+'"',
       d.status==='yes'?'Attending':'Declined',
       d.guests,
       d.diet||'',
-      '"' + (d.message||'').replace(/"/g,'""') + '"',
+      '"'+(d.message||'').replace(/"/g,'""')+'"',
       d.date
     ].join(','));
   }
   var blob = new Blob([rows.join('\n')], {type:'text/csv'});
   var a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'rsvp_james_olivia_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.download = 'rsvp_james_olivia_'+new Date().toISOString().slice(0,10)+'.csv';
+  document.body.appendChild(a);
   a.click();
+  document.body.removeChild(a);
   URL.revokeObjectURL(a.href);
 };
 
-/* ── Confetti ── */
+/* ═════════════════════════════════════════
+   CONFETTI
+   ═════════════════════════════════════════ */
 function launchConfetti() {
-  var colors = ['#d4a574','#e8b668','#a3b89c','#e8b4b8','#f0c987','#fff'];
+  var colors = ['#d4a574','#e8b668','#a3b89c','#e8b4b8','#f0c987','#ffffff'];
   var c = document.createElement('div');
-  c.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:999;overflow:hidden';
+  c.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:250;overflow:hidden';
   document.body.appendChild(c);
 
   if (!document.getElementById('conf-kf')) {
@@ -669,7 +938,9 @@ function launchConfetti() {
   setTimeout(function(){ c.remove(); }, 5000);
 }
 
-/* ── Close modals on Escape ── */
+/* ═════════════════════════════════════════
+   KEYBOARD: ESCAPE CLOSES MODALS
+   ═════════════════════════════════════════ */
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     document.getElementById('lb').classList.remove('on');
@@ -677,6 +948,11 @@ document.addEventListener('keydown', function(e) {
     document.getElementById('conf-m').classList.remove('on');
   }
 });
+
+/* ═════════════════════════════════════════
+   INIT
+   ═════════════════════════════════════════ */
+initFirebase();
 
 })();
 </script>
@@ -694,7 +970,7 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = 50;
 
-const count = 600;
+const count = 500;
 const positions = new Float32Array(count * 3);
 const sizes = new Float32Array(count);
 
@@ -728,7 +1004,7 @@ const mat = new THREE.ShaderMaterial({
       vec4 mv = modelViewMatrix * vec4(p,1.0);
       gl_PointSize = size * (40.0 / -mv.z);
       gl_Position = projectionMatrix * mv;
-      vAlpha = smoothstep(80.0,20.0,-mv.z)*0.6;
+      vAlpha = smoothstep(80.0,20.0,-mv.z)*0.5;
       vMix = sin(position.x*0.05+position.y*0.05+uTime*0.1)*0.5+0.5;
     }
   `,
